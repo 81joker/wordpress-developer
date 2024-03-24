@@ -1,29 +1,36 @@
 <?php
 
-function university_post_types() {
-  // Campus Post Type
-  register_post_type('campus', array(
-    'capability_type' => 'campus',
-    'map_meta_cap' => true,
-    'show_in_rest' => true,
-    'supports' => array('title', 'editor', 'excerpt'),
-    'rewrite' => array('slug' => 'campuses'),
-    'has_archive' => true,
-    'public' => true,
-    'labels' => array(
-      'name' => 'Campuses',
-      'add_new_item' => 'Add New Campus',
-      'edit_item' => 'Edit Campus',
-      'all_items' => 'All Campuses',
-      'singular_name' => 'Campus'
-    ),
-    'menu_icon' => 'dashicons-location-alt'
-  ));
-  
+function university_post_types()
+{
+  // // Campus Post Type
+  // register_post_type('campus', array(
+  //   // to add new Role User 
+  //   'capability_type' => 'campus_test_role_nehad',
+  //   // to add new Role User 
+  //   'map_meta_cap' => true,
+
+  //   'show_in_rest' => true,
+  //   'supports' => array('title', 'editor', 'excerpt'),
+  //   'rewrite' => array('slug' => 'campuses'),
+  //   'has_archive' => true,
+  //   'public' => true,
+  //   'labels' => array(
+  //     'name' => 'Campuses',
+  //     'add_new_item' => 'Add New Campus',
+  //     'edit_item' => 'Edit Campus',
+  //     'all_items' => 'All Campuses',
+  //     'singular_name' => 'Campus'
+  //   ),
+  //   'menu_icon' => 'dashicons-location-alt'
+  // ));
+
   // Event Post Type
   register_post_type('event', array(
-    'capability_type' => 'event',
+    // to add new Role User 
+    'capability_type' => 'event_test_nehad',
+    // to add new Role User 
     'map_meta_cap' => true,
+
     'show_in_rest' => true,
     'supports' => array('title', 'editor', 'excerpt'),
     'rewrite' => array('slug' => 'events'),
@@ -70,13 +77,16 @@ function university_post_types() {
     ),
     'menu_icon' => 'dashicons-welcome-learn-more'
   ));
-
   // Note Post Type
   register_post_type('note', array(
+    'capability_type' => 'note',
+    'map_meta_cap' => true,
     'show_in_rest' => true,
     'supports' => array('title', 'editor'),
+    // disable or Enable show public in Admin or clint
     'public' => false,
-    'show_ui' => true,
+    // disable or Enable show just for admin dashboard
+    'show_ui' =>true,
     'labels' => array(
       'name' => 'Notes',
       'add_new_item' => 'Add New Note',

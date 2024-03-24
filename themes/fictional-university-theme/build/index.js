@@ -1,192 +1,593 @@
-(window["webpackJsonp_fictional_university_theme"] = window["webpackJsonp_fictional_university_theme"] || []).push([["style-index"],{
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _css_style_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/style.scss */ "./css/style.scss");
+/* harmony import */ var _modules_MobileMenu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/MobileMenu */ "./src/modules/MobileMenu.js");
+/* harmony import */ var _modules_HeroSlider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/HeroSlider */ "./src/modules/HeroSlider.js");
+/* harmony import */ var _modules_Search__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/Search */ "./src/modules/Search.js");
+/* harmony import */ var _modules_MyNotes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/MyNotes */ "./src/modules/MyNotes.js");
+
+
+// Our modules / classes
+
+
+// import GoogleMap from "./modules/GoogleMap"
+
+
+
+// Instantiate a new object using our modules/classes
+const mobileMenu = new _modules_MobileMenu__WEBPACK_IMPORTED_MODULE_1__["default"]();
+const heroSlider = new _modules_HeroSlider__WEBPACK_IMPORTED_MODULE_2__["default"]();
+// const googleMap = new GoogleMap()
+const search = new _modules_Search__WEBPACK_IMPORTED_MODULE_3__["default"]();
+const myNotes = new _modules_MyNotes__WEBPACK_IMPORTED_MODULE_4__["default"]();
+
+/***/ }),
+
+/***/ "./src/modules/HeroSlider.js":
+/*!***********************************!*\
+  !*** ./src/modules/HeroSlider.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _glidejs_glide__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @glidejs/glide */ "./node_modules/@glidejs/glide/dist/glide.esm.js");
+
+class HeroSlider {
+  constructor() {
+    if (document.querySelector(".hero-slider")) {
+      // count how many slides there are
+      const dotCount = document.querySelectorAll(".hero-slider__slide").length;
+
+      // Generate the HTML for the navigation dots
+      let dotHTML = "";
+      for (let i = 0; i < dotCount; i++) {
+        dotHTML += `<button class="slider__bullet glide__bullet" data-glide-dir="=${i}"></button>`;
+      }
+
+      // Add the dots HTML to the DOM
+      document.querySelector(".glide__bullets").insertAdjacentHTML("beforeend", dotHTML);
+
+      // Actually initialize the glide / slider script
+      var glide = new _glidejs_glide__WEBPACK_IMPORTED_MODULE_0__["default"](".hero-slider", {
+        type: "carousel",
+        perView: 1,
+        autoplay: 3000
+      });
+      glide.mount();
+    }
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (HeroSlider);
+
+/***/ }),
+
+/***/ "./src/modules/MobileMenu.js":
+/*!***********************************!*\
+  !*** ./src/modules/MobileMenu.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+class MobileMenu {
+  constructor() {
+    this.menu = document.querySelector(".site-header__menu");
+    this.openButton = document.querySelector(".site-header__menu-trigger");
+    this.events();
+  }
+  events() {
+    this.openButton.addEventListener("click", () => this.openMenu());
+  }
+  openMenu() {
+    this.openButton.classList.toggle("fa-bars");
+    this.openButton.classList.toggle("fa-window-close");
+    this.menu.classList.toggle("site-header__menu--active");
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MobileMenu);
+
+/***/ }),
+
+/***/ "./src/modules/MyNotes.js":
+/*!********************************!*\
+  !*** ./src/modules/MyNotes.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
+class MyNotes {
+  constructor() {
+    this.events();
+  }
+  events() {
+    // display in frontEnd  the notes php
+    // $(".delete-note").on("click", this.deleteNote)
+    // display in frontEnd  from Jquery
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#my-notes").on("click", ".delete-note", this.deleteNote);
+
+    // $(".edit-note").on("click", this.editNote.bind(this))
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#my-notes").on("click", ".edit-note", this.editNote.bind(this));
+
+    // $(".update-note").on("click", this.updateNote.bind(this))
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#my-notes").on("click", ".update-note", this.updateNote.bind(this));
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(".submit-note").on("click", this.createNote.bind(this));
+  }
+
+  // Methods will go here
+  deleteNote(e) {
+    var id = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parents("li");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+      beforeSend: xhr => {
+        xhr.setRequestHeader("X-WP-Nonce", universityData.nonce);
+      },
+      url: universityData.root_url + "/wp-json/wp/v2/note/" + id.data("id"),
+      type: "DELETE",
+      success: response => {
+        id.slideUp();
+        // console.log(response)
+      },
+      error: response => {
+        // console.log("Sorry , there was an issue with your request.")
+        alert("Sorry , there was an issue with your request.");
+        // console.log(response)
+      }
+    });
+  }
+  editNote(e) {
+    var thisEdit = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parents("li");
+    if (thisEdit.data("state") == "editable") {
+      this.makeNoteReadOnly(thisEdit);
+    } else {
+      this.makeNoteEditable(thisEdit);
+    }
+  }
+  makeNoteEditable(thisEdit) {
+    thisEdit.find(".note-title-field ,.note-body-field").removeAttr("readonly").addClass("note-active-field");
+    thisEdit.find(".update-note").addClass("update-note--visible");
+    thisEdit.find(".edit-note").html('<i class="fa fa-times" aria-hidden="true"></i> Cancle</span>');
+    thisEdit.data("state", "editable");
+  }
+  makeNoteReadOnly(thisEdit) {
+    thisEdit.find(".note-title-field ,.note-body-field").attr("readonly", "readonly").removeClass("note-active-field");
+    thisEdit.find(".update-note").removeClass("update-note--visible");
+    thisEdit.find(".edit-note").html('<i class="fa fa-times" aria-hidden="true"></i> Edit</span>');
+    thisEdit.data("state", "cancel");
+  }
+  updateNote(e) {
+    var thisUpdate = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parents("li");
+    var datas = {
+      'title': thisUpdate.find('.note-title-field').val(),
+      'content': thisUpdate.find('.note-body-field').val()
+    };
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+      beforeSend: xhr => {
+        xhr.setRequestHeader("X-WP-Nonce", universityData.nonce);
+      },
+      url: universityData.root_url + "/wp-json/wp/v2/note/" + thisUpdate.data("id"),
+      type: 'POST',
+      data: datas,
+      success: response => {
+        this.makeNoteReadOnly(thisUpdate);
+        console.log('Note updated');
+      },
+      error: response => {
+        console.log("Sorry , there was an issue with your request.");
+        console.log(response);
+      }
+    });
+  }
+  createNote(e) {
+    var datas = {
+      'title': jquery__WEBPACK_IMPORTED_MODULE_0___default()('.new-note-title').val(),
+      'content': jquery__WEBPACK_IMPORTED_MODULE_0___default()('.new-note-body').val(),
+      'status': 'publish'
+      //  'status': 'private'
+    };
+    if (datas.title.length > 0 && datas.content.length > 0) {
+      jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+        beforeSend: xhr => {
+          xhr.setRequestHeader("X-WP-Nonce", universityData.nonce);
+        },
+        url: universityData.root_url + "/wp-json/wp/v2/note/",
+        type: 'POST',
+        data: datas,
+        success: response => {
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()('.new-note-title ,.new-note-body').val('');
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(`
+          <li data-id="${response.id}">
+          <input class="note-title-field" value="${response.title.raw}">
+          <span class="edit-note"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</span>
+          <span class="delete-note"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</span>
+          <textarea class="note-body-field">${response.content.raw}</textarea>
+          <span class="update-note btn btn--blue btn--samill"><i class="fa fa-arrow-right" aria-hidden="true"></i> Save</span>
+        </li>`).prependTo("#my-notes").hide().slideDown();
+          console.log('Note Created');
+          console.log(response);
+        },
+        error: response => {
+          console.log("Sorry , there was an issue with your request.");
+          console.log(response);
+        }
+      });
+    } else {
+      alert('No date');
+    }
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyNotes);
+
+/***/ }),
+
+/***/ "./src/modules/Search.js":
+/*!*******************************!*\
+  !*** ./src/modules/Search.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+
+class Search {
+  // 1. describe and create/initiate our object
+  constructor() {
+    this.addSearchHTML();
+    this.resultsDiv = document.querySelector("#search-overlay__results");
+    this.openButton = document.querySelectorAll(".js-search-trigger");
+    this.closeButton = document.querySelector(".search-overlay__close");
+    this.searchOverlay = document.querySelector(".search-overlay");
+    this.searchField = document.querySelector("#search-term");
+    this.isOverlayOpen = false;
+    this.isSpinnerVisible = false;
+    this.previousValue;
+    this.typingTimer;
+    this.events();
+  }
+
+  // 2. events
+  events() {
+    this.openButton.forEach(el => {
+      el.addEventListener("click", e => {
+        e.preventDefault();
+        this.openOverlay();
+      });
+    });
+    this.closeButton.addEventListener("click", () => this.closeOverlay());
+    document.addEventListener("keydown", e => this.keyPressDispatcher(e));
+    this.searchField.addEventListener("keyup", () => this.typingLogic());
+  }
+
+  // 3. methods (function, action...)
+  typingLogic() {
+    if (this.searchField.value != this.previousValue) {
+      clearTimeout(this.typingTimer);
+      if (this.searchField.value) {
+        if (!this.isSpinnerVisible) {
+          this.resultsDiv.innerHTML = '<div class="spinner-loader"></div>';
+          this.isSpinnerVisible = true;
+        }
+        this.typingTimer = setTimeout(this.getResults.bind(this), 750);
+      } else {
+        this.resultsDiv.innerHTML = "";
+        this.isSpinnerVisible = false;
+      }
+    }
+    this.previousValue = this.searchField.value;
+  }
+  async getResults() {
+    try {
+      const response = await axios__WEBPACK_IMPORTED_MODULE_0__["default"].get(universityData.root_url + "/wp-json/university/v1/search?term=" + this.searchField.value);
+      const results = response.data;
+      this.resultsDiv.innerHTML = `
+        <div class="row">
+          <div class="one-third">
+            <h2 class="search-overlay__section-title">General Information</h2>
+            ${results.generalInfo.length ? '<ul class="link-list min-list">' : "<p>No general information matches that search.</p>"}
+              ${results.generalInfo.map(item => `<li><a href="${item.permalink}">${item.title}</a> ${item.postType == "post" ? `by ${item.authorName}` : ""}</li>`).join("")}
+            ${results.generalInfo.length ? "</ul>" : ""}
+          </div>
+          <div class="one-third">
+            <h2 class="search-overlay__section-title">Programs</h2>
+            ${results.programs.length ? '<ul class="link-list min-list">' : `<p>No programs match that search. <a href="${universityData.root_url}/programs">View all programs</a></p>`}
+              ${results.programs.map(item => `<li><a href="${item.permalink}">${item.title}</a></li>`).join("")}
+            ${results.programs.length ? "</ul>" : ""}
+
+            <h2 class="search-overlay__section-title">Professors</h2>
+            ${results.professors.length ? '<ul class="professor-cards">' : `<p>No professors match that search.</p>`}
+              ${results.professors.map(item => `
+                <li class="professor-card__list-item">
+                  <a class="professor-card" href="${item.permalink}">
+                    <img class="professor-card__image" src="${item.image}">
+                    <span class="professor-card__name">${item.title}</span>
+                  </a>
+                </li>
+              `).join("")}
+            ${results.professors.length ? "</ul>" : ""}
+
+          </div>
+          <div class="one-third">
+            <h2 class="search-overlay__section-title">Campuses</h2>
+            ${results.campuses.length ? '<ul class="link-list min-list">' : `<p>No campuses match that search. <a href="${universityData.root_url}/campuses">View all campuses</a></p>`}
+              ${results.campuses.map(item => `<li><a href="${item.permalink}">${item.title}</a></li>`).join("")}
+            ${results.campuses.length ? "</ul>" : ""}
+
+            <h2 class="search-overlay__section-title">Events</h2>
+            ${results.events.length ? "" : `<p>No events match that search. <a href="${universityData.root_url}/events">View all events</a></p>`}
+              ${results.events.map(item => `
+                <div class="event-summary">
+                  <a class="event-summary__date t-center" href="${item.permalink}">
+                    <span class="event-summary__month">${item.month}</span>
+                    <span class="event-summary__day">${item.day}</span>  
+                  </a>
+                  <div class="event-summary__content">
+                    <h5 class="event-summary__title headline headline--tiny"><a href="${item.permalink}">${item.title}</a></h5>
+                    <p>${item.description} <a href="${item.permalink}" class="nu gray">Learn more</a></p>
+                  </div>
+                </div>
+              `).join("")}
+
+          </div>
+        </div>
+      `;
+      this.isSpinnerVisible = false;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  keyPressDispatcher(e) {
+    if (e.keyCode == 83 && !this.isOverlayOpen && document.activeElement.tagName != "INPUT" && document.activeElement.tagName != "TEXTAREA") {
+      this.openOverlay();
+    }
+    if (e.keyCode == 27 && this.isOverlayOpen) {
+      this.closeOverlay();
+    }
+  }
+  openOverlay() {
+    this.searchOverlay.classList.add("search-overlay--active");
+    document.body.classList.add("body-no-scroll");
+    this.searchField.value = "";
+    setTimeout(() => this.searchField.focus(), 301);
+    console.log("our open method just ran!");
+    this.isOverlayOpen = true;
+    return false;
+  }
+  closeOverlay() {
+    this.searchOverlay.classList.remove("search-overlay--active");
+    document.body.classList.remove("body-no-scroll");
+    console.log("our close method just ran!");
+    this.isOverlayOpen = false;
+  }
+  addSearchHTML() {
+    document.body.insertAdjacentHTML("beforeend", `
+      <div class="search-overlay">
+        <div class="search-overlay__top">
+          <div class="container">
+            <i class="fa fa-search search-overlay__icon" aria-hidden="true"></i>
+            <input type="text" class="search-term" placeholder="What are you looking for?" id="search-term">
+            <i class="fa fa-window-close search-overlay__close" aria-hidden="true"></i>
+          </div>
+        </div>
+        
+        <div class="container">
+          <div id="search-overlay__results"></div>
+        </div>
+
+      </div>
+    `);
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);
+
+/***/ }),
 
 /***/ "./css/style.scss":
 /*!************************!*\
   !*** ./css/style.scss ***!
   \************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
 
-/***/ })
+/***/ }),
 
-}]);
+/***/ "jquery":
+/*!*************************!*\
+  !*** external "jQuery" ***!
+  \*************************/
+/***/ ((module) => {
 
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// install a JSONP callback for chunk loading
-/******/ 	function webpackJsonpCallback(data) {
-/******/ 		var chunkIds = data[0];
-/******/ 		var moreModules = data[1];
-/******/ 		var executeModules = data[2];
-/******/
-/******/ 		// add "moreModules" to the modules object,
-/******/ 		// then flag all "chunkIds" as loaded and fire callback
-/******/ 		var moduleId, chunkId, i = 0, resolves = [];
-/******/ 		for(;i < chunkIds.length; i++) {
-/******/ 			chunkId = chunkIds[i];
-/******/ 			if(Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
-/******/ 				resolves.push(installedChunks[chunkId][0]);
-/******/ 			}
-/******/ 			installedChunks[chunkId] = 0;
-/******/ 		}
-/******/ 		for(moduleId in moreModules) {
-/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
-/******/ 				modules[moduleId] = moreModules[moduleId];
-/******/ 			}
-/******/ 		}
-/******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
-/******/
-/******/ 		while(resolves.length) {
-/******/ 			resolves.shift()();
-/******/ 		}
-/******/
-/******/ 		// add entry modules from loaded chunk to deferred list
-/******/ 		deferredModules.push.apply(deferredModules, executeModules || []);
-/******/
-/******/ 		// run deferred modules when all chunks ready
-/******/ 		return checkDeferredModules();
-/******/ 	};
-/******/ 	function checkDeferredModules() {
-/******/ 		var result;
-/******/ 		for(var i = 0; i < deferredModules.length; i++) {
-/******/ 			var deferredModule = deferredModules[i];
-/******/ 			var fulfilled = true;
-/******/ 			for(var j = 1; j < deferredModule.length; j++) {
-/******/ 				var depId = deferredModule[j];
-/******/ 				if(installedChunks[depId] !== 0) fulfilled = false;
-/******/ 			}
-/******/ 			if(fulfilled) {
-/******/ 				deferredModules.splice(i--, 1);
-/******/ 				result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
-/******/ 			}
-/******/ 		}
-/******/
-/******/ 		return result;
-/******/ 	}
-/******/
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// object to store loaded and loading chunks
-/******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 	// Promise = chunk loading, 0 = chunk loaded
-/******/ 	var installedChunks = {
-/******/ 		"index": 0
-/******/ 	};
-/******/
-/******/ 	var deferredModules = [];
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	var jsonpArray = window["webpackJsonp_fictional_university_theme"] = window["webpackJsonp_fictional_university_theme"] || [];
-/******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
-/******/ 	jsonpArray.push = webpackJsonpCallback;
-/******/ 	jsonpArray = jsonpArray.slice();
-/******/ 	for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
-/******/ 	var parentJsonpFunction = oldJsonpFunction;
-/******/
-/******/
-/******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push(["./src/index.js","style-index"]);
-/******/ 	// run deferred modules when ready
-/******/ 	return checkDeferredModules();
-/******/ })
-/************************************************************************/
-/******/ ({
+module.exports = window["jQuery"];
+
+/***/ }),
 
 /***/ "./node_modules/@glidejs/glide/dist/glide.esm.js":
 /*!*******************************************************!*\
   !*** ./node_modules/@glidejs/glide/dist/glide.esm.js ***!
   \*******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Glide)
+/* harmony export */ });
 /*!
- * Glide.js v3.4.1
- * (c) 2013-2019 Jędrzej Chałubek <jedrzej.chalubek@gmail.com> (http://jedrzejchalubek.com/)
+ * Glide.js v3.6.0
+ * (c) 2013-2022 Jędrzej Chałubek (https://github.com/jedrzejchalubek/)
  * Released under the MIT License.
  */
+
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (typeof call === "object" || typeof call === "function")) {
+    return call;
+  } else if (call !== void 0) {
+    throw new TypeError("Derived constructors may only return object or undefined");
+  }
+
+  return _assertThisInitialized(self);
+}
+
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived),
+        result;
+
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return _possibleConstructorReturn(this, result);
+  };
+}
+
+function _superPropBase(object, property) {
+  while (!Object.prototype.hasOwnProperty.call(object, property)) {
+    object = _getPrototypeOf(object);
+    if (object === null) break;
+  }
+
+  return object;
+}
+
+function _get() {
+  if (typeof Reflect !== "undefined" && Reflect.get) {
+    _get = Reflect.get;
+  } else {
+    _get = function _get(target, property, receiver) {
+      var base = _superPropBase(target, property);
+
+      if (!base) return;
+      var desc = Object.getOwnPropertyDescriptor(base, property);
+
+      if (desc.get) {
+        return desc.get.call(arguments.length < 3 ? target : receiver);
+      }
+
+      return desc.value;
+    };
+  }
+
+  return _get.apply(this, arguments);
+}
 
 var defaults = {
   /**
@@ -278,11 +679,15 @@ var defaults = {
   dragThreshold: 120,
 
   /**
-   * A maximum number of slides to which movement will be made on swiping or dragging. Use `false` for unlimited.
+   * A number of slides moved on single swipe.
    *
-   * @type {Number|Boolean}
+   * Available types:
+   * `` - Moves slider by one slide per swipe
+   * `|` - Moves slider between views per swipe (number of slides defined in `perView` options)
+   *
+   * @type {String}
    */
-  perTouch: false,
+  perSwipe: '',
 
   /**
    * Moving distance ratio of the slides on a swiping and dragging.
@@ -327,6 +732,13 @@ var defaults = {
   animationTimingFunc: 'cubic-bezier(.165, .840, .440, 1)',
 
   /**
+   * Wait for the animation to finish until the next user input can be processed
+   *
+   * @type {boolean}
+   */
+  waitForTransition: true,
+
+  /**
    * Throttle costly events at most once per every wait milliseconds.
    *
    * @type {Number}
@@ -359,6 +771,13 @@ var defaults = {
   peek: 0,
 
   /**
+   * Defines how many clones of current viewport will be generated.
+   *
+   * @type {Number}
+   */
+  cloningRatio: 1,
+
+  /**
    * Collection of options applied at specified media breakpoints.
    * For example: display two slides per view under 800px.
    * `{
@@ -376,18 +795,26 @@ var defaults = {
    * @type {Object}
    */
   classes: {
+    swipeable: 'glide--swipeable',
+    dragging: 'glide--dragging',
     direction: {
       ltr: 'glide--ltr',
       rtl: 'glide--rtl'
     },
-    slider: 'glide--slider',
-    carousel: 'glide--carousel',
-    swipeable: 'glide--swipeable',
-    dragging: 'glide--dragging',
-    cloneSlide: 'glide__slide--clone',
-    activeNav: 'glide__bullet--active',
-    activeSlide: 'glide__slide--active',
-    disabledArrow: 'glide__arrow--disabled'
+    type: {
+      slider: 'glide--slider',
+      carousel: 'glide--carousel'
+    },
+    slide: {
+      clone: 'glide__slide--clone',
+      active: 'glide__slide--active'
+    },
+    arrow: {
+      disabled: 'glide__arrow--disabled'
+    },
+    nav: {
+      active: 'glide__bullet--active'
+    }
   }
 };
 
@@ -398,101 +825,8 @@ var defaults = {
  * @return {Void}
  */
 function warn(msg) {
-  console.error("[Glide warn]: " + msg);
+  console.error("[Glide warn]: ".concat(msg));
 }
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-  return typeof obj;
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
-
-var classCallCheck = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-
-var createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
-
-var _extends = Object.assign || function (target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-
-    for (var key in source) {
-      if (Object.prototype.hasOwnProperty.call(source, key)) {
-        target[key] = source[key];
-      }
-    }
-  }
-
-  return target;
-};
-
-var get = function get(object, property, receiver) {
-  if (object === null) object = Function.prototype;
-  var desc = Object.getOwnPropertyDescriptor(object, property);
-
-  if (desc === undefined) {
-    var parent = Object.getPrototypeOf(object);
-
-    if (parent === null) {
-      return undefined;
-    } else {
-      return get(parent, property, receiver);
-    }
-  } else if ("value" in desc) {
-    return desc.value;
-  } else {
-    var getter = desc.get;
-
-    if (getter === undefined) {
-      return undefined;
-    }
-
-    return getter.call(receiver);
-  }
-};
-
-var inherits = function (subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-};
-
-var possibleConstructorReturn = function (self, call) {
-  if (!self) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return call && (typeof call === "object" || typeof call === "function") ? call : self;
-};
 
 /**
  * Converts value entered as number
@@ -504,7 +838,6 @@ var possibleConstructorReturn = function (self, call) {
 function toInt(value) {
   return parseInt(value);
 }
-
 /**
  * Converts value entered as number
  * or string to flat value.
@@ -512,20 +845,20 @@ function toInt(value) {
  * @param {String} value
  * @returns {Number}
  */
+
 function toFloat(value) {
   return parseFloat(value);
 }
-
 /**
  * Indicates whether the specified value is a string.
  *
  * @param  {*}   value
  * @return {Boolean}
  */
+
 function isString(value) {
   return typeof value === 'string';
 }
-
 /**
  * Indicates whether the specified value is an object.
  *
@@ -534,48 +867,39 @@ function isString(value) {
  *
  * @see https://github.com/jashkenas/underscore
  */
+
 function isObject(value) {
-  var type = typeof value === 'undefined' ? 'undefined' : _typeof(value);
+  var type = _typeof(value);
 
   return type === 'function' || type === 'object' && !!value; // eslint-disable-line no-mixed-operators
 }
-
-/**
- * Indicates whether the specified value is a number.
- *
- * @param  {*} value
- * @return {Boolean}
- */
-function isNumber(value) {
-  return typeof value === 'number';
-}
-
 /**
  * Indicates whether the specified value is a function.
  *
  * @param  {*} value
  * @return {Boolean}
  */
+
 function isFunction(value) {
   return typeof value === 'function';
 }
-
 /**
  * Indicates whether the specified value is undefined.
  *
  * @param  {*} value
  * @return {Boolean}
  */
+
 function isUndefined(value) {
   return typeof value === 'undefined';
 }
-
 /**
  * Indicates whether the specified value is an array.
  *
  * @param  {*} value
  * @return {Boolean}
  */
+
 function isArray(value) {
   return value.constructor === Array;
 }
@@ -589,6 +913,7 @@ function isArray(value) {
  *
  * @returns {Object}
  */
+
 function mount(glide, extensions, events) {
   var components = {};
 
@@ -620,21 +945,19 @@ function mount(glide, extensions, events) {
 function define(obj, prop, definition) {
   Object.defineProperty(obj, prop, definition);
 }
-
 /**
  * Sorts aphabetically object keys.
  *
  * @param  {Object} obj
  * @return {Object}
  */
+
 function sortKeys(obj) {
   return Object.keys(obj).sort().reduce(function (r, k) {
     r[k] = obj[k];
-
     return r[k], r;
   }, {});
 }
-
 /**
  * Merges passed settings object with default options.
  *
@@ -642,30 +965,46 @@ function sortKeys(obj) {
  * @param  {Object} settings
  * @return {Object}
  */
-function mergeOptions(defaults, settings) {
-  var options = _extends({}, defaults, settings);
 
-  // `Object.assign` do not deeply merge objects, so we
+function mergeOptions(defaults, settings) {
+  var options = Object.assign({}, defaults, settings); // `Object.assign` do not deeply merge objects, so we
   // have to do it manually for every nested object
   // in options. Although it does not look smart,
   // it's smaller and faster than some fancy
   // merging deep-merge algorithm script.
+
   if (settings.hasOwnProperty('classes')) {
-    options.classes = _extends({}, defaults.classes, settings.classes);
+    options.classes = Object.assign({}, defaults.classes, settings.classes);
 
     if (settings.classes.hasOwnProperty('direction')) {
-      options.classes.direction = _extends({}, defaults.classes.direction, settings.classes.direction);
+      options.classes.direction = Object.assign({}, defaults.classes.direction, settings.classes.direction);
+    }
+
+    if (settings.classes.hasOwnProperty('type')) {
+      options.classes.type = Object.assign({}, defaults.classes.type, settings.classes.type);
+    }
+
+    if (settings.classes.hasOwnProperty('slide')) {
+      options.classes.slide = Object.assign({}, defaults.classes.slide, settings.classes.slide);
+    }
+
+    if (settings.classes.hasOwnProperty('arrow')) {
+      options.classes.arrow = Object.assign({}, defaults.classes.arrow, settings.classes.arrow);
+    }
+
+    if (settings.classes.hasOwnProperty('nav')) {
+      options.classes.nav = Object.assign({}, defaults.classes.nav, settings.classes.nav);
     }
   }
 
   if (settings.hasOwnProperty('breakpoints')) {
-    options.breakpoints = _extends({}, defaults.breakpoints, settings.breakpoints);
+    options.breakpoints = Object.assign({}, defaults.breakpoints, settings.breakpoints);
   }
 
   return options;
 }
 
-var EventsBus = function () {
+var EventsBus = /*#__PURE__*/function () {
   /**
    * Construct a EventBus instance.
    *
@@ -673,12 +1012,12 @@ var EventsBus = function () {
    */
   function EventsBus() {
     var events = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    classCallCheck(this, EventsBus);
+
+    _classCallCheck(this, EventsBus);
 
     this.events = events;
     this.hop = events.hasOwnProperty;
   }
-
   /**
    * Adds listener to the specifed event.
    *
@@ -687,31 +1026,31 @@ var EventsBus = function () {
    */
 
 
-  createClass(EventsBus, [{
-    key: 'on',
+  _createClass(EventsBus, [{
+    key: "on",
     value: function on(event, handler) {
       if (isArray(event)) {
         for (var i = 0; i < event.length; i++) {
           this.on(event[i], handler);
         }
-      }
 
-      // Create the event's object if not yet created
+        return;
+      } // Create the event's object if not yet created
+
+
       if (!this.hop.call(this.events, event)) {
         this.events[event] = [];
-      }
+      } // Add the handler to queue
 
-      // Add the handler to queue
-      var index = this.events[event].push(handler) - 1;
 
-      // Provide handle back for removal of event
+      var index = this.events[event].push(handler) - 1; // Provide handle back for removal of event
+
       return {
         remove: function remove() {
           delete this.events[event][index];
         }
       };
     }
-
     /**
      * Runs registered handlers for specified event.
      *
@@ -720,29 +1059,32 @@ var EventsBus = function () {
      */
 
   }, {
-    key: 'emit',
+    key: "emit",
     value: function emit(event, context) {
       if (isArray(event)) {
         for (var i = 0; i < event.length; i++) {
           this.emit(event[i], context);
         }
-      }
 
-      // If the event doesn't exist, or there's no handlers in queue, just leave
+        return;
+      } // If the event doesn't exist, or there's no handlers in queue, just leave
+
+
       if (!this.hop.call(this.events, event)) {
         return;
-      }
+      } // Cycle through events queue, fire!
 
-      // Cycle through events queue, fire!
+
       this.events[event].forEach(function (item) {
         item(context || {});
       });
     }
   }]);
+
   return EventsBus;
 }();
 
-var Glide = function () {
+var Glide$1 = /*#__PURE__*/function () {
   /**
    * Construct glide.
    *
@@ -751,18 +1093,17 @@ var Glide = function () {
    */
   function Glide(selector) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    classCallCheck(this, Glide);
+
+    _classCallCheck(this, Glide);
 
     this._c = {};
     this._t = [];
     this._e = new EventsBus();
-
     this.disabled = false;
     this.selector = selector;
     this.settings = mergeOptions(defaults, options);
     this.index = this.settings.startAt;
   }
-
   /**
    * Initializes glide.
    *
@@ -771,9 +1112,9 @@ var Glide = function () {
    */
 
 
-  createClass(Glide, [{
-    key: 'mount',
-    value: function mount$$1() {
+  _createClass(Glide, [{
+    key: "mount",
+    value: function mount$1() {
       var extensions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
       this._e.emit('mount.before');
@@ -788,7 +1129,6 @@ var Glide = function () {
 
       return this;
     }
-
     /**
      * Collects an instance `translate` transformers.
      *
@@ -797,7 +1137,7 @@ var Glide = function () {
      */
 
   }, {
-    key: 'mutate',
+    key: "mutate",
     value: function mutate() {
       var transformers = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
@@ -809,7 +1149,6 @@ var Glide = function () {
 
       return this;
     }
-
     /**
      * Updates glide with specified settings.
      *
@@ -818,10 +1157,9 @@ var Glide = function () {
      */
 
   }, {
-    key: 'update',
+    key: "update",
     value: function update() {
       var settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
       this.settings = mergeOptions(this.settings, settings);
 
       if (settings.hasOwnProperty('startAt')) {
@@ -832,7 +1170,6 @@ var Glide = function () {
 
       return this;
     }
-
     /**
      * Change slide with specified pattern. A pattern must be in the special format:
      * `>` - Move one forward
@@ -840,19 +1177,20 @@ var Glide = function () {
      * `={i}` - Go to {i} zero-based slide (eq. '=1', will go to second slide)
      * `>>` - Rewinds to end (last slide)
      * `<<` - Rewinds to start (first slide)
+     * `|>` - Move one viewport forward
+     * `|<` - Move one viewport backward
      *
      * @param {String} pattern
      * @return {Glide}
      */
 
   }, {
-    key: 'go',
+    key: "go",
     value: function go(pattern) {
       this._c.Run.make(pattern);
 
       return this;
     }
-
     /**
      * Move track by specified distance.
      *
@@ -861,14 +1199,14 @@ var Glide = function () {
      */
 
   }, {
-    key: 'move',
+    key: "move",
     value: function move(distance) {
       this._c.Transition.disable();
+
       this._c.Move.make(distance);
 
       return this;
     }
-
     /**
      * Destroy instance and revert all changes done by this._c.
      *
@@ -876,13 +1214,12 @@ var Glide = function () {
      */
 
   }, {
-    key: 'destroy',
+    key: "destroy",
     value: function destroy() {
       this._e.emit('destroy');
 
       return this;
     }
-
     /**
      * Start instance autoplaying.
      *
@@ -891,7 +1228,7 @@ var Glide = function () {
      */
 
   }, {
-    key: 'play',
+    key: "play",
     value: function play() {
       var interval = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
@@ -903,7 +1240,6 @@ var Glide = function () {
 
       return this;
     }
-
     /**
      * Stop instance autoplaying.
      *
@@ -911,13 +1247,12 @@ var Glide = function () {
      */
 
   }, {
-    key: 'pause',
+    key: "pause",
     value: function pause() {
       this._e.emit('pause');
 
       return this;
     }
-
     /**
      * Sets glide into a idle status.
      *
@@ -925,13 +1260,11 @@ var Glide = function () {
      */
 
   }, {
-    key: 'disable',
+    key: "disable",
     value: function disable() {
       this.disabled = true;
-
       return this;
     }
-
     /**
      * Sets glide into a active status.
      *
@@ -939,13 +1272,11 @@ var Glide = function () {
      */
 
   }, {
-    key: 'enable',
+    key: "enable",
     value: function enable() {
       this.disabled = false;
-
       return this;
     }
-
     /**
      * Adds cuutom event listener with handler.
      *
@@ -955,13 +1286,12 @@ var Glide = function () {
      */
 
   }, {
-    key: 'on',
+    key: "on",
     value: function on(event, handler) {
       this._e.on(event, handler);
 
       return this;
     }
-
     /**
      * Checks if glide is a precised type.
      *
@@ -970,11 +1300,10 @@ var Glide = function () {
      */
 
   }, {
-    key: 'isType',
+    key: "isType",
     value: function isType(name) {
       return this.settings.type === name;
     }
-
     /**
      * Gets value of the core options.
      *
@@ -982,11 +1311,10 @@ var Glide = function () {
      */
 
   }, {
-    key: 'settings',
-    get: function get$$1() {
+    key: "settings",
+    get: function get() {
       return this._o;
     }
-
     /**
      * Sets value of the core options.
      *
@@ -994,14 +1322,13 @@ var Glide = function () {
      * @return {Void}
      */
     ,
-    set: function set$$1(o) {
+    set: function set(o) {
       if (isObject(o)) {
         this._o = o;
       } else {
         warn('Options must be an `object` instance.');
       }
     }
-
     /**
      * Gets current index of the slider.
      *
@@ -1009,21 +1336,19 @@ var Glide = function () {
      */
 
   }, {
-    key: 'index',
-    get: function get$$1() {
+    key: "index",
+    get: function get() {
       return this._i;
     }
-
     /**
      * Sets current index a slider.
      *
      * @return {Object}
      */
     ,
-    set: function set$$1(i) {
+    set: function set(i) {
       this._i = toInt(i);
     }
-
     /**
      * Gets type name of the slider.
      *
@@ -1031,11 +1356,10 @@ var Glide = function () {
      */
 
   }, {
-    key: 'type',
-    get: function get$$1() {
+    key: "type",
+    get: function get() {
       return this.settings.type;
     }
-
     /**
      * Gets value of the idle status.
      *
@@ -1043,21 +1367,21 @@ var Glide = function () {
      */
 
   }, {
-    key: 'disabled',
-    get: function get$$1() {
+    key: "disabled",
+    get: function get() {
       return this._d;
     }
-
     /**
      * Sets value of the idle status.
      *
      * @return {Boolean}
      */
     ,
-    set: function set$$1(status) {
+    set: function set(status) {
       this._d = !!status;
     }
   }]);
+
   return Glide;
 }();
 
@@ -1072,7 +1396,6 @@ function Run (Glide, Components, Events) {
       this._o = false;
     },
 
-
     /**
      * Makes glides running based on the passed moving schema.
      *
@@ -1082,16 +1405,11 @@ function Run (Glide, Components, Events) {
       var _this = this;
 
       if (!Glide.disabled) {
-        Glide.disable();
-
+        !Glide.settings.waitForTransition || Glide.disable();
         this.move = move;
-
         Events.emit('run.before', this.move);
-
         this.calculate();
-
         Events.emit('run', this.move);
-
         Components.Transition.after(function () {
           if (_this.isStart()) {
             Events.emit('run.start', _this.move);
@@ -1101,77 +1419,88 @@ function Run (Glide, Components, Events) {
             Events.emit('run.end', _this.move);
           }
 
-          if (_this.isOffset('<') || _this.isOffset('>')) {
+          if (_this.isOffset()) {
             _this._o = false;
-
             Events.emit('run.offset', _this.move);
           }
 
           Events.emit('run.after', _this.move);
-
           Glide.enable();
         });
       }
     },
 
-
     /**
      * Calculates current index based on defined move.
      *
-     * @return {Void}
+     * @return {Number|Undefined}
      */
     calculate: function calculate() {
       var move = this.move,
           length = this.length;
       var steps = move.steps,
-          direction = move.direction;
+          direction = move.direction; // By default assume that size of view is equal to one slide
+
+      var viewSize = 1; // While direction is `=` we want jump to
+      // a specified index described in steps.
+
+      if (direction === '=') {
+        // Check if bound is true, 
+        // as we want to avoid whitespaces.
+        if (Glide.settings.bound && toInt(steps) > length) {
+          Glide.index = length;
+          return;
+        }
+
+        Glide.index = steps;
+        return;
+      } // When pattern is equal to `>>` we want
+      // fast forward to the last slide.
 
 
-      var countableSteps = isNumber(toInt(steps)) && toInt(steps) !== 0;
+      if (direction === '>' && steps === '>') {
+        Glide.index = length;
+        return;
+      } // When pattern is equal to `<<` we want
+      // fast forward to the first slide.
 
-      switch (direction) {
-        case '>':
-          if (steps === '>') {
-            Glide.index = length;
-          } else if (this.isEnd()) {
-            if (!(Glide.isType('slider') && !Glide.settings.rewind)) {
-              this._o = true;
 
-              Glide.index = 0;
-            }
-          } else if (countableSteps) {
-            Glide.index += Math.min(length - Glide.index, -toInt(steps));
-          } else {
-            Glide.index++;
-          }
-          break;
+      if (direction === '<' && steps === '<') {
+        Glide.index = 0;
+        return;
+      } // pagination movement
 
-        case '<':
-          if (steps === '<') {
-            Glide.index = 0;
-          } else if (this.isStart()) {
-            if (!(Glide.isType('slider') && !Glide.settings.rewind)) {
-              this._o = true;
 
-              Glide.index = length;
-            }
-          } else if (countableSteps) {
-            Glide.index -= Math.min(Glide.index, toInt(steps));
-          } else {
-            Glide.index--;
-          }
-          break;
+      if (direction === '|') {
+        viewSize = Glide.settings.perView || 1;
+      } // we are moving forward
 
-        case '=':
-          Glide.index = steps;
-          break;
 
-        default:
-          warn('Invalid direction pattern [' + direction + steps + '] has been used');
-          break;
+      if (direction === '>' || direction === '|' && steps === '>') {
+        var index = calculateForwardIndex(viewSize);
+
+        if (index > length) {
+          this._o = true;
+        }
+
+        Glide.index = normalizeForwardIndex(index, viewSize);
+        return;
+      } // we are moving backward
+
+
+      if (direction === '<' || direction === '|' && steps === '<') {
+        var _index = calculateBackwardIndex(viewSize);
+
+        if (_index < 0) {
+          this._o = true;
+        }
+
+        Glide.index = normalizeBackwardIndex(_index, viewSize);
+        return;
       }
-    },
 
+      warn("Invalid direction pattern [".concat(direction).concat(steps, "] has been used"));
+    },
 
     /**
      * Checks if we are on the first slide.
@@ -1179,9 +1508,8 @@ function Run (Glide, Components, Events) {
      * @return {Boolean}
      */
     isStart: function isStart() {
-      return Glide.index === 0;
+      return Glide.index <= 0;
     },
-
 
     /**
      * Checks if we are on the last slide.
@@ -1189,9 +1517,8 @@ function Run (Glide, Components, Events) {
      * @return {Boolean}
      */
     isEnd: function isEnd() {
-      return Glide.index === this.length;
+      return Glide.index >= this.length;
     },
-
 
     /**
      * Checks if we are making a offset run.
@@ -1199,10 +1526,145 @@ function Run (Glide, Components, Events) {
      * @param {String} direction
      * @return {Boolean}
      */
-    isOffset: function isOffset(direction) {
-      return this._o && this.move.direction === direction;
+    isOffset: function isOffset() {
+      var direction = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+
+      if (!direction) {
+        return this._o;
+      }
+
+      if (!this._o) {
+        return false;
+      } // did we view to the right?
+
+
+      if (direction === '|>') {
+        return this.move.direction === '|' && this.move.steps === '>';
+      } // did we view to the left?
+
+
+      if (direction === '|<') {
+        return this.move.direction === '|' && this.move.steps === '<';
+      }
+
+      return this.move.direction === direction;
+    },
+
+    /**
+     * Checks if bound mode is active
+     *
+     * @return {Boolean}
+     */
+    isBound: function isBound() {
+      return Glide.isType('slider') && Glide.settings.focusAt !== 'center' && Glide.settings.bound;
     }
   };
+  /**
+   * Returns index value to move forward/to the right
+   *
+   * @param viewSize
+   * @returns {Number}
+   */
+
+  function calculateForwardIndex(viewSize) {
+    var index = Glide.index;
+
+    if (Glide.isType('carousel')) {
+      return index + viewSize;
+    }
+
+    return index + (viewSize - index % viewSize);
+  }
+  /**
+   * Normalizes the given forward index based on glide settings, preventing it to exceed certain boundaries
+   *
+   * @param index
+   * @param length
+   * @param viewSize
+   * @returns {Number}
+   */
+
+
+  function normalizeForwardIndex(index, viewSize) {
+    var length = Run.length;
+
+    if (index <= length) {
+      return index;
+    }
+
+    if (Glide.isType('carousel')) {
+      return index - (length + 1);
+    }
+
+    if (Glide.settings.rewind) {
+      // bound does funny things with the length, therefor we have to be certain
+      // that we are on the last possible index value given by bound
+      if (Run.isBound() && !Run.isEnd()) {
+        return length;
+      }
+
+      return 0;
+    }
+
+    if (Run.isBound()) {
+      return length;
+    }
+
+    return Math.floor(length / viewSize) * viewSize;
+  }
+  /**
+   * Calculates index value to move backward/to the left
+   *
+   * @param viewSize
+   * @returns {Number}
+   */
+
+
+  function calculateBackwardIndex(viewSize) {
+    var index = Glide.index;
+
+    if (Glide.isType('carousel')) {
+      return index - viewSize;
+    } // ensure our back navigation results in the same index as a forward navigation
+    // to experience a homogeneous paging
+
+
+    var view = Math.ceil(index / viewSize);
+    return (view - 1) * viewSize;
+  }
+  /**
+   * Normalizes the given backward index based on glide settings, preventing it to exceed certain boundaries
+   *
+   * @param index
+   * @param length
+   * @param viewSize
+   * @returns {*}
+   */
+
+
+  function normalizeBackwardIndex(index, viewSize) {
+    var length = Run.length;
+
+    if (index >= 0) {
+      return index;
+    }
+
+    if (Glide.isType('carousel')) {
+      return index + (length + 1);
+    }
+
+    if (Glide.settings.rewind) {
+      // bound does funny things with the length, therefor we have to be certain
+      // that we are on first possible index value before we to rewind to the length given by bound
+      if (Run.isBound() && Run.isStart()) {
+        return length;
+      }
+
+      return Math.floor(length / viewSize) * viewSize;
+    }
+
+    return 0;
+  }
 
   define(Run, 'move', {
     /**
@@ -1214,7 +1676,6 @@ function Run (Glide, Components, Events) {
       return this._m;
     },
 
-
     /**
      * Sets value of the move schema.
      *
@@ -1222,14 +1683,12 @@ function Run (Glide, Components, Events) {
      */
     set: function set(value) {
       var step = value.substr(1);
-
       this._m = {
         direction: value.substr(0, 1),
         steps: step ? toInt(step) ? toInt(step) : step : 0
       };
     }
   });
-
   define(Run, 'length', {
     /**
      * Gets value of the running distance based
@@ -1239,20 +1698,17 @@ function Run (Glide, Components, Events) {
      */
     get: function get() {
       var settings = Glide.settings;
-      var length = Components.Html.slides.length;
-
-      // If the `bound` option is acitve, a maximum running distance should be
+      var length = Components.Html.slides.length; // If the `bound` option is active, a maximum running distance should be
       // reduced by `perView` and `focusAt` settings. Running distance
       // should end before creating an empty space after instance.
 
-      if (Glide.isType('slider') && settings.focusAt !== 'center' && settings.bound) {
+      if (this.isBound()) {
         return length - 1 - (toInt(settings.perView) - 1) + toInt(settings.focusAt);
       }
 
       return length - 1;
     }
   });
-
   define(Run, 'offset', {
     /**
      * Gets status of the offsetting flag.
@@ -1263,7 +1719,6 @@ function Run (Glide, Components, Events) {
       return this._o;
     }
   });
-
   return Run;
 }
 
@@ -1287,11 +1742,9 @@ function now() {
  *
  * @see https://github.com/jashkenas/underscore
  */
+
 function throttle(func, wait, options) {
-  var timeout = void 0,
-      context = void 0,
-      args = void 0,
-      result = void 0;
+  var timeout, context, args, result;
   var previous = 0;
   if (!options) options = {};
 
@@ -1308,17 +1761,20 @@ function throttle(func, wait, options) {
     var remaining = wait - (at - previous);
     context = this;
     args = arguments;
+
     if (remaining <= 0 || remaining > wait) {
       if (timeout) {
         clearTimeout(timeout);
         timeout = null;
       }
+
       previous = at;
       result = func.apply(context, args);
       if (!timeout) context = args = null;
     } else if (!timeout && options.trailing !== false) {
       timeout = setTimeout(later, remaining);
     }
+
     return result;
   };
 
@@ -1335,7 +1791,6 @@ var MARGIN_TYPE = {
   ltr: ['marginLeft', 'marginRight'],
   rtl: ['marginRight', 'marginLeft']
 };
-
 function Gaps (Glide, Components, Events) {
   var Gaps = {
     /**
@@ -1351,19 +1806,18 @@ function Gaps (Glide, Components, Events) {
         var direction = Components.Direction.value;
 
         if (i !== 0) {
-          style[MARGIN_TYPE[direction][0]] = this.value / 2 + 'px';
+          style[MARGIN_TYPE[direction][0]] = "".concat(this.value / 2, "px");
         } else {
           style[MARGIN_TYPE[direction][0]] = '';
         }
 
         if (i !== slides.length - 1) {
-          style[MARGIN_TYPE[direction][1]] = this.value / 2 + 'px';
+          style[MARGIN_TYPE[direction][1]] = "".concat(this.value / 2, "px");
         } else {
           style[MARGIN_TYPE[direction][1]] = '';
         }
       }
     },
-
 
     /**
      * Removes gaps from the slides.
@@ -1374,13 +1828,11 @@ function Gaps (Glide, Components, Events) {
     remove: function remove(slides) {
       for (var i = 0, len = slides.length; i < len; i++) {
         var style = slides[i].style;
-
         style.marginLeft = '';
         style.marginRight = '';
       }
     }
   };
-
   define(Gaps, 'value', {
     /**
      * Gets value of the gap.
@@ -1391,19 +1843,17 @@ function Gaps (Glide, Components, Events) {
       return toInt(Glide.settings.gap);
     }
   });
-
   define(Gaps, 'grow', {
     /**
-     * Gets additional dimentions value caused by gaps.
+     * Gets additional dimensions value caused by gaps.
      * Used to increase width of the slides wrapper.
      *
      * @returns {Number}
      */
     get: function get() {
-      return Gaps.value * (Components.Sizes.length - 1);
+      return Gaps.value * Components.Sizes.length;
     }
   });
-
   define(Gaps, 'reductor', {
     /**
      * Gets reduction value caused by gaps.
@@ -1413,28 +1863,26 @@ function Gaps (Glide, Components, Events) {
      */
     get: function get() {
       var perView = Glide.settings.perView;
-
       return Gaps.value * (perView - 1) / perView;
     }
   });
-
   /**
    * Apply calculated gaps:
    * - after building, so slides (including clones) will receive proper margins
    * - on updating via API, to recalculate gaps with new options
    */
+
   Events.on(['build.after', 'update'], throttle(function () {
     Gaps.apply(Components.Html.wrapper.children);
   }, 30));
-
   /**
    * Remove gaps:
    * - on destroying to bring markup to its inital state
    */
+
   Events.on('destroy', function () {
     Gaps.remove(Components.Html.wrapper.children);
   });
-
   return Gaps;
 }
 
@@ -1460,13 +1908,13 @@ function siblings(node) {
 
   return [];
 }
-
 /**
  * Checks if passed node exist and is a valid element.
  *
  * @param  {Element} node
  * @return {Boolean}
  */
+
 function exist(node) {
   if (node && node instanceof window.HTMLElement) {
     return true;
@@ -1474,10 +1922,19 @@ function exist(node) {
 
   return false;
 }
+/**
+ * Coerces a NodeList to an Array.
+ *
+ * @param  {NodeList} nodeList
+ * @return {Array}
+ */
+
+function toArray(nodeList) {
+  return Array.prototype.slice.call(nodeList);
+}
 
 var TRACK_SELECTOR = '[data-glide-el="track"]';
-
-function Html (Glide, Components) {
+function Html (Glide, Components, Events) {
   var Html = {
     /**
      * Setup slider HTML nodes.
@@ -1487,12 +1944,18 @@ function Html (Glide, Components) {
     mount: function mount() {
       this.root = Glide.selector;
       this.track = this.root.querySelector(TRACK_SELECTOR);
-      this.slides = Array.prototype.slice.call(this.wrapper.children).filter(function (slide) {
-        return !slide.classList.contains(Glide.settings.classes.cloneSlide);
+      this.collectSlides();
+    },
+
+    /**
+     * Collect slides
+     */
+    collectSlides: function collectSlides() {
+      this.slides = toArray(this.wrapper.children).filter(function (slide) {
+        return !slide.classList.contains(Glide.settings.classes.slide.clone);
       });
     }
   };
-
   define(Html, 'root', {
     /**
      * Gets node of the glide main element.
@@ -1502,7 +1965,6 @@ function Html (Glide, Components) {
     get: function get() {
       return Html._r;
     },
-
 
     /**
      * Sets node of the glide main element.
@@ -1521,7 +1983,6 @@ function Html (Glide, Components) {
       }
     }
   });
-
   define(Html, 'track', {
     /**
      * Gets node of the glide track with slides.
@@ -1532,7 +1993,6 @@ function Html (Glide, Components) {
       return Html._t;
     },
 
-
     /**
      * Sets node of the glide track with slides.
      *
@@ -1542,11 +2002,10 @@ function Html (Glide, Components) {
       if (exist(t)) {
         Html._t = t;
       } else {
-        warn('Could not find track element. Please use ' + TRACK_SELECTOR + ' attribute.');
+        warn("Could not find track element. Please use ".concat(TRACK_SELECTOR, " attribute."));
       }
     }
   });
-
   define(Html, 'wrapper', {
     /**
      * Gets node of the slides wrapper.
@@ -1557,7 +2016,13 @@ function Html (Glide, Components) {
       return Html.track.children[0];
     }
   });
+  /**
+   * Add/remove/reorder dynamic slides
+   */
 
+  Events.on('update', function () {
+    Html.collectSlides();
+  });
   return Html;
 }
 
@@ -1572,7 +2037,6 @@ function Peek (Glide, Components, Events) {
       this.value = Glide.settings.peek;
     }
   };
-
   define(Peek, 'value', {
     /**
      * Gets value of the peek.
@@ -1582,7 +2046,6 @@ function Peek (Glide, Components, Events) {
     get: function get() {
       return Peek._v;
     },
-
 
     /**
      * Sets value of the peek.
@@ -1601,7 +2064,6 @@ function Peek (Glide, Components, Events) {
       Peek._v = value;
     }
   });
-
   define(Peek, 'reductor', {
     /**
      * Gets reduction value caused by peek.
@@ -1619,15 +2081,14 @@ function Peek (Glide, Components, Events) {
       return value * 2 / perView;
     }
   });
-
   /**
    * Recalculate peeking sizes on:
    * - when resizing window to update to proper percents
    */
+
   Events.on(['resize', 'update'], function () {
     Peek.mount();
   });
-
   return Peek;
 }
 
@@ -1642,7 +2103,6 @@ function Move (Glide, Components, Events) {
       this._o = 0;
     },
 
-
     /**
      * Calculates a movement value based on passed offset and currently active index.
      *
@@ -1653,13 +2113,10 @@ function Move (Glide, Components, Events) {
       var _this = this;
 
       var offset = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
       this.offset = offset;
-
       Events.emit('move', {
         movement: this.value
       });
-
       Components.Transition.after(function () {
         Events.emit('move.after', {
           movement: _this.value
@@ -1667,7 +2124,6 @@ function Move (Glide, Components, Events) {
       });
     }
   };
-
   define(Move, 'offset', {
     /**
      * Gets an offset value used to modify current translate.
@@ -1678,7 +2134,6 @@ function Move (Glide, Components, Events) {
       return Move._o;
     },
 
-
     /**
      * Sets an offset value used to modify current translate.
      *
@@ -1688,7 +2143,6 @@ function Move (Glide, Components, Events) {
       Move._o = !isUndefined(value) ? toInt(value) : 0;
     }
   });
-
   define(Move, 'translate', {
     /**
      * Gets a raw movement value.
@@ -1699,7 +2153,6 @@ function Move (Glide, Components, Events) {
       return Components.Sizes.slideWidth * Glide.index;
     }
   });
-
   define(Move, 'value', {
     /**
      * Gets an actual movement value corrected by offset.
@@ -1717,28 +2170,27 @@ function Move (Glide, Components, Events) {
       return translate - offset;
     }
   });
-
   /**
    * Make movement to proper slide on:
    * - before build, so glide will start at `startAt` index
    * - on each standard run to move to newly calculated index
    */
+
   Events.on(['build.before', 'run'], function () {
     Move.make();
   });
-
   return Move;
 }
 
 function Sizes (Glide, Components, Events) {
   var Sizes = {
     /**
-     * Setups dimentions of slides.
+     * Setups dimensions of slides.
      *
      * @return {Void}
      */
     setupSlides: function setupSlides() {
-      var width = this.slideWidth + 'px';
+      var width = "".concat(this.slideWidth, "px");
       var slides = Components.Html.slides;
 
       for (var i = 0; i < slides.length; i++) {
@@ -1746,16 +2198,14 @@ function Sizes (Glide, Components, Events) {
       }
     },
 
-
     /**
-     * Setups dimentions of slides wrapper.
+     * Setups dimensions of slides wrapper.
      *
      * @return {Void}
      */
-    setupWrapper: function setupWrapper(dimention) {
-      Components.Html.wrapper.style.width = this.wrapperSize + 'px';
+    setupWrapper: function setupWrapper() {
+      Components.Html.wrapper.style.width = "".concat(this.wrapperSize, "px");
     },
-
 
     /**
      * Removes applied styles from HTML elements.
@@ -1772,7 +2222,6 @@ function Sizes (Glide, Components, Events) {
       Components.Html.wrapper.style.width = '';
     }
   };
-
   define(Sizes, 'length', {
     /**
      * Gets count number of the slides.
@@ -1783,18 +2232,16 @@ function Sizes (Glide, Components, Events) {
       return Components.Html.slides.length;
     }
   });
-
   define(Sizes, 'width', {
     /**
-     * Gets width value of the glide.
+     * Gets width value of the slider (visible area).
      *
      * @return {Number}
      */
     get: function get() {
-      return Components.Html.root.offsetWidth;
+      return Components.Html.track.offsetWidth;
     }
   });
-
   define(Sizes, 'wrapperSize', {
     /**
      * Gets size of the slides wrapper.
@@ -1805,10 +2252,9 @@ function Sizes (Glide, Components, Events) {
       return Sizes.slideWidth * Sizes.length + Components.Gaps.grow + Components.Clones.grow;
     }
   });
-
   define(Sizes, 'slideWidth', {
     /**
-     * Gets width value of the single slide.
+     * Gets width value of a single slide.
      *
      * @return {Number}
      */
@@ -1816,26 +2262,25 @@ function Sizes (Glide, Components, Events) {
       return Sizes.width / Glide.settings.perView - Components.Peek.reductor - Components.Gaps.reductor;
     }
   });
-
   /**
    * Apply calculated glide's dimensions:
-   * - before building, so other dimentions (e.g. translate) will be calculated propertly
+   * - before building, so other dimensions (e.g. translate) will be calculated propertly
    * - when resizing window to recalculate sildes dimensions
    * - on updating via API, to calculate dimensions based on new options
    */
+
   Events.on(['build.before', 'resize', 'update'], function () {
     Sizes.setupSlides();
     Sizes.setupWrapper();
   });
-
   /**
    * Remove calculated glide's dimensions:
    * - on destoting to bring markup to its inital state
    */
+
   Events.on('destroy', function () {
     Sizes.remove();
   });
-
   return Sizes;
 }
 
@@ -1849,13 +2294,10 @@ function Build (Glide, Components, Events) {
      */
     mount: function mount() {
       Events.emit('build.before');
-
       this.typeClass();
       this.activeClass();
-
       Events.emit('build.after');
     },
-
 
     /**
      * Adds `type` class to the glide element.
@@ -1863,9 +2305,8 @@ function Build (Glide, Components, Events) {
      * @return {Void}
      */
     typeClass: function typeClass() {
-      Components.Html.root.classList.add(Glide.settings.classes[Glide.settings.type]);
+      Components.Html.root.classList.add(Glide.settings.classes.type[Glide.settings.type]);
     },
-
 
     /**
      * Sets active class to current slide.
@@ -1877,14 +2318,12 @@ function Build (Glide, Components, Events) {
       var slide = Components.Html.slides[Glide.index];
 
       if (slide) {
-        slide.classList.add(classes.activeSlide);
-
+        slide.classList.add(classes.slide.active);
         siblings(slide).forEach(function (sibling) {
-          sibling.classList.remove(classes.activeSlide);
+          sibling.classList.remove(classes.slide.active);
         });
       }
     },
-
 
     /**
      * Removes HTML classes applied at building.
@@ -1892,42 +2331,41 @@ function Build (Glide, Components, Events) {
      * @return {Void}
      */
     removeClasses: function removeClasses() {
-      var classes = Glide.settings.classes;
-
-      Components.Html.root.classList.remove(classes[Glide.settings.type]);
-
+      var _Glide$settings$class = Glide.settings.classes,
+          type = _Glide$settings$class.type,
+          slide = _Glide$settings$class.slide;
+      Components.Html.root.classList.remove(type[Glide.settings.type]);
       Components.Html.slides.forEach(function (sibling) {
-        sibling.classList.remove(classes.activeSlide);
+        sibling.classList.remove(slide.active);
       });
     }
   };
-
   /**
    * Clear building classes:
    * - on destroying to bring HTML to its initial state
    * - on updating to remove classes before remounting component
    */
+
   Events.on(['destroy', 'update'], function () {
     Build.removeClasses();
   });
-
   /**
    * Remount component:
-   * - on resizing of the window to calculate new dimentions
+   * - on resizing of the window to calculate new dimensions
    * - on updating settings via API
    */
+
   Events.on(['resize', 'update'], function () {
     Build.mount();
   });
-
   /**
    * Swap active class of current slide:
    * - after each move to the new index
    */
+
   Events.on('move.after', function () {
     Build.activeClass();
   });
-
   return Build;
 }
 
@@ -1944,46 +2382,44 @@ function Clones (Glide, Components, Events) {
       }
     },
 
-
     /**
      * Collect clones with pattern.
      *
-     * @return {Void}
+     * @return {[]}
      */
     collect: function collect() {
       var items = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       var slides = Components.Html.slides;
       var _Glide$settings = Glide.settings,
           perView = _Glide$settings.perView,
-          classes = _Glide$settings.classes;
+          classes = _Glide$settings.classes,
+          cloningRatio = _Glide$settings.cloningRatio;
 
+      if (slides.length !== 0) {
+        var peekIncrementer = +!!Glide.settings.peek;
+        var cloneCount = perView + peekIncrementer + Math.round(perView / 2);
+        var append = slides.slice(0, cloneCount).reverse();
+        var prepend = slides.slice(cloneCount * -1);
 
-      var peekIncrementer = +!!Glide.settings.peek;
-      var part = perView + peekIncrementer;
-      var start = slides.slice(0, part);
-      var end = slides.slice(-part);
+        for (var r = 0; r < Math.max(cloningRatio, Math.floor(perView / slides.length)); r++) {
+          for (var i = 0; i < append.length; i++) {
+            var clone = append[i].cloneNode(true);
+            clone.classList.add(classes.slide.clone);
+            items.push(clone);
+          }
 
-      for (var r = 0; r < Math.max(1, Math.floor(perView / slides.length)); r++) {
-        for (var i = 0; i < start.length; i++) {
-          var clone = start[i].cloneNode(true);
+          for (var _i = 0; _i < prepend.length; _i++) {
+            var _clone = prepend[_i].cloneNode(true);
 
-          clone.classList.add(classes.cloneSlide);
+            _clone.classList.add(classes.slide.clone);
 
-          items.push(clone);
-        }
-
-        for (var _i = 0; _i < end.length; _i++) {
-          var _clone = end[_i].cloneNode(true);
-
-          _clone.classList.add(classes.cloneSlide);
-
-          items.unshift(_clone);
+            items.unshift(_clone);
+          }
         }
       }
 
       return items;
     },
-
 
     /**
      * Append cloned slides with generated pattern.
@@ -1995,12 +2431,10 @@ function Clones (Glide, Components, Events) {
       var _Components$Html = Components.Html,
           wrapper = _Components$Html.wrapper,
           slides = _Components$Html.slides;
-
-
       var half = Math.floor(items.length / 2);
       var prepend = items.slice(0, half).reverse();
-      var append = items.slice(half, items.length);
-      var width = Components.Sizes.slideWidth + 'px';
+      var append = items.slice(half * -1).reverse();
+      var width = "".concat(Components.Sizes.slideWidth, "px");
 
       for (var i = 0; i < append.length; i++) {
         wrapper.appendChild(append[i]);
@@ -2015,7 +2449,6 @@ function Clones (Glide, Components, Events) {
       }
     },
 
-
     /**
      * Remove all cloned slides.
      *
@@ -2024,16 +2457,14 @@ function Clones (Glide, Components, Events) {
     remove: function remove() {
       var items = this.items;
 
-
       for (var i = 0; i < items.length; i++) {
         Components.Html.wrapper.removeChild(items[i]);
       }
     }
   };
-
   define(Clones, 'grow', {
     /**
-     * Gets additional dimentions value caused by clones.
+     * Gets additional dimensions value caused by clones.
      *
      * @return {Number}
      */
@@ -2041,49 +2472,48 @@ function Clones (Glide, Components, Events) {
       return (Components.Sizes.slideWidth + Components.Gaps.value) * Clones.items.length;
     }
   });
-
   /**
    * Append additional slide's clones:
    * - while glide's type is `carousel`
    */
+
   Events.on('update', function () {
     Clones.remove();
     Clones.mount();
     Clones.append();
   });
-
   /**
    * Append additional slide's clones:
    * - while glide's type is `carousel`
    */
+
   Events.on('build.before', function () {
     if (Glide.isType('carousel')) {
       Clones.append();
     }
   });
-
   /**
    * Remove clones HTMLElements:
    * - on destroying, to bring HTML to its initial state
    */
+
   Events.on('destroy', function () {
     Clones.remove();
   });
-
   return Clones;
 }
 
-var EventsBinder = function () {
+var EventsBinder = /*#__PURE__*/function () {
   /**
    * Construct a EventsBinder instance.
    */
   function EventsBinder() {
     var listeners = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    classCallCheck(this, EventsBinder);
+
+    _classCallCheck(this, EventsBinder);
 
     this.listeners = listeners;
   }
-
   /**
    * Adds events listeners to arrows HTML elements.
    *
@@ -2095,8 +2525,8 @@ var EventsBinder = function () {
    */
 
 
-  createClass(EventsBinder, [{
-    key: 'on',
+  _createClass(EventsBinder, [{
+    key: "on",
     value: function on(events, el, closure) {
       var capture = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
@@ -2106,11 +2536,9 @@ var EventsBinder = function () {
 
       for (var i = 0; i < events.length; i++) {
         this.listeners[events[i]] = closure;
-
         el.addEventListener(events[i], this.listeners[events[i]], capture);
       }
     }
-
     /**
      * Removes event listeners from arrows HTML elements.
      *
@@ -2121,7 +2549,7 @@ var EventsBinder = function () {
      */
 
   }, {
-    key: 'off',
+    key: "off",
     value: function off(events, el) {
       var capture = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
@@ -2133,7 +2561,6 @@ var EventsBinder = function () {
         el.removeEventListener(events[i], this.listeners[events[i]], capture);
       }
     }
-
     /**
      * Destroy collected listeners.
      *
@@ -2141,11 +2568,12 @@ var EventsBinder = function () {
      */
 
   }, {
-    key: 'destroy',
+    key: "destroy",
     value: function destroy() {
       delete this.listeners;
     }
   }]);
+
   return EventsBinder;
 }();
 
@@ -2156,7 +2584,6 @@ function Resize (Glide, Components, Events) {
    * @type {EventsBinder}
    */
   var Binder = new EventsBinder();
-
   var Resize = {
     /**
      * Initializes window bindings.
@@ -2164,7 +2591,6 @@ function Resize (Glide, Components, Events) {
     mount: function mount() {
       this.bind();
     },
-
 
     /**
      * Binds `rezsize` listener to the window.
@@ -2178,7 +2604,6 @@ function Resize (Glide, Components, Events) {
       }, Glide.settings.throttle));
     },
 
-
     /**
      * Unbinds listeners from the window.
      *
@@ -2188,16 +2613,15 @@ function Resize (Glide, Components, Events) {
       Binder.off('resize', window);
     }
   };
-
   /**
    * Remove bindings from window:
    * - on destroying, to remove added EventListener
    */
+
   Events.on('destroy', function () {
     Resize.unbind();
     Binder.destroy();
   });
-
   return Resize;
 }
 
@@ -2207,7 +2631,6 @@ var FLIPED_MOVEMENTS = {
   '<': '>',
   '=': '='
 };
-
 function Direction (Glide, Components, Events) {
   var Direction = {
     /**
@@ -2218,7 +2641,6 @@ function Direction (Glide, Components, Events) {
     mount: function mount() {
       this.value = Glide.settings.direction;
     },
-
 
     /**
      * Resolves pattern based on direction value
@@ -2236,7 +2658,6 @@ function Direction (Glide, Components, Events) {
       return pattern;
     },
 
-
     /**
      * Checks value of direction mode.
      *
@@ -2247,7 +2668,6 @@ function Direction (Glide, Components, Events) {
       return this.value === direction;
     },
 
-
     /**
      * Applies direction class to the root HTML element.
      *
@@ -2256,7 +2676,6 @@ function Direction (Glide, Components, Events) {
     addClass: function addClass() {
       Components.Html.root.classList.add(Glide.settings.classes.direction[this.value]);
     },
-
 
     /**
      * Removes direction class from the root HTML element.
@@ -2267,7 +2686,6 @@ function Direction (Glide, Components, Events) {
       Components.Html.root.classList.remove(Glide.settings.classes.direction[this.value]);
     }
   };
-
   define(Direction, 'value', {
     /**
      * Gets value of the direction.
@@ -2277,7 +2695,6 @@ function Direction (Glide, Components, Events) {
     get: function get() {
       return Direction._v;
     },
-
 
     /**
      * Sets value of the direction.
@@ -2293,33 +2710,32 @@ function Direction (Glide, Components, Events) {
       }
     }
   });
-
   /**
    * Clear direction class:
    * - on destroy to bring HTML to its initial state
    * - on update to remove class before reappling bellow
    */
+
   Events.on(['destroy', 'update'], function () {
     Direction.removeClass();
   });
-
   /**
    * Remount component:
    * - on update to reflect changes in direction value
    */
+
   Events.on('update', function () {
     Direction.mount();
   });
-
   /**
    * Apply direction class:
    * - before building to apply class for the first time
    * - on updating to reapply direction class that may changed
    */
+
   Events.on(['build.before', 'update'], function () {
     Direction.addClass();
   });
-
   return Direction;
 }
 
@@ -2364,7 +2780,8 @@ function Gap (Glide, Components) {
      * @return {Number}
      */
     modify: function modify(translate) {
-      return translate + Components.Gaps.value * Glide.index;
+      var multiplier = Math.floor(translate / Components.Sizes.slideWidth);
+      return translate + Components.Gaps.value * multiplier;
     }
   };
 }
@@ -2397,6 +2814,7 @@ function Grow (Glide, Components) {
  * @param  {Object} Components
  * @return {Object}
  */
+
 function Peeking (Glide, Components) {
   return {
     /**
@@ -2458,6 +2876,7 @@ function Focusing (Glide, Components) {
  * @param  {Object} Components
  * @return {Object}
  */
+
 function mutator (Glide, Components, Events) {
   /**
    * Merge instance transformers with collection of default transformers.
@@ -2467,7 +2886,6 @@ function mutator (Glide, Components, Events) {
    * @type {Array}
    */
   var TRANSFORMERS = [Gap, Grow, Peeking, Focusing].concat(Glide._t, [Rtl]);
-
   return {
     /**
      * Piplines translate value with registered transformers.
@@ -2501,10 +2919,13 @@ function Translate (Glide, Components, Events) {
      */
     set: function set(value) {
       var transform = mutator(Glide, Components).mutate(value);
+      var translate3d = "translate3d(".concat(-1 * transform, "px, 0px, 0px)");
+      Components.Html.wrapper.style.mozTransform = translate3d; // needed for supported Firefox 10-15
 
-      Components.Html.wrapper.style.transform = 'translate3d(' + -1 * transform + 'px, 0px, 0px)';
+      Components.Html.wrapper.style.webkitTransform = translate3d; // needed for supported Chrome 10-35, Safari 5.1-8, and Opera 15-22
+
+      Components.Html.wrapper.style.transform = translate3d;
     },
-
 
     /**
      * Removes value of translate from HTML element.
@@ -2513,50 +2934,64 @@ function Translate (Glide, Components, Events) {
      */
     remove: function remove() {
       Components.Html.wrapper.style.transform = '';
+    },
+
+    /**
+     * @return {number}
+     */
+    getStartIndex: function getStartIndex() {
+      var length = Components.Sizes.length;
+      var index = Glide.index;
+      var perView = Glide.settings.perView;
+
+      if (Components.Run.isOffset('>') || Components.Run.isOffset('|>')) {
+        return length + (index - perView);
+      } // "modulo length" converts an index that equals length to zero
+
+
+      return (index + perView) % length;
+    },
+
+    /**
+     * @return {number}
+     */
+    getTravelDistance: function getTravelDistance() {
+      var travelDistance = Components.Sizes.slideWidth * Glide.settings.perView;
+
+      if (Components.Run.isOffset('>') || Components.Run.isOffset('|>')) {
+        // reverse travel distance so that we don't have to change subtract operations
+        return travelDistance * -1;
+      }
+
+      return travelDistance;
     }
   };
-
   /**
    * Set new translate value:
    * - on move to reflect index change
    * - on updating via API to reflect possible changes in options
    */
+
   Events.on('move', function (context) {
-    var gap = Components.Gaps.value;
-    var length = Components.Sizes.length;
-    var width = Components.Sizes.slideWidth;
-
-    if (Glide.isType('carousel') && Components.Run.isOffset('<')) {
-      Components.Transition.after(function () {
-        Events.emit('translate.jump');
-
-        Translate.set(width * (length - 1));
-      });
-
-      return Translate.set(-width - gap * length);
+    if (!Glide.isType('carousel') || !Components.Run.isOffset()) {
+      return Translate.set(context.movement);
     }
 
-    if (Glide.isType('carousel') && Components.Run.isOffset('>')) {
-      Components.Transition.after(function () {
-        Events.emit('translate.jump');
-
-        Translate.set(0);
-      });
-
-      return Translate.set(width * length + gap * length);
-    }
-
-    return Translate.set(context.movement);
+    Components.Transition.after(function () {
+      Events.emit('translate.jump');
+      Translate.set(Components.Sizes.slideWidth * Glide.index);
+    });
+    var startWidth = Components.Sizes.slideWidth * Components.Translate.getStartIndex();
+    return Translate.set(startWidth - Components.Translate.getTravelDistance());
   });
-
   /**
    * Remove translate:
    * - on destroying to bring markup to its inital state
    */
+
   Events.on('destroy', function () {
     Translate.remove();
   });
-
   return Translate;
 }
 
@@ -2568,7 +3003,6 @@ function Transition (Glide, Components, Events) {
    * @type {Boolean}
    */
   var disabled = false;
-
   var Transition = {
     /**
      * Composes string of the CSS transition.
@@ -2580,12 +3014,11 @@ function Transition (Glide, Components, Events) {
       var settings = Glide.settings;
 
       if (!disabled) {
-        return property + ' ' + this.duration + 'ms ' + settings.animationTimingFunc;
+        return "".concat(property, " ").concat(this.duration, "ms ").concat(settings.animationTimingFunc);
       }
 
-      return property + ' 0ms ' + settings.animationTimingFunc;
+      return "".concat(property, " 0ms ").concat(settings.animationTimingFunc);
     },
-
 
     /**
      * Sets value of transition on HTML element.
@@ -2595,10 +3028,8 @@ function Transition (Glide, Components, Events) {
      */
     set: function set() {
       var property = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'transform';
-
       Components.Html.wrapper.style.transition = this.compose(property);
     },
-
 
     /**
      * Removes value of transition from HTML element.
@@ -2608,7 +3039,6 @@ function Transition (Glide, Components, Events) {
     remove: function remove() {
       Components.Html.wrapper.style.transition = '';
     },
-
 
     /**
      * Runs callback after animation.
@@ -2622,7 +3052,6 @@ function Transition (Glide, Components, Events) {
       }, this.duration);
     },
 
-
     /**
      * Enable transition.
      *
@@ -2630,10 +3059,8 @@ function Transition (Glide, Components, Events) {
      */
     enable: function enable() {
       disabled = false;
-
       this.set();
     },
-
 
     /**
      * Disable transition.
@@ -2642,11 +3069,9 @@ function Transition (Glide, Components, Events) {
      */
     disable: function disable() {
       disabled = true;
-
       this.set();
     }
   };
-
   define(Transition, 'duration', {
     /**
      * Gets duration of the transition based
@@ -2664,41 +3089,40 @@ function Transition (Glide, Components, Events) {
       return settings.animationDuration;
     }
   });
-
   /**
    * Set transition `style` value:
    * - on each moving, because it may be cleared by offset move
    */
+
   Events.on('move', function () {
     Transition.set();
   });
-
   /**
    * Disable transition:
    * - before initial build to avoid transitioning from `0` to `startAt` index
-   * - while resizing window and recalculating dimentions
+   * - while resizing window and recalculating dimensions
    * - on jumping from offset transition at start and end edges in `carousel` type
    */
+
   Events.on(['build.before', 'resize', 'translate.jump'], function () {
     Transition.disable();
   });
-
   /**
    * Enable transition:
    * - on each running, because it may be disabled by offset move
    */
+
   Events.on('run', function () {
     Transition.enable();
   });
-
   /**
    * Remove transition:
    * - on destroying to bring markup to its inital state
    */
+
   Events.on('destroy', function () {
     Transition.remove();
   });
-
   return Transition;
 }
 
@@ -2708,7 +3132,6 @@ function Transition (Glide, Components, Events) {
  *
  * @see https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection
  */
-
 var supportsPassive = false;
 
 try {
@@ -2717,7 +3140,6 @@ try {
       supportsPassive = true;
     }
   });
-
   window.addEventListener('testPassive', null, opts);
   window.removeEventListener('testPassive', null, opts);
 } catch (e) {}
@@ -2728,7 +3150,6 @@ var START_EVENTS = ['touchstart', 'mousedown'];
 var MOVE_EVENTS = ['touchmove', 'mousemove'];
 var END_EVENTS = ['touchend', 'touchcancel', 'mouseup', 'mouseleave'];
 var MOUSE_EVENTS = ['mousedown', 'mousemove', 'mouseup', 'mouseleave'];
-
 function Swipe (Glide, Components, Events) {
   /**
    * Instance of the binder for DOM Events.
@@ -2736,13 +3157,13 @@ function Swipe (Glide, Components, Events) {
    * @type {EventsBinder}
    */
   var Binder = new EventsBinder();
-
   var swipeSin = 0;
   var swipeStartX = 0;
   var swipeStartY = 0;
   var disabled = false;
-  var capture = supportsPassive$1 ? { passive: true } : false;
-
+  var capture = supportsPassive$1 ? {
+    passive: true
+  } : false;
   var Swipe = {
     /**
      * Initializes swipe bindings.
@@ -2753,7 +3174,6 @@ function Swipe (Glide, Components, Events) {
       this.bindSwipeStart();
     },
 
-
     /**
      * Handler for `swipestart` event. Calculates entry points of the user's tap.
      *
@@ -2763,20 +3183,15 @@ function Swipe (Glide, Components, Events) {
     start: function start(event) {
       if (!disabled && !Glide.disabled) {
         this.disable();
-
         var swipe = this.touches(event);
-
         swipeSin = null;
         swipeStartX = toInt(swipe.pageX);
         swipeStartY = toInt(swipe.pageY);
-
         this.bindSwipeMove();
         this.bindSwipeEnd();
-
         Events.emit('swipe.start');
       }
     },
-
 
     /**
      * Handler for `swipemove` event. Calculates user's tap angle and distance.
@@ -2789,33 +3204,25 @@ function Swipe (Glide, Components, Events) {
             touchAngle = _Glide$settings.touchAngle,
             touchRatio = _Glide$settings.touchRatio,
             classes = _Glide$settings.classes;
-
-
         var swipe = this.touches(event);
-
         var subExSx = toInt(swipe.pageX) - swipeStartX;
         var subEySy = toInt(swipe.pageY) - swipeStartY;
         var powEX = Math.abs(subExSx << 2);
         var powEY = Math.abs(subEySy << 2);
         var swipeHypotenuse = Math.sqrt(powEX + powEY);
         var swipeCathetus = Math.sqrt(powEY);
-
         swipeSin = Math.asin(swipeCathetus / swipeHypotenuse);
 
         if (swipeSin * 180 / Math.PI < touchAngle) {
           event.stopPropagation();
-
           Components.Move.make(subExSx * toFloat(touchRatio));
-
           Components.Html.root.classList.add(classes.dragging);
-
           Events.emit('swipe.move');
         } else {
           return false;
         }
       }
     },
-
 
     /**
      * Handler for `swipeend` event. Finitializes user's tap and decides about glide move.
@@ -2825,53 +3232,31 @@ function Swipe (Glide, Components, Events) {
      */
     end: function end(event) {
       if (!Glide.disabled) {
-        var settings = Glide.settings;
-
+        var _Glide$settings2 = Glide.settings,
+            perSwipe = _Glide$settings2.perSwipe,
+            touchAngle = _Glide$settings2.touchAngle,
+            classes = _Glide$settings2.classes;
         var swipe = this.touches(event);
         var threshold = this.threshold(event);
-
         var swipeDistance = swipe.pageX - swipeStartX;
         var swipeDeg = swipeSin * 180 / Math.PI;
-        var steps = Math.round(swipeDistance / Components.Sizes.slideWidth);
-
         this.enable();
 
-        if (swipeDistance > threshold && swipeDeg < settings.touchAngle) {
-          // While swipe is positive and greater than threshold move backward.
-          if (settings.perTouch) {
-            steps = Math.min(steps, toInt(settings.perTouch));
-          }
-
-          if (Components.Direction.is('rtl')) {
-            steps = -steps;
-          }
-
-          Components.Run.make(Components.Direction.resolve('<' + steps));
-        } else if (swipeDistance < -threshold && swipeDeg < settings.touchAngle) {
-          // While swipe is negative and lower than negative threshold move forward.
-          if (settings.perTouch) {
-            steps = Math.max(steps, -toInt(settings.perTouch));
-          }
-
-          if (Components.Direction.is('rtl')) {
-            steps = -steps;
-          }
-
-          Components.Run.make(Components.Direction.resolve('>' + steps));
+        if (swipeDistance > threshold && swipeDeg < touchAngle) {
+          Components.Run.make(Components.Direction.resolve("".concat(perSwipe, "<")));
+        } else if (swipeDistance < -threshold && swipeDeg < touchAngle) {
+          Components.Run.make(Components.Direction.resolve("".concat(perSwipe, ">")));
         } else {
           // While swipe don't reach distance apply previous transform.
           Components.Move.make();
         }
 
-        Components.Html.root.classList.remove(settings.classes.dragging);
-
+        Components.Html.root.classList.remove(classes.dragging);
         this.unbindSwipeMove();
         this.unbindSwipeEnd();
-
         Events.emit('swipe.end');
       }
     },
-
 
     /**
      * Binds swipe's starting event.
@@ -2881,21 +3266,22 @@ function Swipe (Glide, Components, Events) {
     bindSwipeStart: function bindSwipeStart() {
       var _this = this;
 
-      var settings = Glide.settings;
+      var _Glide$settings3 = Glide.settings,
+          swipeThreshold = _Glide$settings3.swipeThreshold,
+          dragThreshold = _Glide$settings3.dragThreshold;
 
-      if (settings.swipeThreshold) {
+      if (swipeThreshold) {
         Binder.on(START_EVENTS[0], Components.Html.wrapper, function (event) {
           _this.start(event);
         }, capture);
       }
 
-      if (settings.dragThreshold) {
+      if (dragThreshold) {
         Binder.on(START_EVENTS[1], Components.Html.wrapper, function (event) {
           _this.start(event);
         }, capture);
       }
     },
-
 
     /**
      * Unbinds swipe's starting event.
@@ -2906,7 +3292,6 @@ function Swipe (Glide, Components, Events) {
       Binder.off(START_EVENTS[0], Components.Html.wrapper, capture);
       Binder.off(START_EVENTS[1], Components.Html.wrapper, capture);
     },
-
 
     /**
      * Binds swipe's moving event.
@@ -2921,7 +3306,6 @@ function Swipe (Glide, Components, Events) {
       }, Glide.settings.throttle), capture);
     },
 
-
     /**
      * Unbinds swipe's moving event.
      *
@@ -2930,7 +3314,6 @@ function Swipe (Glide, Components, Events) {
     unbindSwipeMove: function unbindSwipeMove() {
       Binder.off(MOVE_EVENTS, Components.Html.wrapper, capture);
     },
-
 
     /**
      * Binds swipe's ending event.
@@ -2945,7 +3328,6 @@ function Swipe (Glide, Components, Events) {
       });
     },
 
-
     /**
      * Unbinds swipe's ending event.
      *
@@ -2954,7 +3336,6 @@ function Swipe (Glide, Components, Events) {
     unbindSwipeEnd: function unbindSwipeEnd() {
       Binder.off(END_EVENTS, Components.Html.wrapper);
     },
-
 
     /**
      * Normalizes event touches points accorting to different types.
@@ -2968,7 +3349,6 @@ function Swipe (Glide, Components, Events) {
 
       return event.touches[0] || event.changedTouches[0];
     },
-
 
     /**
      * Gets value of minimum swipe distance settings based on event type.
@@ -2985,7 +3365,6 @@ function Swipe (Glide, Components, Events) {
       return settings.swipeThreshold;
     },
 
-
     /**
      * Enables swipe event.
      *
@@ -2993,12 +3372,9 @@ function Swipe (Glide, Components, Events) {
      */
     enable: function enable() {
       disabled = false;
-
       Components.Transition.enable();
-
       return this;
     },
-
 
     /**
      * Disables swipe event.
@@ -3007,32 +3383,29 @@ function Swipe (Glide, Components, Events) {
      */
     disable: function disable() {
       disabled = true;
-
       Components.Transition.disable();
-
       return this;
     }
   };
-
   /**
    * Add component class:
    * - after initial building
    */
+
   Events.on('build.after', function () {
     Components.Html.root.classList.add(Glide.settings.classes.swipeable);
   });
-
   /**
    * Remove swiping bindings:
    * - on destroying, to remove added EventListeners
    */
+
   Events.on('destroy', function () {
     Swipe.unbindSwipeStart();
     Swipe.unbindSwipeMove();
     Swipe.unbindSwipeEnd();
     Binder.destroy();
   });
-
   return Swipe;
 }
 
@@ -3043,7 +3416,6 @@ function Images (Glide, Components, Events) {
    * @type {EventsBinder}
    */
   var Binder = new EventsBinder();
-
   var Images = {
     /**
      * Binds listener to glide wrapper.
@@ -3054,7 +3426,6 @@ function Images (Glide, Components, Events) {
       this.bind();
     },
 
-
     /**
      * Binds `dragstart` event on wrapper to prevent dragging images.
      *
@@ -3063,7 +3434,6 @@ function Images (Glide, Components, Events) {
     bind: function bind() {
       Binder.on('dragstart', Components.Html.wrapper, this.dragstart);
     },
-
 
     /**
      * Unbinds `dragstart` event on wrapper.
@@ -3074,7 +3444,6 @@ function Images (Glide, Components, Events) {
       Binder.off('dragstart', Components.Html.wrapper);
     },
 
-
     /**
      * Event handler. Prevents dragging.
      *
@@ -3084,16 +3453,15 @@ function Images (Glide, Components, Events) {
       event.preventDefault();
     }
   };
-
   /**
    * Remove bindings from images:
    * - on destroying, to remove added EventListeners
    */
+
   Events.on('destroy', function () {
     Images.unbind();
     Binder.destroy();
   });
-
   return Images;
 }
 
@@ -3104,7 +3472,6 @@ function Anchors (Glide, Components, Events) {
    * @type {EventsBinder}
    */
   var Binder = new EventsBinder();
-
   /**
    * Holds detaching status of anchors.
    * Prevents detaching of already detached anchors.
@@ -3112,8 +3479,8 @@ function Anchors (Glide, Components, Events) {
    * @private
    * @type {Boolean}
    */
-  var detached = false;
 
+  var detached = false;
   /**
    * Holds preventing status of anchors.
    * If `true` redirection after click will be disabled.
@@ -3121,8 +3488,8 @@ function Anchors (Glide, Components, Events) {
    * @private
    * @type {Boolean}
    */
-  var prevented = false;
 
+  var prevented = false;
   var Anchors = {
     /**
      * Setups a initial state of anchors component.
@@ -3137,10 +3504,8 @@ function Anchors (Glide, Components, Events) {
        * @type {HTMLCollection}
        */
       this._a = Components.Html.wrapper.querySelectorAll('a');
-
       this.bind();
     },
-
 
     /**
      * Binds events to anchors inside a track.
@@ -3151,7 +3516,6 @@ function Anchors (Glide, Components, Events) {
       Binder.on('click', Components.Html.wrapper, this.click);
     },
 
-
     /**
      * Unbinds events attached to anchors inside a track.
      *
@@ -3160,7 +3524,6 @@ function Anchors (Glide, Components, Events) {
     unbind: function unbind() {
       Binder.off('click', Components.Html.wrapper);
     },
-
 
     /**
      * Handler for click event. Prevents clicks when glide is in `prevent` status.
@@ -3175,7 +3538,6 @@ function Anchors (Glide, Components, Events) {
       }
     },
 
-
     /**
      * Detaches anchors click event inside glide.
      *
@@ -3187,10 +3549,6 @@ function Anchors (Glide, Components, Events) {
       if (!detached) {
         for (var i = 0; i < this.items.length; i++) {
           this.items[i].draggable = false;
-
-          this.items[i].setAttribute('data-href', this.items[i].getAttribute('href'));
-
-          this.items[i].removeAttribute('href');
         }
 
         detached = true;
@@ -3198,7 +3556,6 @@ function Anchors (Glide, Components, Events) {
 
       return this;
     },
-
 
     /**
      * Attaches anchors click events inside glide.
@@ -3211,8 +3568,6 @@ function Anchors (Glide, Components, Events) {
       if (detached) {
         for (var i = 0; i < this.items.length; i++) {
           this.items[i].draggable = true;
-
-          this.items[i].setAttribute('href', this.items[i].getAttribute('data-href'));
         }
 
         detached = false;
@@ -3221,7 +3576,6 @@ function Anchors (Glide, Components, Events) {
       return this;
     }
   };
-
   define(Anchors, 'items', {
     /**
      * Gets collection of the arrows HTML elements.
@@ -3232,41 +3586,41 @@ function Anchors (Glide, Components, Events) {
       return Anchors._a;
     }
   });
-
   /**
    * Detach anchors inside slides:
    * - on swiping, so they won't redirect to its `href` attributes
    */
+
   Events.on('swipe.move', function () {
     Anchors.detach();
   });
-
   /**
    * Attach anchors inside slides:
    * - after swiping and transitions ends, so they can redirect after click again
    */
+
   Events.on('swipe.end', function () {
     Components.Transition.after(function () {
       Anchors.attach();
     });
   });
-
   /**
    * Unbind anchors inside slides:
    * - on destroying, to bring anchors to its initial state
    */
+
   Events.on('destroy', function () {
     Anchors.attach();
     Anchors.unbind();
     Binder.destroy();
   });
-
   return Anchors;
 }
 
 var NAV_SELECTOR = '[data-glide-el="controls[nav]"]';
 var CONTROLS_SELECTOR = '[data-glide-el^="controls"]';
-
+var PREVIOUS_CONTROLS_SELECTOR = "".concat(CONTROLS_SELECTOR, " [data-glide-dir*=\"<\"]");
+var NEXT_CONTROLS_SELECTOR = "".concat(CONTROLS_SELECTOR, " [data-glide-dir*=\">\"]");
 function Controls (Glide, Components, Events) {
   /**
    * Instance of the binder for DOM Events.
@@ -3274,9 +3628,9 @@ function Controls (Glide, Components, Events) {
    * @type {EventsBinder}
    */
   var Binder = new EventsBinder();
-
-  var capture = supportsPassive$1 ? { passive: true } : false;
-
+  var capture = supportsPassive$1 ? {
+    passive: true
+  } : false;
   var Controls = {
     /**
      * Inits arrows. Binds events listeners
@@ -3292,18 +3646,27 @@ function Controls (Glide, Components, Events) {
        * @type {HTMLCollection}
        */
       this._n = Components.Html.root.querySelectorAll(NAV_SELECTOR);
-
       /**
        * Collection of controls HTML elements.
        *
        * @private
        * @type {HTMLCollection}
        */
-      this._c = Components.Html.root.querySelectorAll(CONTROLS_SELECTOR);
 
+      this._c = Components.Html.root.querySelectorAll(CONTROLS_SELECTOR);
+      /**
+       * Collection of arrow control HTML elements.
+       *
+       * @private
+       * @type {Object}
+       */
+
+      this._arrowControls = {
+        previous: Components.Html.root.querySelectorAll(PREVIOUS_CONTROLS_SELECTOR),
+        next: Components.Html.root.querySelectorAll(NEXT_CONTROLS_SELECTOR)
+      };
       this.addBindings();
     },
-
 
     /**
      * Sets active class to current slide.
@@ -3316,7 +3679,6 @@ function Controls (Glide, Components, Events) {
       }
     },
 
-
     /**
      * Removes active class to current slide.
      *
@@ -3328,7 +3690,6 @@ function Controls (Glide, Components, Events) {
       }
     },
 
-
     /**
      * Toggles active class on items inside navigation.
      *
@@ -3339,15 +3700,17 @@ function Controls (Glide, Components, Events) {
       var settings = Glide.settings;
       var item = controls[Glide.index];
 
-      if (item) {
-        item.classList.add(settings.classes.activeNav);
+      if (!item) {
+        return;
+      }
 
+      if (item) {
+        item.classList.add(settings.classes.nav.active);
         siblings(item).forEach(function (sibling) {
-          sibling.classList.remove(settings.classes.activeNav);
+          sibling.classList.remove(settings.classes.nav.active);
         });
       }
     },
-
 
     /**
      * Removes active class from active control.
@@ -3359,10 +3722,68 @@ function Controls (Glide, Components, Events) {
       var item = controls[Glide.index];
 
       if (item) {
-        item.classList.remove(Glide.settings.classes.activeNav);
+        item.classList.remove(Glide.settings.classes.nav.active);
       }
     },
 
+    /**
+     * Calculates, removes or adds `Glide.settings.classes.disabledArrow` class on the control arrows
+     */
+    setArrowState: function setArrowState() {
+      if (Glide.settings.rewind) {
+        return;
+      }
+
+      var next = Controls._arrowControls.next;
+      var previous = Controls._arrowControls.previous;
+      this.resetArrowState(next, previous);
+
+      if (Glide.index === 0) {
+        this.disableArrow(previous);
+      }
+
+      if (Glide.index === Components.Run.length) {
+        this.disableArrow(next);
+      }
+    },
+
+    /**
+     * Removes `Glide.settings.classes.disabledArrow` from given NodeList elements
+     *
+     * @param {NodeList[]} lists
+     */
+    resetArrowState: function resetArrowState() {
+      var settings = Glide.settings;
+
+      for (var _len = arguments.length, lists = new Array(_len), _key = 0; _key < _len; _key++) {
+        lists[_key] = arguments[_key];
+      }
+
+      lists.forEach(function (list) {
+        toArray(list).forEach(function (element) {
+          element.classList.remove(settings.classes.arrow.disabled);
+        });
+      });
+    },
+
+    /**
+     * Adds `Glide.settings.classes.disabledArrow` to given NodeList elements
+     *
+     * @param {NodeList[]} lists
+     */
+    disableArrow: function disableArrow() {
+      var settings = Glide.settings;
+
+      for (var _len2 = arguments.length, lists = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        lists[_key2] = arguments[_key2];
+      }
+
+      lists.forEach(function (list) {
+        toArray(list).forEach(function (element) {
+          element.classList.add(settings.classes.arrow.disabled);
+        });
+      });
+    },
 
     /**
      * Adds handles to the each group of controls.
@@ -3375,7 +3796,6 @@ function Controls (Glide, Components, Events) {
       }
     },
 
-
     /**
      * Removes handles from the each group of controls.
      *
@@ -3386,7 +3806,6 @@ function Controls (Glide, Components, Events) {
         this.unbind(this._c[i].children);
       }
     },
-
 
     /**
      * Binds events to arrows HTML elements.
@@ -3401,7 +3820,6 @@ function Controls (Glide, Components, Events) {
       }
     },
 
-
     /**
      * Unbinds events binded to the arrows HTML elements.
      *
@@ -3414,22 +3832,23 @@ function Controls (Glide, Components, Events) {
       }
     },
 
-
     /**
      * Handles `click` event on the arrows HTML elements.
-     * Moves slider in driection precised in
+     * Moves slider in direction given via the
      * `data-glide-dir` attribute.
      *
      * @param {Object} event
-     * @return {Void}
+     * @return {void}
      */
     click: function click(event) {
-      event.preventDefault();
+      if (!supportsPassive$1 && event.type === 'touchstart') {
+        event.preventDefault();
+      }
 
-      Components.Run.make(Components.Direction.resolve(event.currentTarget.getAttribute('data-glide-dir')));
+      var direction = event.currentTarget.getAttribute('data-glide-dir');
+      Components.Run.make(Components.Direction.resolve(direction));
     }
   };
-
   define(Controls, 'items', {
     /**
      * Gets collection of the controls HTML elements.
@@ -3440,26 +3859,32 @@ function Controls (Glide, Components, Events) {
       return Controls._c;
     }
   });
-
   /**
    * Swap active class of current navigation item:
    * - after mounting to set it to initial index
    * - after each move to the new index
    */
+
   Events.on(['mount.after', 'move.after'], function () {
     Controls.setActive();
   });
+  /**
+   * Add or remove disabled class of arrow elements
+   */
 
+  Events.on(['mount.after', 'run'], function () {
+    Controls.setArrowState();
+  });
   /**
    * Remove bindings and HTML Classes:
    * - on destroying, to bring markup to its initial state
    */
+
   Events.on('destroy', function () {
     Controls.removeBindings();
     Controls.removeActive();
     Binder.destroy();
   });
-
   return Controls;
 }
 
@@ -3470,7 +3895,6 @@ function Keyboard (Glide, Components, Events) {
    * @type {EventsBinder}
    */
   var Binder = new EventsBinder();
-
   var Keyboard = {
     /**
      * Binds keyboard events on component mount.
@@ -3483,7 +3907,6 @@ function Keyboard (Glide, Components, Events) {
       }
     },
 
-
     /**
      * Adds keyboard press events.
      *
@@ -3492,7 +3915,6 @@ function Keyboard (Glide, Components, Events) {
     bind: function bind() {
       Binder.on('keyup', document, this.press);
     },
-
 
     /**
      * Removes keyboard press events.
@@ -3503,7 +3925,6 @@ function Keyboard (Glide, Components, Events) {
       Binder.off('keyup', document);
     },
 
-
     /**
      * Handles keyboard's arrows press and moving glide foward and backward.
      *
@@ -3511,41 +3932,42 @@ function Keyboard (Glide, Components, Events) {
      * @return {Void}
      */
     press: function press(event) {
-      if (event.keyCode === 39) {
-        Components.Run.make(Components.Direction.resolve('>'));
+      var perSwipe = Glide.settings.perSwipe;
+
+      if (event.code === 'ArrowRight') {
+        Components.Run.make(Components.Direction.resolve("".concat(perSwipe, ">")));
       }
 
-      if (event.keyCode === 37) {
-        Components.Run.make(Components.Direction.resolve('<'));
+      if (event.code === 'ArrowLeft') {
+        Components.Run.make(Components.Direction.resolve("".concat(perSwipe, "<")));
       }
     }
   };
-
   /**
    * Remove bindings from keyboard:
    * - on destroying to remove added events
    * - on updating to remove events before remounting
    */
+
   Events.on(['destroy', 'update'], function () {
     Keyboard.unbind();
   });
-
   /**
    * Remount component
    * - on updating to reflect potential changes in settings
    */
+
   Events.on('update', function () {
     Keyboard.mount();
   });
-
   /**
    * Destroy binder:
    * - on destroying to remove listeners
    */
+
   Events.on('destroy', function () {
     Binder.destroy();
   });
-
   return Keyboard;
 }
 
@@ -3556,7 +3978,6 @@ function Autoplay (Glide, Components, Events) {
    * @type {EventsBinder}
    */
   var Binder = new EventsBinder();
-
   var Autoplay = {
     /**
      * Initializes autoplaying and events.
@@ -3564,6 +3985,7 @@ function Autoplay (Glide, Components, Events) {
      * @return {Void}
      */
     mount: function mount() {
+      this.enable();
       this.start();
 
       if (Glide.settings.hoverpause) {
@@ -3571,6 +3993,23 @@ function Autoplay (Glide, Components, Events) {
       }
     },
 
+    /**
+     * Enables autoplaying
+     *
+     * @returns {Void}
+     */
+    enable: function enable() {
+      this._e = true;
+    },
+
+    /**
+     * Disables autoplaying.
+     *
+     * @returns {Void}
+     */
+    disable: function disable() {
+      this._e = false;
+    },
 
     /**
      * Starts autoplaying in configured interval.
@@ -3581,6 +4020,12 @@ function Autoplay (Glide, Components, Events) {
     start: function start() {
       var _this = this;
 
+      if (!this._e) {
+        return;
+      }
+
+      this.enable();
+
       if (Glide.settings.autoplay) {
         if (isUndefined(this._i)) {
           this._i = setInterval(function () {
@@ -3589,11 +4034,12 @@ function Autoplay (Glide, Components, Events) {
             Components.Run.make('>');
 
             _this.start();
+
+            Events.emit('autoplay');
           }, this.time);
         }
       }
     },
-
 
     /**
      * Stops autorunning of the glide.
@@ -3604,7 +4050,6 @@ function Autoplay (Glide, Components, Events) {
       this._i = clearInterval(this._i);
     },
 
-
     /**
      * Stops autoplaying while mouse is over glide's area.
      *
@@ -3614,14 +4059,16 @@ function Autoplay (Glide, Components, Events) {
       var _this2 = this;
 
       Binder.on('mouseover', Components.Html.root, function () {
-        _this2.stop();
+        if (_this2._e) {
+          _this2.stop();
+        }
       });
-
       Binder.on('mouseout', Components.Html.root, function () {
-        _this2.start();
+        if (_this2._e) {
+          _this2.start();
+        }
       });
     },
-
 
     /**
      * Unbind mouseover events.
@@ -3632,7 +4079,6 @@ function Autoplay (Glide, Components, Events) {
       Binder.off(['mouseover', 'mouseout'], Components.Html.root);
     }
   };
-
   define(Autoplay, 'time', {
     /**
      * Gets time period value for the autoplay interval. Prioritizes
@@ -3650,16 +4096,15 @@ function Autoplay (Glide, Components, Events) {
       return toInt(Glide.settings.autoplay);
     }
   });
-
   /**
    * Stop autoplaying and unbind events:
    * - on destroying, to clear defined interval
    * - on updating via API to reset interval that may changed
    */
+
   Events.on(['destroy', 'update'], function () {
     Autoplay.unbind();
   });
-
   /**
    * Stop autoplaying:
    * - before each run, to restart autoplaying
@@ -3668,36 +4113,51 @@ function Autoplay (Glide, Components, Events) {
    * - while starting a swipe
    * - on updating via API to reset interval that may changed
    */
-  Events.on(['run.before', 'pause', 'destroy', 'swipe.start', 'update'], function () {
+
+  Events.on(['run.before', 'swipe.start', 'update'], function () {
     Autoplay.stop();
   });
-
+  Events.on(['pause', 'destroy'], function () {
+    Autoplay.disable();
+    Autoplay.stop();
+  });
   /**
    * Start autoplaying:
    * - after each run, to restart autoplaying
    * - on playing via API
    * - while ending a swipe
    */
-  Events.on(['run.after', 'play', 'swipe.end'], function () {
+
+  Events.on(['run.after', 'swipe.end'], function () {
     Autoplay.start();
   });
+  /**
+   * Start autoplaying:
+   * - after each run, to restart autoplaying
+   * - on playing via API
+   * - while ending a swipe
+   */
 
+  Events.on(['play'], function () {
+    Autoplay.enable();
+    Autoplay.start();
+  });
   /**
    * Remount autoplaying:
    * - on updating via API to reset interval that may changed
    */
+
   Events.on('update', function () {
     Autoplay.mount();
   });
-
   /**
    * Destroy a binder:
    * - on destroying glide instance to clearup listeners
    */
+
   Events.on('destroy', function () {
     Binder.destroy();
   });
-
   return Autoplay;
 }
 
@@ -3707,11 +4167,12 @@ function Autoplay (Glide, Components, Events) {
  * @param {Object} points
  * @returns {Object}
  */
+
 function sortBreakpoints(points) {
   if (isObject(points)) {
     return sortKeys(points);
   } else {
-    warn('Breakpoints option must be an object');
+    warn("Breakpoints option must be an object");
   }
 
   return {};
@@ -3724,14 +4185,13 @@ function Breakpoints (Glide, Components, Events) {
    * @type {EventsBinder}
    */
   var Binder = new EventsBinder();
-
   /**
    * Holds reference to settings.
    *
    * @type {Object}
    */
-  var settings = Glide.settings;
 
+  var settings = Glide.settings;
   /**
    * Holds reference to breakpoints object in settings. Sorts breakpoints
    * from smaller to larger. It is required in order to proper
@@ -3739,15 +4199,15 @@ function Breakpoints (Glide, Components, Events) {
    *
    * @type {Object}
    */
-  var points = sortBreakpoints(settings.breakpoints);
 
+  var points = sortBreakpoints(settings.breakpoints);
   /**
    * Cache initial settings before overwritting.
    *
    * @type {Object}
    */
-  var defaults = _extends({}, settings);
 
+  var defaults = Object.assign({}, settings);
   var Breakpoints = {
     /**
      * Matches settings for currectly matching media breakpoint.
@@ -3759,7 +4219,7 @@ function Breakpoints (Glide, Components, Events) {
       if (typeof window.matchMedia !== 'undefined') {
         for (var point in points) {
           if (points.hasOwnProperty(point)) {
-            if (window.matchMedia('(max-width: ' + point + 'px)').matches) {
+            if (window.matchMedia("(max-width: ".concat(point, "px)")).matches) {
               return points[point];
             }
           }
@@ -3769,39 +4229,37 @@ function Breakpoints (Glide, Components, Events) {
       return defaults;
     }
   };
-
   /**
    * Overwrite instance settings with currently matching breakpoint settings.
    * This happens right after component initialization.
    */
-  _extends(settings, Breakpoints.match(points));
 
+  Object.assign(settings, Breakpoints.match(points));
   /**
    * Update glide with settings of matched brekpoint:
    * - window resize to update slider
    */
+
   Binder.on('resize', window, throttle(function () {
     Glide.settings = mergeOptions(settings, Breakpoints.match(points));
   }, Glide.settings.throttle));
-
   /**
    * Resort and update default settings:
    * - on reinit via API, so breakpoint matching will be performed with options
    */
+
   Events.on('update', function () {
     points = sortBreakpoints(points);
-
-    defaults = _extends({}, settings);
+    defaults = Object.assign({}, settings);
   });
-
   /**
    * Unbind resize listener:
    * - on destroying, to bring markup to its initial state
    */
+
   Events.on('destroy', function () {
     Binder.off('resize', window);
   });
-
   return Breakpoints;
 }
 
@@ -3819,7 +4277,6 @@ var COMPONENTS = {
   Resize: Resize,
   Build: Build,
   Run: Run,
-
   // Optional
   Swipe: Swipe,
   Images: Images,
@@ -3830,38 +4287,125 @@ var COMPONENTS = {
   Breakpoints: Breakpoints
 };
 
-var Glide$1 = function (_Core) {
-  inherits(Glide$$1, _Core);
+var Glide = /*#__PURE__*/function (_Core) {
+  _inherits(Glide, _Core);
 
-  function Glide$$1() {
-    classCallCheck(this, Glide$$1);
-    return possibleConstructorReturn(this, (Glide$$1.__proto__ || Object.getPrototypeOf(Glide$$1)).apply(this, arguments));
+  var _super = _createSuper(Glide);
+
+  function Glide() {
+    _classCallCheck(this, Glide);
+
+    return _super.apply(this, arguments);
   }
 
-  createClass(Glide$$1, [{
-    key: 'mount',
+  _createClass(Glide, [{
+    key: "mount",
     value: function mount() {
       var extensions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      return get(Glide$$1.prototype.__proto__ || Object.getPrototypeOf(Glide$$1.prototype), 'mount', this).call(this, _extends({}, COMPONENTS, extensions));
+      return _get(_getPrototypeOf(Glide.prototype), "mount", this).call(this, Object.assign({}, COMPONENTS, extensions));
     }
   }]);
-  return Glide$$1;
-}(Glide);
 
-/* harmony default export */ __webpack_exports__["default"] = (Glide$1);
+  return Glide;
+}(Glide$1);
+
+
 
 
 /***/ }),
 
-/***/ "./node_modules/axios/index.js":
-/*!*************************************!*\
-  !*** ./node_modules/axios/index.js ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/axios/lib/adapters/adapters.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/axios/lib/adapters/adapters.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/lib/axios.js");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _http_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./http.js */ "./node_modules/axios/lib/helpers/null.js");
+/* harmony import */ var _xhr_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./xhr.js */ "./node_modules/axios/lib/adapters/xhr.js");
+/* harmony import */ var _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/AxiosError.js */ "./node_modules/axios/lib/core/AxiosError.js");
+
+
+
+
+
+const knownAdapters = {
+  http: _http_js__WEBPACK_IMPORTED_MODULE_0__["default"],
+  xhr: _xhr_js__WEBPACK_IMPORTED_MODULE_1__["default"]
+}
+
+_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].forEach(knownAdapters, (fn, value) => {
+  if (fn) {
+    try {
+      Object.defineProperty(fn, 'name', {value});
+    } catch (e) {
+      // eslint-disable-next-line no-empty
+    }
+    Object.defineProperty(fn, 'adapterName', {value});
+  }
+});
+
+const renderReason = (reason) => `- ${reason}`;
+
+const isResolvedHandle = (adapter) => _utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].isFunction(adapter) || adapter === null || adapter === false;
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  getAdapter: (adapters) => {
+    adapters = _utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].isArray(adapters) ? adapters : [adapters];
+
+    const {length} = adapters;
+    let nameOrAdapter;
+    let adapter;
+
+    const rejectedReasons = {};
+
+    for (let i = 0; i < length; i++) {
+      nameOrAdapter = adapters[i];
+      let id;
+
+      adapter = nameOrAdapter;
+
+      if (!isResolvedHandle(nameOrAdapter)) {
+        adapter = knownAdapters[(id = String(nameOrAdapter)).toLowerCase()];
+
+        if (adapter === undefined) {
+          throw new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_3__["default"](`Unknown adapter '${id}'`);
+        }
+      }
+
+      if (adapter) {
+        break;
+      }
+
+      rejectedReasons[id || '#' + i] = adapter;
+    }
+
+    if (!adapter) {
+
+      const reasons = Object.entries(rejectedReasons)
+        .map(([id, state]) => `adapter ${id} ` +
+          (state === false ? 'is not supported by the environment' : 'is not available in the build')
+        );
+
+      let s = length ?
+        (reasons.length > 1 ? 'since :\n' + reasons.map(renderReason).join('\n') : ' ' + renderReason(reasons[0])) :
+        'as no adapter specified';
+
+      throw new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_3__["default"](
+        `There is no suitable adapter to dispatch the request ` + s,
+        'ERR_NOT_SUPPORT'
+      );
+    }
+
+    return adapter;
+  },
+  adapters: knownAdapters
+});
+
 
 /***/ }),
 
@@ -3869,76 +4413,169 @@ module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/li
 /*!************************************************!*\
   !*** ./node_modules/axios/lib/adapters/xhr.js ***!
   \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _core_settle_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../core/settle.js */ "./node_modules/axios/lib/core/settle.js");
+/* harmony import */ var _helpers_cookies_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./../helpers/cookies.js */ "./node_modules/axios/lib/helpers/cookies.js");
+/* harmony import */ var _helpers_buildURL_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./../helpers/buildURL.js */ "./node_modules/axios/lib/helpers/buildURL.js");
+/* harmony import */ var _core_buildFullPath_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../core/buildFullPath.js */ "./node_modules/axios/lib/core/buildFullPath.js");
+/* harmony import */ var _helpers_isURLSameOrigin_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./../helpers/isURLSameOrigin.js */ "./node_modules/axios/lib/helpers/isURLSameOrigin.js");
+/* harmony import */ var _defaults_transitional_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../defaults/transitional.js */ "./node_modules/axios/lib/defaults/transitional.js");
+/* harmony import */ var _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../core/AxiosError.js */ "./node_modules/axios/lib/core/AxiosError.js");
+/* harmony import */ var _cancel_CanceledError_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../cancel/CanceledError.js */ "./node_modules/axios/lib/cancel/CanceledError.js");
+/* harmony import */ var _helpers_parseProtocol_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../helpers/parseProtocol.js */ "./node_modules/axios/lib/helpers/parseProtocol.js");
+/* harmony import */ var _platform_index_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../platform/index.js */ "./node_modules/axios/lib/platform/index.js");
+/* harmony import */ var _core_AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/AxiosHeaders.js */ "./node_modules/axios/lib/core/AxiosHeaders.js");
+/* harmony import */ var _helpers_speedometer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/speedometer.js */ "./node_modules/axios/lib/helpers/speedometer.js");
 
 
-var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
-var settle = __webpack_require__(/*! ./../core/settle */ "./node_modules/axios/lib/core/settle.js");
-var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
-var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
-var buildFullPath = __webpack_require__(/*! ../core/buildFullPath */ "./node_modules/axios/lib/core/buildFullPath.js");
-var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ "./node_modules/axios/lib/helpers/parseHeaders.js");
-var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ "./node_modules/axios/lib/helpers/isURLSameOrigin.js");
-var createError = __webpack_require__(/*! ../core/createError */ "./node_modules/axios/lib/core/createError.js");
 
-module.exports = function xhrAdapter(config) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+function progressEventReducer(listener, isDownloadStream) {
+  let bytesNotified = 0;
+  const _speedometer = (0,_helpers_speedometer_js__WEBPACK_IMPORTED_MODULE_0__["default"])(50, 250);
+
+  return e => {
+    const loaded = e.loaded;
+    const total = e.lengthComputable ? e.total : undefined;
+    const progressBytes = loaded - bytesNotified;
+    const rate = _speedometer(progressBytes);
+    const inRange = loaded <= total;
+
+    bytesNotified = loaded;
+
+    const data = {
+      loaded,
+      total,
+      progress: total ? (loaded / total) : undefined,
+      bytes: progressBytes,
+      rate: rate ? rate : undefined,
+      estimated: rate && total && inRange ? (total - loaded) / rate : undefined,
+      event: e
+    };
+
+    data[isDownloadStream ? 'download' : 'upload'] = true;
+
+    listener(data);
+  };
+}
+
+const isXHRAdapterSupported = typeof XMLHttpRequest !== 'undefined';
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (isXHRAdapterSupported && function (config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
-    var requestData = config.data;
-    var requestHeaders = config.headers;
+    let requestData = config.data;
+    const requestHeaders = _core_AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_1__["default"].from(config.headers).normalize();
+    let {responseType, withXSRFToken} = config;
+    let onCanceled;
+    function done() {
+      if (config.cancelToken) {
+        config.cancelToken.unsubscribe(onCanceled);
+      }
 
-    if (utils.isFormData(requestData)) {
-      delete requestHeaders['Content-Type']; // Let the browser set it
+      if (config.signal) {
+        config.signal.removeEventListener('abort', onCanceled);
+      }
     }
 
-    var request = new XMLHttpRequest();
+    let contentType;
+
+    if (_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].isFormData(requestData)) {
+      if (_platform_index_js__WEBPACK_IMPORTED_MODULE_3__["default"].hasStandardBrowserEnv || _platform_index_js__WEBPACK_IMPORTED_MODULE_3__["default"].hasStandardBrowserWebWorkerEnv) {
+        requestHeaders.setContentType(false); // Let the browser set it
+      } else if ((contentType = requestHeaders.getContentType()) !== false) {
+        // fix semicolon duplication issue for ReactNative FormData implementation
+        const [type, ...tokens] = contentType ? contentType.split(';').map(token => token.trim()).filter(Boolean) : [];
+        requestHeaders.setContentType([type || 'multipart/form-data', ...tokens].join('; '));
+      }
+    }
+
+    let request = new XMLHttpRequest();
 
     // HTTP basic authentication
     if (config.auth) {
-      var username = config.auth.username || '';
-      var password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : '';
-      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
+      const username = config.auth.username || '';
+      const password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : '';
+      requestHeaders.set('Authorization', 'Basic ' + btoa(username + ':' + password));
     }
 
-    var fullPath = buildFullPath(config.baseURL, config.url);
-    request.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
+    const fullPath = (0,_core_buildFullPath_js__WEBPACK_IMPORTED_MODULE_4__["default"])(config.baseURL, config.url);
+
+    request.open(config.method.toUpperCase(), (0,_helpers_buildURL_js__WEBPACK_IMPORTED_MODULE_5__["default"])(fullPath, config.params, config.paramsSerializer), true);
 
     // Set the request timeout in MS
     request.timeout = config.timeout;
 
-    // Listen for ready state
-    request.onreadystatechange = function handleLoad() {
-      if (!request || request.readyState !== 4) {
+    function onloadend() {
+      if (!request) {
         return;
       }
-
-      // The request errored out and we didn't get a response, this will be
-      // handled by onerror instead
-      // With one exception: request that using file: protocol, most browsers
-      // will return status as 0 even though it's a successful request
-      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
-        return;
-      }
-
       // Prepare the response
-      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
-      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
-      var response = {
+      const responseHeaders = _core_AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_1__["default"].from(
+        'getAllResponseHeaders' in request && request.getAllResponseHeaders()
+      );
+      const responseData = !responseType || responseType === 'text' || responseType === 'json' ?
+        request.responseText : request.response;
+      const response = {
         data: responseData,
         status: request.status,
         statusText: request.statusText,
         headers: responseHeaders,
-        config: config,
-        request: request
+        config,
+        request
       };
 
-      settle(resolve, reject, response);
+      (0,_core_settle_js__WEBPACK_IMPORTED_MODULE_6__["default"])(function _resolve(value) {
+        resolve(value);
+        done();
+      }, function _reject(err) {
+        reject(err);
+        done();
+      }, response);
 
       // Clean up request
       request = null;
-    };
+    }
+
+    if ('onloadend' in request) {
+      // Use onloadend if available
+      request.onloadend = onloadend;
+    } else {
+      // Listen for ready state to emulate onloadend
+      request.onreadystatechange = function handleLoad() {
+        if (!request || request.readyState !== 4) {
+          return;
+        }
+
+        // The request errored out and we didn't get a response, this will be
+        // handled by onerror instead
+        // With one exception: request that using file: protocol, most browsers
+        // will return status as 0 even though it's a successful request
+        if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+          return;
+        }
+        // readystate handler is calling before onerror or ontimeout handlers,
+        // so we should call onloadend on the next 'tick'
+        setTimeout(onloadend);
+      };
+    }
 
     // Handle browser request cancellation (as opposed to a manual cancellation)
     request.onabort = function handleAbort() {
@@ -3946,7 +4583,7 @@ module.exports = function xhrAdapter(config) {
         return;
       }
 
-      reject(createError('Request aborted', config, 'ECONNABORTED', request));
+      reject(new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_7__["default"]('Request aborted', _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_7__["default"].ECONNABORTED, config, request));
 
       // Clean up request
       request = null;
@@ -3956,7 +4593,7 @@ module.exports = function xhrAdapter(config) {
     request.onerror = function handleError() {
       // Real errors are hidden from us by the browser
       // onerror should only fire if it's a network error
-      reject(createError('Network Error', config, null, request));
+      reject(new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_7__["default"]('Network Error', _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_7__["default"].ERR_NETWORK, config, request));
 
       // Clean up request
       request = null;
@@ -3964,11 +4601,15 @@ module.exports = function xhrAdapter(config) {
 
     // Handle timeout
     request.ontimeout = function handleTimeout() {
-      var timeoutErrorMessage = 'timeout of ' + config.timeout + 'ms exceeded';
+      let timeoutErrorMessage = config.timeout ? 'timeout of ' + config.timeout + 'ms exceeded' : 'timeout exceeded';
+      const transitional = config.transitional || _defaults_transitional_js__WEBPACK_IMPORTED_MODULE_8__["default"];
       if (config.timeoutErrorMessage) {
         timeoutErrorMessage = config.timeoutErrorMessage;
       }
-      reject(createError(timeoutErrorMessage, config, 'ECONNABORTED',
+      reject(new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_7__["default"](
+        timeoutErrorMessage,
+        transitional.clarifyTimeoutError ? _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_7__["default"].ETIMEDOUT : _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_7__["default"].ECONNABORTED,
+        config,
         request));
 
       // Clean up request
@@ -3978,80 +4619,79 @@ module.exports = function xhrAdapter(config) {
     // Add xsrf header
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
-    if (utils.isStandardBrowserEnv()) {
-      // Add xsrf header
-      var xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookieName ?
-        cookies.read(config.xsrfCookieName) :
-        undefined;
+    if(_platform_index_js__WEBPACK_IMPORTED_MODULE_3__["default"].hasStandardBrowserEnv) {
+      withXSRFToken && _utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].isFunction(withXSRFToken) && (withXSRFToken = withXSRFToken(config));
 
-      if (xsrfValue) {
-        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+      if (withXSRFToken || (withXSRFToken !== false && (0,_helpers_isURLSameOrigin_js__WEBPACK_IMPORTED_MODULE_9__["default"])(fullPath))) {
+        // Add xsrf header
+        const xsrfValue = config.xsrfHeaderName && config.xsrfCookieName && _helpers_cookies_js__WEBPACK_IMPORTED_MODULE_10__["default"].read(config.xsrfCookieName);
+
+        if (xsrfValue) {
+          requestHeaders.set(config.xsrfHeaderName, xsrfValue);
+        }
       }
     }
 
+    // Remove Content-Type if data is undefined
+    requestData === undefined && requestHeaders.setContentType(null);
+
     // Add headers to the request
     if ('setRequestHeader' in request) {
-      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
-        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
-          // Remove Content-Type if data is undefined
-          delete requestHeaders[key];
-        } else {
-          // Otherwise add header to the request
-          request.setRequestHeader(key, val);
-        }
+      _utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].forEach(requestHeaders.toJSON(), function setRequestHeader(val, key) {
+        request.setRequestHeader(key, val);
       });
     }
 
     // Add withCredentials to request if needed
-    if (!utils.isUndefined(config.withCredentials)) {
+    if (!_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].isUndefined(config.withCredentials)) {
       request.withCredentials = !!config.withCredentials;
     }
 
     // Add responseType to request if needed
-    if (config.responseType) {
-      try {
-        request.responseType = config.responseType;
-      } catch (e) {
-        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
-        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
-        if (config.responseType !== 'json') {
-          throw e;
-        }
-      }
+    if (responseType && responseType !== 'json') {
+      request.responseType = config.responseType;
     }
 
     // Handle progress if needed
     if (typeof config.onDownloadProgress === 'function') {
-      request.addEventListener('progress', config.onDownloadProgress);
+      request.addEventListener('progress', progressEventReducer(config.onDownloadProgress, true));
     }
 
     // Not all browsers support upload events
     if (typeof config.onUploadProgress === 'function' && request.upload) {
-      request.upload.addEventListener('progress', config.onUploadProgress);
+      request.upload.addEventListener('progress', progressEventReducer(config.onUploadProgress));
     }
 
-    if (config.cancelToken) {
+    if (config.cancelToken || config.signal) {
       // Handle cancellation
-      config.cancelToken.promise.then(function onCanceled(cancel) {
+      // eslint-disable-next-line func-names
+      onCanceled = cancel => {
         if (!request) {
           return;
         }
-
+        reject(!cancel || cancel.type ? new _cancel_CanceledError_js__WEBPACK_IMPORTED_MODULE_11__["default"](null, config, request) : cancel);
         request.abort();
-        reject(cancel);
-        // Clean up request
         request = null;
-      });
+      };
+
+      config.cancelToken && config.cancelToken.subscribe(onCanceled);
+      if (config.signal) {
+        config.signal.aborted ? onCanceled() : config.signal.addEventListener('abort', onCanceled);
+      }
     }
 
-    if (!requestData) {
-      requestData = null;
+    const protocol = (0,_helpers_parseProtocol_js__WEBPACK_IMPORTED_MODULE_12__["default"])(fullPath);
+
+    if (protocol && _platform_index_js__WEBPACK_IMPORTED_MODULE_3__["default"].protocols.indexOf(protocol) === -1) {
+      reject(new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_7__["default"]('Unsupported protocol ' + protocol + ':', _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_7__["default"].ERR_BAD_REQUEST, config));
+      return;
     }
+
 
     // Send the request
-    request.send(requestData);
+    request.send(requestData || null);
   });
-};
+});
 
 
 /***/ }),
@@ -4060,97 +4700,118 @@ module.exports = function xhrAdapter(config) {
 /*!*****************************************!*\
   !*** ./node_modules/axios/lib/axios.js ***!
   \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _helpers_bind_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers/bind.js */ "./node_modules/axios/lib/helpers/bind.js");
+/* harmony import */ var _core_Axios_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core/Axios.js */ "./node_modules/axios/lib/core/Axios.js");
+/* harmony import */ var _core_mergeConfig_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./core/mergeConfig.js */ "./node_modules/axios/lib/core/mergeConfig.js");
+/* harmony import */ var _defaults_index_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./defaults/index.js */ "./node_modules/axios/lib/defaults/index.js");
+/* harmony import */ var _helpers_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./helpers/formDataToJSON.js */ "./node_modules/axios/lib/helpers/formDataToJSON.js");
+/* harmony import */ var _cancel_CanceledError_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./cancel/CanceledError.js */ "./node_modules/axios/lib/cancel/CanceledError.js");
+/* harmony import */ var _cancel_CancelToken_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./cancel/CancelToken.js */ "./node_modules/axios/lib/cancel/CancelToken.js");
+/* harmony import */ var _cancel_isCancel_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./cancel/isCancel.js */ "./node_modules/axios/lib/cancel/isCancel.js");
+/* harmony import */ var _env_data_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./env/data.js */ "./node_modules/axios/lib/env/data.js");
+/* harmony import */ var _helpers_toFormData_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./helpers/toFormData.js */ "./node_modules/axios/lib/helpers/toFormData.js");
+/* harmony import */ var _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./core/AxiosError.js */ "./node_modules/axios/lib/core/AxiosError.js");
+/* harmony import */ var _helpers_spread_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./helpers/spread.js */ "./node_modules/axios/lib/helpers/spread.js");
+/* harmony import */ var _helpers_isAxiosError_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./helpers/isAxiosError.js */ "./node_modules/axios/lib/helpers/isAxiosError.js");
+/* harmony import */ var _core_AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./core/AxiosHeaders.js */ "./node_modules/axios/lib/core/AxiosHeaders.js");
+/* harmony import */ var _adapters_adapters_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./adapters/adapters.js */ "./node_modules/axios/lib/adapters/adapters.js");
+/* harmony import */ var _helpers_HttpStatusCode_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./helpers/HttpStatusCode.js */ "./node_modules/axios/lib/helpers/HttpStatusCode.js");
 
 
-var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
-var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
-var Axios = __webpack_require__(/*! ./core/Axios */ "./node_modules/axios/lib/core/Axios.js");
-var mergeConfig = __webpack_require__(/*! ./core/mergeConfig */ "./node_modules/axios/lib/core/mergeConfig.js");
-var defaults = __webpack_require__(/*! ./defaults */ "./node_modules/axios/lib/defaults.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Create an instance of Axios
  *
  * @param {Object} defaultConfig The default config for the instance
- * @return {Axios} A new instance of Axios
+ *
+ * @returns {Axios} A new instance of Axios
  */
 function createInstance(defaultConfig) {
-  var context = new Axios(defaultConfig);
-  var instance = bind(Axios.prototype.request, context);
+  const context = new _core_Axios_js__WEBPACK_IMPORTED_MODULE_0__["default"](defaultConfig);
+  const instance = (0,_helpers_bind_js__WEBPACK_IMPORTED_MODULE_1__["default"])(_core_Axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.request, context);
 
   // Copy axios.prototype to instance
-  utils.extend(instance, Axios.prototype, context);
+  _utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].extend(instance, _core_Axios_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, context, {allOwnKeys: true});
 
   // Copy context to instance
-  utils.extend(instance, context);
+  _utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].extend(instance, context, null, {allOwnKeys: true});
+
+  // Factory for creating new instances
+  instance.create = function create(instanceConfig) {
+    return createInstance((0,_core_mergeConfig_js__WEBPACK_IMPORTED_MODULE_3__["default"])(defaultConfig, instanceConfig));
+  };
 
   return instance;
 }
 
 // Create the default instance to be exported
-var axios = createInstance(defaults);
+const axios = createInstance(_defaults_index_js__WEBPACK_IMPORTED_MODULE_4__["default"]);
 
 // Expose Axios class to allow class inheritance
-axios.Axios = Axios;
-
-// Factory for creating new instances
-axios.create = function create(instanceConfig) {
-  return createInstance(mergeConfig(axios.defaults, instanceConfig));
-};
+axios.Axios = _core_Axios_js__WEBPACK_IMPORTED_MODULE_0__["default"];
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(/*! ./cancel/Cancel */ "./node_modules/axios/lib/cancel/Cancel.js");
-axios.CancelToken = __webpack_require__(/*! ./cancel/CancelToken */ "./node_modules/axios/lib/cancel/CancelToken.js");
-axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ "./node_modules/axios/lib/cancel/isCancel.js");
+axios.CanceledError = _cancel_CanceledError_js__WEBPACK_IMPORTED_MODULE_5__["default"];
+axios.CancelToken = _cancel_CancelToken_js__WEBPACK_IMPORTED_MODULE_6__["default"];
+axios.isCancel = _cancel_isCancel_js__WEBPACK_IMPORTED_MODULE_7__["default"];
+axios.VERSION = _env_data_js__WEBPACK_IMPORTED_MODULE_8__.VERSION;
+axios.toFormData = _helpers_toFormData_js__WEBPACK_IMPORTED_MODULE_9__["default"];
+
+// Expose AxiosError class
+axios.AxiosError = _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_10__["default"];
+
+// alias for CanceledError for backward compatibility
+axios.Cancel = axios.CanceledError;
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(/*! ./helpers/spread */ "./node_modules/axios/lib/helpers/spread.js");
+
+axios.spread = _helpers_spread_js__WEBPACK_IMPORTED_MODULE_11__["default"];
 
 // Expose isAxiosError
-axios.isAxiosError = __webpack_require__(/*! ./helpers/isAxiosError */ "./node_modules/axios/lib/helpers/isAxiosError.js");
+axios.isAxiosError = _helpers_isAxiosError_js__WEBPACK_IMPORTED_MODULE_12__["default"];
 
-module.exports = axios;
+// Expose mergeConfig
+axios.mergeConfig = _core_mergeConfig_js__WEBPACK_IMPORTED_MODULE_3__["default"];
 
-// Allow use of default import syntax in TypeScript
-module.exports.default = axios;
+axios.AxiosHeaders = _core_AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_13__["default"];
 
+axios.formToJSON = thing => (0,_helpers_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_14__["default"])(_utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].isHTMLForm(thing) ? new FormData(thing) : thing);
 
-/***/ }),
+axios.getAdapter = _adapters_adapters_js__WEBPACK_IMPORTED_MODULE_15__["default"].getAdapter;
 
-/***/ "./node_modules/axios/lib/cancel/Cancel.js":
-/*!*************************************************!*\
-  !*** ./node_modules/axios/lib/cancel/Cancel.js ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+axios.HttpStatusCode = _helpers_HttpStatusCode_js__WEBPACK_IMPORTED_MODULE_16__["default"];
 
-"use strict";
+axios.default = axios;
 
-
-/**
- * A `Cancel` is an object that is thrown when an operation is canceled.
- *
- * @class
- * @param {string=} message The message.
- */
-function Cancel(message) {
-  this.message = message;
-}
-
-Cancel.prototype.toString = function toString() {
-  return 'Cancel' + (this.message ? ': ' + this.message : '');
-};
-
-Cancel.prototype.__CANCEL__ = true;
-
-module.exports = Cancel;
+// this module should only have a default export
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (axios);
 
 
 /***/ }),
@@ -4159,67 +4820,175 @@ module.exports = Cancel;
 /*!******************************************************!*\
   !*** ./node_modules/axios/lib/cancel/CancelToken.js ***!
   \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _CanceledError_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CanceledError.js */ "./node_modules/axios/lib/cancel/CanceledError.js");
 
 
-var Cancel = __webpack_require__(/*! ./Cancel */ "./node_modules/axios/lib/cancel/Cancel.js");
+
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
  *
- * @class
  * @param {Function} executor The executor function.
+ *
+ * @returns {CancelToken}
  */
-function CancelToken(executor) {
-  if (typeof executor !== 'function') {
-    throw new TypeError('executor must be a function.');
+class CancelToken {
+  constructor(executor) {
+    if (typeof executor !== 'function') {
+      throw new TypeError('executor must be a function.');
+    }
+
+    let resolvePromise;
+
+    this.promise = new Promise(function promiseExecutor(resolve) {
+      resolvePromise = resolve;
+    });
+
+    const token = this;
+
+    // eslint-disable-next-line func-names
+    this.promise.then(cancel => {
+      if (!token._listeners) return;
+
+      let i = token._listeners.length;
+
+      while (i-- > 0) {
+        token._listeners[i](cancel);
+      }
+      token._listeners = null;
+    });
+
+    // eslint-disable-next-line func-names
+    this.promise.then = onfulfilled => {
+      let _resolve;
+      // eslint-disable-next-line func-names
+      const promise = new Promise(resolve => {
+        token.subscribe(resolve);
+        _resolve = resolve;
+      }).then(onfulfilled);
+
+      promise.cancel = function reject() {
+        token.unsubscribe(_resolve);
+      };
+
+      return promise;
+    };
+
+    executor(function cancel(message, config, request) {
+      if (token.reason) {
+        // Cancellation has already been requested
+        return;
+      }
+
+      token.reason = new _CanceledError_js__WEBPACK_IMPORTED_MODULE_0__["default"](message, config, request);
+      resolvePromise(token.reason);
+    });
   }
 
-  var resolvePromise;
-  this.promise = new Promise(function promiseExecutor(resolve) {
-    resolvePromise = resolve;
-  });
+  /**
+   * Throws a `CanceledError` if cancellation has been requested.
+   */
+  throwIfRequested() {
+    if (this.reason) {
+      throw this.reason;
+    }
+  }
 
-  var token = this;
-  executor(function cancel(message) {
-    if (token.reason) {
-      // Cancellation has already been requested
+  /**
+   * Subscribe to the cancel signal
+   */
+
+  subscribe(listener) {
+    if (this.reason) {
+      listener(this.reason);
       return;
     }
 
-    token.reason = new Cancel(message);
-    resolvePromise(token.reason);
-  });
+    if (this._listeners) {
+      this._listeners.push(listener);
+    } else {
+      this._listeners = [listener];
+    }
+  }
+
+  /**
+   * Unsubscribe from the cancel signal
+   */
+
+  unsubscribe(listener) {
+    if (!this._listeners) {
+      return;
+    }
+    const index = this._listeners.indexOf(listener);
+    if (index !== -1) {
+      this._listeners.splice(index, 1);
+    }
+  }
+
+  /**
+   * Returns an object that contains a new `CancelToken` and a function that, when called,
+   * cancels the `CancelToken`.
+   */
+  static source() {
+    let cancel;
+    const token = new CancelToken(function executor(c) {
+      cancel = c;
+    });
+    return {
+      token,
+      cancel
+    };
+  }
 }
 
-/**
- * Throws a `Cancel` if cancellation has been requested.
- */
-CancelToken.prototype.throwIfRequested = function throwIfRequested() {
-  if (this.reason) {
-    throw this.reason;
-  }
-};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CancelToken);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/cancel/CanceledError.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/CanceledError.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/AxiosError.js */ "./node_modules/axios/lib/core/AxiosError.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils.js */ "./node_modules/axios/lib/utils.js");
+
+
+
+
 
 /**
- * Returns an object that contains a new `CancelToken` and a function that, when called,
- * cancels the `CancelToken`.
+ * A `CanceledError` is an object that is thrown when an operation is canceled.
+ *
+ * @param {string=} message The message.
+ * @param {Object=} config The config.
+ * @param {Object=} request The request.
+ *
+ * @returns {CanceledError} The created error.
  */
-CancelToken.source = function source() {
-  var cancel;
-  var token = new CancelToken(function executor(c) {
-    cancel = c;
-  });
-  return {
-    token: token,
-    cancel: cancel
-  };
-};
+function CanceledError(message, config, request) {
+  // eslint-disable-next-line no-eq-null,eqeqeq
+  _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_0__["default"].call(this, message == null ? 'canceled' : message, _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_0__["default"].ERR_CANCELED, config, request);
+  this.name = 'CanceledError';
+}
 
-module.exports = CancelToken;
+_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].inherits(CanceledError, _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_0__["default"], {
+  __CANCEL__: true
+});
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (CanceledError);
 
 
 /***/ }),
@@ -4228,15 +4997,17 @@ module.exports = CancelToken;
 /*!***************************************************!*\
   !*** ./node_modules/axios/lib/cancel/isCancel.js ***!
   \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ isCancel)
+/* harmony export */ });
 
 
-module.exports = function isCancel(value) {
+function isCancel(value) {
   return !!(value && value.__CANCEL__);
-};
+}
 
 
 /***/ }),
@@ -4245,357 +5016,294 @@ module.exports = function isCancel(value) {
 /*!**********************************************!*\
   !*** ./node_modules/axios/lib/core/Axios.js ***!
   \**********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _helpers_buildURL_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../helpers/buildURL.js */ "./node_modules/axios/lib/helpers/buildURL.js");
+/* harmony import */ var _InterceptorManager_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InterceptorManager.js */ "./node_modules/axios/lib/core/InterceptorManager.js");
+/* harmony import */ var _dispatchRequest_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dispatchRequest.js */ "./node_modules/axios/lib/core/dispatchRequest.js");
+/* harmony import */ var _mergeConfig_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./mergeConfig.js */ "./node_modules/axios/lib/core/mergeConfig.js");
+/* harmony import */ var _buildFullPath_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./buildFullPath.js */ "./node_modules/axios/lib/core/buildFullPath.js");
+/* harmony import */ var _helpers_validator_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/validator.js */ "./node_modules/axios/lib/helpers/validator.js");
+/* harmony import */ var _AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./AxiosHeaders.js */ "./node_modules/axios/lib/core/AxiosHeaders.js");
 
 
-var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
-var buildURL = __webpack_require__(/*! ../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
-var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ "./node_modules/axios/lib/core/InterceptorManager.js");
-var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ "./node_modules/axios/lib/core/dispatchRequest.js");
-var mergeConfig = __webpack_require__(/*! ./mergeConfig */ "./node_modules/axios/lib/core/mergeConfig.js");
+
+
+
+
+
+
+
+
+
+const validators = _helpers_validator_js__WEBPACK_IMPORTED_MODULE_0__["default"].validators;
 
 /**
  * Create a new instance of Axios
  *
  * @param {Object} instanceConfig The default config for the instance
+ *
+ * @return {Axios} A new instance of Axios
  */
-function Axios(instanceConfig) {
-  this.defaults = instanceConfig;
-  this.interceptors = {
-    request: new InterceptorManager(),
-    response: new InterceptorManager()
-  };
+class Axios {
+  constructor(instanceConfig) {
+    this.defaults = instanceConfig;
+    this.interceptors = {
+      request: new _InterceptorManager_js__WEBPACK_IMPORTED_MODULE_1__["default"](),
+      response: new _InterceptorManager_js__WEBPACK_IMPORTED_MODULE_1__["default"]()
+    };
+  }
+
+  /**
+   * Dispatch a request
+   *
+   * @param {String|Object} configOrUrl The config specific for this request (merged with this.defaults)
+   * @param {?Object} config
+   *
+   * @returns {Promise} The Promise to be fulfilled
+   */
+  async request(configOrUrl, config) {
+    try {
+      return await this._request(configOrUrl, config);
+    } catch (err) {
+      if (err instanceof Error) {
+        let dummy;
+
+        Error.captureStackTrace ? Error.captureStackTrace(dummy = {}) : (dummy = new Error());
+
+        // slice off the Error: ... line
+        const stack = dummy.stack ? dummy.stack.replace(/^.+\n/, '') : '';
+
+        if (!err.stack) {
+          err.stack = stack;
+          // match without the 2 top stack lines
+        } else if (stack && !String(err.stack).endsWith(stack.replace(/^.+\n.+\n/, ''))) {
+          err.stack += '\n' + stack
+        }
+      }
+
+      throw err;
+    }
+  }
+
+  _request(configOrUrl, config) {
+    /*eslint no-param-reassign:0*/
+    // Allow for axios('example/url'[, config]) a la fetch API
+    if (typeof configOrUrl === 'string') {
+      config = config || {};
+      config.url = configOrUrl;
+    } else {
+      config = configOrUrl || {};
+    }
+
+    config = (0,_mergeConfig_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this.defaults, config);
+
+    const {transitional, paramsSerializer, headers} = config;
+
+    if (transitional !== undefined) {
+      _helpers_validator_js__WEBPACK_IMPORTED_MODULE_0__["default"].assertOptions(transitional, {
+        silentJSONParsing: validators.transitional(validators.boolean),
+        forcedJSONParsing: validators.transitional(validators.boolean),
+        clarifyTimeoutError: validators.transitional(validators.boolean)
+      }, false);
+    }
+
+    if (paramsSerializer != null) {
+      if (_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].isFunction(paramsSerializer)) {
+        config.paramsSerializer = {
+          serialize: paramsSerializer
+        }
+      } else {
+        _helpers_validator_js__WEBPACK_IMPORTED_MODULE_0__["default"].assertOptions(paramsSerializer, {
+          encode: validators.function,
+          serialize: validators.function
+        }, true);
+      }
+    }
+
+    // Set config.method
+    config.method = (config.method || this.defaults.method || 'get').toLowerCase();
+
+    // Flatten headers
+    let contextHeaders = headers && _utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].merge(
+      headers.common,
+      headers[config.method]
+    );
+
+    headers && _utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].forEach(
+      ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
+      (method) => {
+        delete headers[method];
+      }
+    );
+
+    config.headers = _AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_4__["default"].concat(contextHeaders, headers);
+
+    // filter out skipped interceptors
+    const requestInterceptorChain = [];
+    let synchronousRequestInterceptors = true;
+    this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+      if (typeof interceptor.runWhen === 'function' && interceptor.runWhen(config) === false) {
+        return;
+      }
+
+      synchronousRequestInterceptors = synchronousRequestInterceptors && interceptor.synchronous;
+
+      requestInterceptorChain.unshift(interceptor.fulfilled, interceptor.rejected);
+    });
+
+    const responseInterceptorChain = [];
+    this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+      responseInterceptorChain.push(interceptor.fulfilled, interceptor.rejected);
+    });
+
+    let promise;
+    let i = 0;
+    let len;
+
+    if (!synchronousRequestInterceptors) {
+      const chain = [_dispatchRequest_js__WEBPACK_IMPORTED_MODULE_5__["default"].bind(this), undefined];
+      chain.unshift.apply(chain, requestInterceptorChain);
+      chain.push.apply(chain, responseInterceptorChain);
+      len = chain.length;
+
+      promise = Promise.resolve(config);
+
+      while (i < len) {
+        promise = promise.then(chain[i++], chain[i++]);
+      }
+
+      return promise;
+    }
+
+    len = requestInterceptorChain.length;
+
+    let newConfig = config;
+
+    i = 0;
+
+    while (i < len) {
+      const onFulfilled = requestInterceptorChain[i++];
+      const onRejected = requestInterceptorChain[i++];
+      try {
+        newConfig = onFulfilled(newConfig);
+      } catch (error) {
+        onRejected.call(this, error);
+        break;
+      }
+    }
+
+    try {
+      promise = _dispatchRequest_js__WEBPACK_IMPORTED_MODULE_5__["default"].call(this, newConfig);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+
+    i = 0;
+    len = responseInterceptorChain.length;
+
+    while (i < len) {
+      promise = promise.then(responseInterceptorChain[i++], responseInterceptorChain[i++]);
+    }
+
+    return promise;
+  }
+
+  getUri(config) {
+    config = (0,_mergeConfig_js__WEBPACK_IMPORTED_MODULE_2__["default"])(this.defaults, config);
+    const fullPath = (0,_buildFullPath_js__WEBPACK_IMPORTED_MODULE_6__["default"])(config.baseURL, config.url);
+    return (0,_helpers_buildURL_js__WEBPACK_IMPORTED_MODULE_7__["default"])(fullPath, config.params, config.paramsSerializer);
+  }
 }
 
-/**
- * Dispatch a request
- *
- * @param {Object} config The config specific for this request (merged with this.defaults)
- */
-Axios.prototype.request = function request(config) {
-  /*eslint no-param-reassign:0*/
-  // Allow for axios('example/url'[, config]) a la fetch API
-  if (typeof config === 'string') {
-    config = arguments[1] || {};
-    config.url = arguments[0];
-  } else {
-    config = config || {};
-  }
-
-  config = mergeConfig(this.defaults, config);
-
-  // Set config.method
-  if (config.method) {
-    config.method = config.method.toLowerCase();
-  } else if (this.defaults.method) {
-    config.method = this.defaults.method.toLowerCase();
-  } else {
-    config.method = 'get';
-  }
-
-  // Hook up interceptors middleware
-  var chain = [dispatchRequest, undefined];
-  var promise = Promise.resolve(config);
-
-  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
-    chain.unshift(interceptor.fulfilled, interceptor.rejected);
-  });
-
-  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
-    chain.push(interceptor.fulfilled, interceptor.rejected);
-  });
-
-  while (chain.length) {
-    promise = promise.then(chain.shift(), chain.shift());
-  }
-
-  return promise;
-};
-
-Axios.prototype.getUri = function getUri(config) {
-  config = mergeConfig(this.defaults, config);
-  return buildURL(config.url, config.params, config.paramsSerializer).replace(/^\?/, '');
-};
-
 // Provide aliases for supported request methods
-utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
+_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
   /*eslint func-names:0*/
   Axios.prototype[method] = function(url, config) {
-    return this.request(mergeConfig(config || {}, {
-      method: method,
-      url: url,
+    return this.request((0,_mergeConfig_js__WEBPACK_IMPORTED_MODULE_2__["default"])(config || {}, {
+      method,
+      url,
       data: (config || {}).data
     }));
   };
 });
 
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+_utils_js__WEBPACK_IMPORTED_MODULE_3__["default"].forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
   /*eslint func-names:0*/
-  Axios.prototype[method] = function(url, data, config) {
-    return this.request(mergeConfig(config || {}, {
-      method: method,
-      url: url,
-      data: data
-    }));
-  };
+
+  function generateHTTPMethod(isForm) {
+    return function httpMethod(url, data, config) {
+      return this.request((0,_mergeConfig_js__WEBPACK_IMPORTED_MODULE_2__["default"])(config || {}, {
+        method,
+        headers: isForm ? {
+          'Content-Type': 'multipart/form-data'
+        } : {},
+        url,
+        data
+      }));
+    };
+  }
+
+  Axios.prototype[method] = generateHTTPMethod();
+
+  Axios.prototype[method + 'Form'] = generateHTTPMethod(true);
 });
 
-module.exports = Axios;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Axios);
 
 
 /***/ }),
 
-/***/ "./node_modules/axios/lib/core/InterceptorManager.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/axios/lib/core/InterceptorManager.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/axios/lib/core/AxiosError.js":
+/*!***************************************************!*\
+  !*** ./node_modules/axios/lib/core/AxiosError.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
-
-
-var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
-
-function InterceptorManager() {
-  this.handlers = [];
-}
-
-/**
- * Add a new interceptor to the stack
- *
- * @param {Function} fulfilled The function to handle `then` for a `Promise`
- * @param {Function} rejected The function to handle `reject` for a `Promise`
- *
- * @return {Number} An ID used to remove interceptor later
- */
-InterceptorManager.prototype.use = function use(fulfilled, rejected) {
-  this.handlers.push({
-    fulfilled: fulfilled,
-    rejected: rejected
-  });
-  return this.handlers.length - 1;
-};
-
-/**
- * Remove an interceptor from the stack
- *
- * @param {Number} id The ID that was returned by `use`
- */
-InterceptorManager.prototype.eject = function eject(id) {
-  if (this.handlers[id]) {
-    this.handlers[id] = null;
-  }
-};
-
-/**
- * Iterate over all the registered interceptors
- *
- * This method is particularly useful for skipping over any
- * interceptors that may have become `null` calling `eject`.
- *
- * @param {Function} fn The function to call for each interceptor
- */
-InterceptorManager.prototype.forEach = function forEach(fn) {
-  utils.forEach(this.handlers, function forEachHandler(h) {
-    if (h !== null) {
-      fn(h);
-    }
-  });
-};
-
-module.exports = InterceptorManager;
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./node_modules/axios/lib/utils.js");
 
 
-/***/ }),
 
-/***/ "./node_modules/axios/lib/core/buildFullPath.js":
-/*!******************************************************!*\
-  !*** ./node_modules/axios/lib/core/buildFullPath.js ***!
-  \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var isAbsoluteURL = __webpack_require__(/*! ../helpers/isAbsoluteURL */ "./node_modules/axios/lib/helpers/isAbsoluteURL.js");
-var combineURLs = __webpack_require__(/*! ../helpers/combineURLs */ "./node_modules/axios/lib/helpers/combineURLs.js");
-
-/**
- * Creates a new URL by combining the baseURL with the requestedURL,
- * only when the requestedURL is not already an absolute URL.
- * If the requestURL is absolute, this function returns the requestedURL untouched.
- *
- * @param {string} baseURL The base URL
- * @param {string} requestedURL Absolute or relative URL to combine
- * @returns {string} The combined full path
- */
-module.exports = function buildFullPath(baseURL, requestedURL) {
-  if (baseURL && !isAbsoluteURL(requestedURL)) {
-    return combineURLs(baseURL, requestedURL);
-  }
-  return requestedURL;
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/axios/lib/core/createError.js":
-/*!****************************************************!*\
-  !*** ./node_modules/axios/lib/core/createError.js ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var enhanceError = __webpack_require__(/*! ./enhanceError */ "./node_modules/axios/lib/core/enhanceError.js");
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
  *
  * @param {string} message The error message.
- * @param {Object} config The config.
  * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [config] The config.
  * @param {Object} [request] The request.
  * @param {Object} [response] The response.
+ *
  * @returns {Error} The created error.
  */
-module.exports = function createError(message, config, code, request, response) {
-  var error = new Error(message);
-  return enhanceError(error, config, code, request, response);
-};
+function AxiosError(message, code, config, request, response) {
+  Error.call(this);
 
-
-/***/ }),
-
-/***/ "./node_modules/axios/lib/core/dispatchRequest.js":
-/*!********************************************************!*\
-  !*** ./node_modules/axios/lib/core/dispatchRequest.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
-var transformData = __webpack_require__(/*! ./transformData */ "./node_modules/axios/lib/core/transformData.js");
-var isCancel = __webpack_require__(/*! ../cancel/isCancel */ "./node_modules/axios/lib/cancel/isCancel.js");
-var defaults = __webpack_require__(/*! ../defaults */ "./node_modules/axios/lib/defaults.js");
-
-/**
- * Throws a `Cancel` if cancellation has been requested.
- */
-function throwIfCancellationRequested(config) {
-  if (config.cancelToken) {
-    config.cancelToken.throwIfRequested();
+  if (Error.captureStackTrace) {
+    Error.captureStackTrace(this, this.constructor);
+  } else {
+    this.stack = (new Error()).stack;
   }
+
+  this.message = message;
+  this.name = 'AxiosError';
+  code && (this.code = code);
+  config && (this.config = config);
+  request && (this.request = request);
+  response && (this.response = response);
 }
 
-/**
- * Dispatch a request to the server using the configured adapter.
- *
- * @param {object} config The config that is to be used for the request
- * @returns {Promise} The Promise to be fulfilled
- */
-module.exports = function dispatchRequest(config) {
-  throwIfCancellationRequested(config);
-
-  // Ensure headers exist
-  config.headers = config.headers || {};
-
-  // Transform request data
-  config.data = transformData(
-    config.data,
-    config.headers,
-    config.transformRequest
-  );
-
-  // Flatten headers
-  config.headers = utils.merge(
-    config.headers.common || {},
-    config.headers[config.method] || {},
-    config.headers
-  );
-
-  utils.forEach(
-    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
-    function cleanHeaderConfig(method) {
-      delete config.headers[method];
-    }
-  );
-
-  var adapter = config.adapter || defaults.adapter;
-
-  return adapter(config).then(function onAdapterResolution(response) {
-    throwIfCancellationRequested(config);
-
-    // Transform response data
-    response.data = transformData(
-      response.data,
-      response.headers,
-      config.transformResponse
-    );
-
-    return response;
-  }, function onAdapterRejection(reason) {
-    if (!isCancel(reason)) {
-      throwIfCancellationRequested(config);
-
-      // Transform response data
-      if (reason && reason.response) {
-        reason.response.data = transformData(
-          reason.response.data,
-          reason.response.headers,
-          config.transformResponse
-        );
-      }
-    }
-
-    return Promise.reject(reason);
-  });
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/axios/lib/core/enhanceError.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/axios/lib/core/enhanceError.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Update an Error with the specified config, error code, and response.
- *
- * @param {Error} error The error to update.
- * @param {Object} config The config.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- * @param {Object} [request] The request.
- * @param {Object} [response] The response.
- * @returns {Error} The error.
- */
-module.exports = function enhanceError(error, config, code, request, response) {
-  error.config = config;
-  if (code) {
-    error.code = code;
-  }
-
-  error.request = request;
-  error.response = response;
-  error.isAxiosError = true;
-
-  error.toJSON = function toJSON() {
+_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].inherits(AxiosError, Error, {
+  toJSON: function toJSON() {
     return {
       // Standard
       message: this.message,
@@ -4609,12 +5317,597 @@ module.exports = function enhanceError(error, config, code, request, response) {
       columnNumber: this.columnNumber,
       stack: this.stack,
       // Axios
-      config: this.config,
-      code: this.code
+      config: _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].toJSONObject(this.config),
+      code: this.code,
+      status: this.response && this.response.status ? this.response.status : null
     };
-  };
-  return error;
+  }
+});
+
+const prototype = AxiosError.prototype;
+const descriptors = {};
+
+[
+  'ERR_BAD_OPTION_VALUE',
+  'ERR_BAD_OPTION',
+  'ECONNABORTED',
+  'ETIMEDOUT',
+  'ERR_NETWORK',
+  'ERR_FR_TOO_MANY_REDIRECTS',
+  'ERR_DEPRECATED',
+  'ERR_BAD_RESPONSE',
+  'ERR_BAD_REQUEST',
+  'ERR_CANCELED',
+  'ERR_NOT_SUPPORT',
+  'ERR_INVALID_URL'
+// eslint-disable-next-line func-names
+].forEach(code => {
+  descriptors[code] = {value: code};
+});
+
+Object.defineProperties(AxiosError, descriptors);
+Object.defineProperty(prototype, 'isAxiosError', {value: true});
+
+// eslint-disable-next-line func-names
+AxiosError.from = (error, code, config, request, response, customProps) => {
+  const axiosError = Object.create(prototype);
+
+  _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].toFlatObject(error, axiosError, function filter(obj) {
+    return obj !== Error.prototype;
+  }, prop => {
+    return prop !== 'isAxiosError';
+  });
+
+  AxiosError.call(axiosError, error.message, code, config, request, response);
+
+  axiosError.cause = error;
+
+  axiosError.name = error.name;
+
+  customProps && Object.assign(axiosError, customProps);
+
+  return axiosError;
 };
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AxiosError);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/AxiosHeaders.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/axios/lib/core/AxiosHeaders.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _helpers_parseHeaders_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/parseHeaders.js */ "./node_modules/axios/lib/helpers/parseHeaders.js");
+
+
+
+
+
+const $internals = Symbol('internals');
+
+function normalizeHeader(header) {
+  return header && String(header).trim().toLowerCase();
+}
+
+function normalizeValue(value) {
+  if (value === false || value == null) {
+    return value;
+  }
+
+  return _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArray(value) ? value.map(normalizeValue) : String(value);
+}
+
+function parseTokens(str) {
+  const tokens = Object.create(null);
+  const tokensRE = /([^\s,;=]+)\s*(?:=\s*([^,;]+))?/g;
+  let match;
+
+  while ((match = tokensRE.exec(str))) {
+    tokens[match[1]] = match[2];
+  }
+
+  return tokens;
+}
+
+const isValidHeaderName = (str) => /^[-_a-zA-Z0-9^`|~,!#$%&'*+.]+$/.test(str.trim());
+
+function matchHeaderValue(context, value, header, filter, isHeaderNameFilter) {
+  if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isFunction(filter)) {
+    return filter.call(this, value, header);
+  }
+
+  if (isHeaderNameFilter) {
+    value = header;
+  }
+
+  if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(value)) return;
+
+  if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(filter)) {
+    return value.indexOf(filter) !== -1;
+  }
+
+  if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isRegExp(filter)) {
+    return filter.test(value);
+  }
+}
+
+function formatHeader(header) {
+  return header.trim()
+    .toLowerCase().replace(/([a-z\d])(\w*)/g, (w, char, str) => {
+      return char.toUpperCase() + str;
+    });
+}
+
+function buildAccessors(obj, header) {
+  const accessorName = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].toCamelCase(' ' + header);
+
+  ['get', 'set', 'has'].forEach(methodName => {
+    Object.defineProperty(obj, methodName + accessorName, {
+      value: function(arg1, arg2, arg3) {
+        return this[methodName].call(this, header, arg1, arg2, arg3);
+      },
+      configurable: true
+    });
+  });
+}
+
+class AxiosHeaders {
+  constructor(headers) {
+    headers && this.set(headers);
+  }
+
+  set(header, valueOrRewrite, rewrite) {
+    const self = this;
+
+    function setHeader(_value, _header, _rewrite) {
+      const lHeader = normalizeHeader(_header);
+
+      if (!lHeader) {
+        throw new Error('header name must be a non-empty string');
+      }
+
+      const key = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].findKey(self, lHeader);
+
+      if(!key || self[key] === undefined || _rewrite === true || (_rewrite === undefined && self[key] !== false)) {
+        self[key || _header] = normalizeValue(_value);
+      }
+    }
+
+    const setHeaders = (headers, _rewrite) =>
+      _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].forEach(headers, (_value, _header) => setHeader(_value, _header, _rewrite));
+
+    if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isPlainObject(header) || header instanceof this.constructor) {
+      setHeaders(header, valueOrRewrite)
+    } else if(_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(header) && (header = header.trim()) && !isValidHeaderName(header)) {
+      setHeaders((0,_helpers_parseHeaders_js__WEBPACK_IMPORTED_MODULE_1__["default"])(header), valueOrRewrite);
+    } else {
+      header != null && setHeader(valueOrRewrite, header, rewrite);
+    }
+
+    return this;
+  }
+
+  get(header, parser) {
+    header = normalizeHeader(header);
+
+    if (header) {
+      const key = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].findKey(this, header);
+
+      if (key) {
+        const value = this[key];
+
+        if (!parser) {
+          return value;
+        }
+
+        if (parser === true) {
+          return parseTokens(value);
+        }
+
+        if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isFunction(parser)) {
+          return parser.call(this, value, key);
+        }
+
+        if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isRegExp(parser)) {
+          return parser.exec(value);
+        }
+
+        throw new TypeError('parser must be boolean|regexp|function');
+      }
+    }
+  }
+
+  has(header, matcher) {
+    header = normalizeHeader(header);
+
+    if (header) {
+      const key = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].findKey(this, header);
+
+      return !!(key && this[key] !== undefined && (!matcher || matchHeaderValue(this, this[key], key, matcher)));
+    }
+
+    return false;
+  }
+
+  delete(header, matcher) {
+    const self = this;
+    let deleted = false;
+
+    function deleteHeader(_header) {
+      _header = normalizeHeader(_header);
+
+      if (_header) {
+        const key = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].findKey(self, _header);
+
+        if (key && (!matcher || matchHeaderValue(self, self[key], key, matcher))) {
+          delete self[key];
+
+          deleted = true;
+        }
+      }
+    }
+
+    if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArray(header)) {
+      header.forEach(deleteHeader);
+    } else {
+      deleteHeader(header);
+    }
+
+    return deleted;
+  }
+
+  clear(matcher) {
+    const keys = Object.keys(this);
+    let i = keys.length;
+    let deleted = false;
+
+    while (i--) {
+      const key = keys[i];
+      if(!matcher || matchHeaderValue(this, this[key], key, matcher, true)) {
+        delete this[key];
+        deleted = true;
+      }
+    }
+
+    return deleted;
+  }
+
+  normalize(format) {
+    const self = this;
+    const headers = {};
+
+    _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].forEach(this, (value, header) => {
+      const key = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].findKey(headers, header);
+
+      if (key) {
+        self[key] = normalizeValue(value);
+        delete self[header];
+        return;
+      }
+
+      const normalized = format ? formatHeader(header) : String(header).trim();
+
+      if (normalized !== header) {
+        delete self[header];
+      }
+
+      self[normalized] = normalizeValue(value);
+
+      headers[normalized] = true;
+    });
+
+    return this;
+  }
+
+  concat(...targets) {
+    return this.constructor.concat(this, ...targets);
+  }
+
+  toJSON(asStrings) {
+    const obj = Object.create(null);
+
+    _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].forEach(this, (value, header) => {
+      value != null && value !== false && (obj[header] = asStrings && _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArray(value) ? value.join(', ') : value);
+    });
+
+    return obj;
+  }
+
+  [Symbol.iterator]() {
+    return Object.entries(this.toJSON())[Symbol.iterator]();
+  }
+
+  toString() {
+    return Object.entries(this.toJSON()).map(([header, value]) => header + ': ' + value).join('\n');
+  }
+
+  get [Symbol.toStringTag]() {
+    return 'AxiosHeaders';
+  }
+
+  static from(thing) {
+    return thing instanceof this ? thing : new this(thing);
+  }
+
+  static concat(first, ...targets) {
+    const computed = new this(first);
+
+    targets.forEach((target) => computed.set(target));
+
+    return computed;
+  }
+
+  static accessor(header) {
+    const internals = this[$internals] = (this[$internals] = {
+      accessors: {}
+    });
+
+    const accessors = internals.accessors;
+    const prototype = this.prototype;
+
+    function defineAccessor(_header) {
+      const lHeader = normalizeHeader(_header);
+
+      if (!accessors[lHeader]) {
+        buildAccessors(prototype, _header);
+        accessors[lHeader] = true;
+      }
+    }
+
+    _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArray(header) ? header.forEach(defineAccessor) : defineAccessor(header);
+
+    return this;
+  }
+}
+
+AxiosHeaders.accessor(['Content-Type', 'Content-Length', 'Accept', 'Accept-Encoding', 'User-Agent', 'Authorization']);
+
+// reserved names hotfix
+_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].reduceDescriptors(AxiosHeaders.prototype, ({value}, key) => {
+  let mapped = key[0].toUpperCase() + key.slice(1); // map `set` => `Set`
+  return {
+    get: () => value,
+    set(headerValue) {
+      this[mapped] = headerValue;
+    }
+  }
+});
+
+_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].freezeMethods(AxiosHeaders);
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AxiosHeaders);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/InterceptorManager.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/axios/lib/core/InterceptorManager.js ***!
+  \***********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../utils.js */ "./node_modules/axios/lib/utils.js");
+
+
+
+
+class InterceptorManager {
+  constructor() {
+    this.handlers = [];
+  }
+
+  /**
+   * Add a new interceptor to the stack
+   *
+   * @param {Function} fulfilled The function to handle `then` for a `Promise`
+   * @param {Function} rejected The function to handle `reject` for a `Promise`
+   *
+   * @return {Number} An ID used to remove interceptor later
+   */
+  use(fulfilled, rejected, options) {
+    this.handlers.push({
+      fulfilled,
+      rejected,
+      synchronous: options ? options.synchronous : false,
+      runWhen: options ? options.runWhen : null
+    });
+    return this.handlers.length - 1;
+  }
+
+  /**
+   * Remove an interceptor from the stack
+   *
+   * @param {Number} id The ID that was returned by `use`
+   *
+   * @returns {Boolean} `true` if the interceptor was removed, `false` otherwise
+   */
+  eject(id) {
+    if (this.handlers[id]) {
+      this.handlers[id] = null;
+    }
+  }
+
+  /**
+   * Clear all interceptors from the stack
+   *
+   * @returns {void}
+   */
+  clear() {
+    if (this.handlers) {
+      this.handlers = [];
+    }
+  }
+
+  /**
+   * Iterate over all the registered interceptors
+   *
+   * This method is particularly useful for skipping over any
+   * interceptors that may have become `null` calling `eject`.
+   *
+   * @param {Function} fn The function to call for each interceptor
+   *
+   * @returns {void}
+   */
+  forEach(fn) {
+    _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].forEach(this.handlers, function forEachHandler(h) {
+      if (h !== null) {
+        fn(h);
+      }
+    });
+  }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (InterceptorManager);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/buildFullPath.js":
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/core/buildFullPath.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ buildFullPath)
+/* harmony export */ });
+/* harmony import */ var _helpers_isAbsoluteURL_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/isAbsoluteURL.js */ "./node_modules/axios/lib/helpers/isAbsoluteURL.js");
+/* harmony import */ var _helpers_combineURLs_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/combineURLs.js */ "./node_modules/axios/lib/helpers/combineURLs.js");
+
+
+
+
+
+/**
+ * Creates a new URL by combining the baseURL with the requestedURL,
+ * only when the requestedURL is not already an absolute URL.
+ * If the requestURL is absolute, this function returns the requestedURL untouched.
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} requestedURL Absolute or relative URL to combine
+ *
+ * @returns {string} The combined full path
+ */
+function buildFullPath(baseURL, requestedURL) {
+  if (baseURL && !(0,_helpers_isAbsoluteURL_js__WEBPACK_IMPORTED_MODULE_0__["default"])(requestedURL)) {
+    return (0,_helpers_combineURLs_js__WEBPACK_IMPORTED_MODULE_1__["default"])(baseURL, requestedURL);
+  }
+  return requestedURL;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/dispatchRequest.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/core/dispatchRequest.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ dispatchRequest)
+/* harmony export */ });
+/* harmony import */ var _transformData_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./transformData.js */ "./node_modules/axios/lib/core/transformData.js");
+/* harmony import */ var _cancel_isCancel_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../cancel/isCancel.js */ "./node_modules/axios/lib/cancel/isCancel.js");
+/* harmony import */ var _defaults_index_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../defaults/index.js */ "./node_modules/axios/lib/defaults/index.js");
+/* harmony import */ var _cancel_CanceledError_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../cancel/CanceledError.js */ "./node_modules/axios/lib/cancel/CanceledError.js");
+/* harmony import */ var _core_AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/AxiosHeaders.js */ "./node_modules/axios/lib/core/AxiosHeaders.js");
+/* harmony import */ var _adapters_adapters_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../adapters/adapters.js */ "./node_modules/axios/lib/adapters/adapters.js");
+
+
+
+
+
+
+
+
+
+/**
+ * Throws a `CanceledError` if cancellation has been requested.
+ *
+ * @param {Object} config The config that is to be used for the request
+ *
+ * @returns {void}
+ */
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+
+  if (config.signal && config.signal.aborted) {
+    throw new _cancel_CanceledError_js__WEBPACK_IMPORTED_MODULE_0__["default"](null, config);
+  }
+}
+
+/**
+ * Dispatch a request to the server using the configured adapter.
+ *
+ * @param {object} config The config that is to be used for the request
+ *
+ * @returns {Promise} The Promise to be fulfilled
+ */
+function dispatchRequest(config) {
+  throwIfCancellationRequested(config);
+
+  config.headers = _core_AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_1__["default"].from(config.headers);
+
+  // Transform request data
+  config.data = _transformData_js__WEBPACK_IMPORTED_MODULE_2__["default"].call(
+    config,
+    config.transformRequest
+  );
+
+  if (['post', 'put', 'patch'].indexOf(config.method) !== -1) {
+    config.headers.setContentType('application/x-www-form-urlencoded', false);
+  }
+
+  const adapter = _adapters_adapters_js__WEBPACK_IMPORTED_MODULE_3__["default"].getAdapter(config.adapter || _defaults_index_js__WEBPACK_IMPORTED_MODULE_4__["default"].adapter);
+
+  return adapter(config).then(function onAdapterResolution(response) {
+    throwIfCancellationRequested(config);
+
+    // Transform response data
+    response.data = _transformData_js__WEBPACK_IMPORTED_MODULE_2__["default"].call(
+      config,
+      config.transformResponse,
+      response
+    );
+
+    response.headers = _core_AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_1__["default"].from(response.headers);
+
+    return response;
+  }, function onAdapterRejection(reason) {
+    if (!(0,_cancel_isCancel_js__WEBPACK_IMPORTED_MODULE_5__["default"])(reason)) {
+      throwIfCancellationRequested(config);
+
+      // Transform response data
+      if (reason && reason.response) {
+        reason.response.data = _transformData_js__WEBPACK_IMPORTED_MODULE_2__["default"].call(
+          config,
+          config.transformResponse,
+          reason.response
+        );
+        reason.response.headers = _core_AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_1__["default"].from(reason.response.headers);
+      }
+    }
+
+    return Promise.reject(reason);
+  });
+}
 
 
 /***/ }),
@@ -4623,13 +5916,20 @@ module.exports = function enhanceError(error, config, code, request, response) {
 /*!****************************************************!*\
   !*** ./node_modules/axios/lib/core/mergeConfig.js ***!
   \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ mergeConfig)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AxiosHeaders.js */ "./node_modules/axios/lib/core/AxiosHeaders.js");
 
 
-var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
+
+
+
+const headersToObject = (thing) => thing instanceof _AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_0__["default"] ? thing.toJSON() : thing;
 
 /**
  * Config-specific merge-function which creates a new config-object
@@ -4637,83 +5937,99 @@ var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.
  *
  * @param {Object} config1
  * @param {Object} config2
+ *
  * @returns {Object} New object resulting from merging config2 to config1
  */
-module.exports = function mergeConfig(config1, config2) {
+function mergeConfig(config1, config2) {
   // eslint-disable-next-line no-param-reassign
   config2 = config2 || {};
-  var config = {};
+  const config = {};
 
-  var valueFromConfig2Keys = ['url', 'method', 'data'];
-  var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy', 'params'];
-  var defaultToConfig2Keys = [
-    'baseURL', 'transformRequest', 'transformResponse', 'paramsSerializer',
-    'timeout', 'timeoutMessage', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
-    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress', 'decompress',
-    'maxContentLength', 'maxBodyLength', 'maxRedirects', 'transport', 'httpAgent',
-    'httpsAgent', 'cancelToken', 'socketPath', 'responseEncoding'
-  ];
-  var directMergeKeys = ['validateStatus'];
-
-  function getMergedValue(target, source) {
-    if (utils.isPlainObject(target) && utils.isPlainObject(source)) {
-      return utils.merge(target, source);
-    } else if (utils.isPlainObject(source)) {
-      return utils.merge({}, source);
-    } else if (utils.isArray(source)) {
+  function getMergedValue(target, source, caseless) {
+    if (_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isPlainObject(target) && _utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isPlainObject(source)) {
+      return _utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].merge.call({caseless}, target, source);
+    } else if (_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isPlainObject(source)) {
+      return _utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].merge({}, source);
+    } else if (_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isArray(source)) {
       return source.slice();
     }
     return source;
   }
 
-  function mergeDeepProperties(prop) {
-    if (!utils.isUndefined(config2[prop])) {
-      config[prop] = getMergedValue(config1[prop], config2[prop]);
-    } else if (!utils.isUndefined(config1[prop])) {
-      config[prop] = getMergedValue(undefined, config1[prop]);
+  // eslint-disable-next-line consistent-return
+  function mergeDeepProperties(a, b, caseless) {
+    if (!_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isUndefined(b)) {
+      return getMergedValue(a, b, caseless);
+    } else if (!_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isUndefined(a)) {
+      return getMergedValue(undefined, a, caseless);
     }
   }
 
-  utils.forEach(valueFromConfig2Keys, function valueFromConfig2(prop) {
-    if (!utils.isUndefined(config2[prop])) {
-      config[prop] = getMergedValue(undefined, config2[prop]);
+  // eslint-disable-next-line consistent-return
+  function valueFromConfig2(a, b) {
+    if (!_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isUndefined(b)) {
+      return getMergedValue(undefined, b);
     }
-  });
+  }
 
-  utils.forEach(mergeDeepPropertiesKeys, mergeDeepProperties);
-
-  utils.forEach(defaultToConfig2Keys, function defaultToConfig2(prop) {
-    if (!utils.isUndefined(config2[prop])) {
-      config[prop] = getMergedValue(undefined, config2[prop]);
-    } else if (!utils.isUndefined(config1[prop])) {
-      config[prop] = getMergedValue(undefined, config1[prop]);
+  // eslint-disable-next-line consistent-return
+  function defaultToConfig2(a, b) {
+    if (!_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isUndefined(b)) {
+      return getMergedValue(undefined, b);
+    } else if (!_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isUndefined(a)) {
+      return getMergedValue(undefined, a);
     }
-  });
+  }
 
-  utils.forEach(directMergeKeys, function merge(prop) {
+  // eslint-disable-next-line consistent-return
+  function mergeDirectKeys(a, b, prop) {
     if (prop in config2) {
-      config[prop] = getMergedValue(config1[prop], config2[prop]);
+      return getMergedValue(a, b);
     } else if (prop in config1) {
-      config[prop] = getMergedValue(undefined, config1[prop]);
+      return getMergedValue(undefined, a);
     }
+  }
+
+  const mergeMap = {
+    url: valueFromConfig2,
+    method: valueFromConfig2,
+    data: valueFromConfig2,
+    baseURL: defaultToConfig2,
+    transformRequest: defaultToConfig2,
+    transformResponse: defaultToConfig2,
+    paramsSerializer: defaultToConfig2,
+    timeout: defaultToConfig2,
+    timeoutMessage: defaultToConfig2,
+    withCredentials: defaultToConfig2,
+    withXSRFToken: defaultToConfig2,
+    adapter: defaultToConfig2,
+    responseType: defaultToConfig2,
+    xsrfCookieName: defaultToConfig2,
+    xsrfHeaderName: defaultToConfig2,
+    onUploadProgress: defaultToConfig2,
+    onDownloadProgress: defaultToConfig2,
+    decompress: defaultToConfig2,
+    maxContentLength: defaultToConfig2,
+    maxBodyLength: defaultToConfig2,
+    beforeRedirect: defaultToConfig2,
+    transport: defaultToConfig2,
+    httpAgent: defaultToConfig2,
+    httpsAgent: defaultToConfig2,
+    cancelToken: defaultToConfig2,
+    socketPath: defaultToConfig2,
+    responseEncoding: defaultToConfig2,
+    validateStatus: mergeDirectKeys,
+    headers: (a, b) => mergeDeepProperties(headersToObject(a), headersToObject(b), true)
+  };
+
+  _utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].forEach(Object.keys(Object.assign({}, config1, config2)), function computeConfigValue(prop) {
+    const merge = mergeMap[prop] || mergeDeepProperties;
+    const configValue = merge(config1[prop], config2[prop], prop);
+    (_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isUndefined(configValue) && merge !== mergeDirectKeys) || (config[prop] = configValue);
   });
-
-  var axiosKeys = valueFromConfig2Keys
-    .concat(mergeDeepPropertiesKeys)
-    .concat(defaultToConfig2Keys)
-    .concat(directMergeKeys);
-
-  var otherKeys = Object
-    .keys(config1)
-    .concat(Object.keys(config2))
-    .filter(function filterAxiosKeys(key) {
-      return axiosKeys.indexOf(key) === -1;
-    });
-
-  utils.forEach(otherKeys, mergeDeepProperties);
 
   return config;
-};
+}
 
 
 /***/ }),
@@ -4722,13 +6038,16 @@ module.exports = function mergeConfig(config1, config2) {
 /*!***********************************************!*\
   !*** ./node_modules/axios/lib/core/settle.js ***!
   \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ settle)
+/* harmony export */ });
+/* harmony import */ var _AxiosError_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AxiosError.js */ "./node_modules/axios/lib/core/AxiosError.js");
 
 
-var createError = __webpack_require__(/*! ./createError */ "./node_modules/axios/lib/core/createError.js");
+
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -4736,21 +6055,23 @@ var createError = __webpack_require__(/*! ./createError */ "./node_modules/axios
  * @param {Function} resolve A function that resolves the promise.
  * @param {Function} reject A function that rejects the promise.
  * @param {object} response The response.
+ *
+ * @returns {object} The response.
  */
-module.exports = function settle(resolve, reject, response) {
-  var validateStatus = response.config.validateStatus;
+function settle(resolve, reject, response) {
+  const validateStatus = response.config.validateStatus;
   if (!response.status || !validateStatus || validateStatus(response.status)) {
     resolve(response);
   } else {
-    reject(createError(
+    reject(new _AxiosError_js__WEBPACK_IMPORTED_MODULE_0__["default"](
       'Request failed with status code ' + response.status,
+      [_AxiosError_js__WEBPACK_IMPORTED_MODULE_0__["default"].ERR_BAD_REQUEST, _AxiosError_js__WEBPACK_IMPORTED_MODULE_0__["default"].ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4],
       response.config,
-      null,
       response.request,
       response
     ));
   }
-};
+}
 
 
 /***/ }),
@@ -4759,105 +6080,183 @@ module.exports = function settle(resolve, reject, response) {
 /*!******************************************************!*\
   !*** ./node_modules/axios/lib/core/transformData.js ***!
   \******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ transformData)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _defaults_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../defaults/index.js */ "./node_modules/axios/lib/defaults/index.js");
+/* harmony import */ var _core_AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/AxiosHeaders.js */ "./node_modules/axios/lib/core/AxiosHeaders.js");
 
 
-var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+
+
 
 /**
  * Transform the data for a request or a response
  *
- * @param {Object|String} data The data to be transformed
- * @param {Array} headers The headers for the request or response
  * @param {Array|Function} fns A single function or Array of functions
+ * @param {?Object} response The response object
+ *
  * @returns {*} The resulting transformed data
  */
-module.exports = function transformData(data, headers, fns) {
-  /*eslint no-param-reassign:0*/
-  utils.forEach(fns, function transform(fn) {
-    data = fn(data, headers);
+function transformData(fns, response) {
+  const config = this || _defaults_index_js__WEBPACK_IMPORTED_MODULE_0__["default"];
+  const context = response || config;
+  const headers = _core_AxiosHeaders_js__WEBPACK_IMPORTED_MODULE_1__["default"].from(context.headers);
+  let data = context.data;
+
+  _utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].forEach(fns, function transform(fn) {
+    data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
   });
 
+  headers.normalize();
+
   return data;
-};
+}
 
 
 /***/ }),
 
-/***/ "./node_modules/axios/lib/defaults.js":
-/*!********************************************!*\
-  !*** ./node_modules/axios/lib/defaults.js ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/axios/lib/defaults/index.js":
+/*!**************************************************!*\
+  !*** ./node_modules/axios/lib/defaults/index.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../core/AxiosError.js */ "./node_modules/axios/lib/core/AxiosError.js");
+/* harmony import */ var _transitional_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./transitional.js */ "./node_modules/axios/lib/defaults/transitional.js");
+/* harmony import */ var _helpers_toFormData_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/toFormData.js */ "./node_modules/axios/lib/helpers/toFormData.js");
+/* harmony import */ var _helpers_toURLEncodedForm_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/toURLEncodedForm.js */ "./node_modules/axios/lib/helpers/toURLEncodedForm.js");
+/* harmony import */ var _platform_index_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../platform/index.js */ "./node_modules/axios/lib/platform/index.js");
+/* harmony import */ var _helpers_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/formDataToJSON.js */ "./node_modules/axios/lib/helpers/formDataToJSON.js");
 
-var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
-var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ "./node_modules/axios/lib/helpers/normalizeHeaderName.js");
 
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
 
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
+
+
+
+
+
+
+
+/**
+ * It takes a string, tries to parse it, and if it fails, it returns the stringified version
+ * of the input
+ *
+ * @param {any} rawValue - The value to be stringified.
+ * @param {Function} parser - A function that parses a string into a JavaScript object.
+ * @param {Function} encoder - A function that takes a value and returns a string.
+ *
+ * @returns {string} A stringified version of the rawValue.
+ */
+function stringifySafely(rawValue, parser, encoder) {
+  if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(rawValue)) {
+    try {
+      (parser || JSON.parse)(rawValue);
+      return _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].trim(rawValue);
+    } catch (e) {
+      if (e.name !== 'SyntaxError') {
+        throw e;
+      }
+    }
   }
+
+  return (encoder || JSON.stringify)(rawValue);
 }
 
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(/*! ./adapters/xhr */ "./node_modules/axios/lib/adapters/xhr.js");
-  } else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__(/*! ./adapters/http */ "./node_modules/axios/lib/adapters/xhr.js");
-  }
-  return adapter;
-}
+const defaults = {
 
-var defaults = {
-  adapter: getDefaultAdapter(),
+  transitional: _transitional_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+
+  adapter: ['xhr', 'http'],
 
   transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Accept');
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
+    const contentType = headers.getContentType() || '';
+    const hasJSONContentType = contentType.indexOf('application/json') > -1;
+    const isObjectPayload = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isObject(data);
+
+    if (isObjectPayload && _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isHTMLForm(data)) {
+      data = new FormData(data);
+    }
+
+    const isFormData = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isFormData(data);
+
+    if (isFormData) {
+      return hasJSONContentType ? JSON.stringify((0,_helpers_formDataToJSON_js__WEBPACK_IMPORTED_MODULE_2__["default"])(data)) : data;
+    }
+
+    if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArrayBuffer(data) ||
+      _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isBuffer(data) ||
+      _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isStream(data) ||
+      _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isFile(data) ||
+      _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isBlob(data)
     ) {
       return data;
     }
-    if (utils.isArrayBufferView(data)) {
+    if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArrayBufferView(data)) {
       return data.buffer;
     }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+    if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isURLSearchParams(data)) {
+      headers.setContentType('application/x-www-form-urlencoded;charset=utf-8', false);
       return data.toString();
     }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
+
+    let isFileList;
+
+    if (isObjectPayload) {
+      if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
+        return (0,_helpers_toURLEncodedForm_js__WEBPACK_IMPORTED_MODULE_3__["default"])(data, this.formSerializer).toString();
+      }
+
+      if ((isFileList = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
+        const _FormData = this.env && this.env.FormData;
+
+        return (0,_helpers_toFormData_js__WEBPACK_IMPORTED_MODULE_4__["default"])(
+          isFileList ? {'files[]': data} : data,
+          _FormData && new _FormData(),
+          this.formSerializer
+        );
+      }
     }
+
+    if (isObjectPayload || hasJSONContentType ) {
+      headers.setContentType('application/json', false);
+      return stringifySafely(data);
+    }
+
     return data;
   }],
 
   transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
+    const transitional = this.transitional || defaults.transitional;
+    const forcedJSONParsing = transitional && transitional.forcedJSONParsing;
+    const JSONRequested = this.responseType === 'json';
+
+    if (data && _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(data) && ((forcedJSONParsing && !this.responseType) || JSONRequested)) {
+      const silentJSONParsing = transitional && transitional.silentJSONParsing;
+      const strictJSONParsing = !silentJSONParsing && JSONRequested;
+
       try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
+        return JSON.parse(data);
+      } catch (e) {
+        if (strictJSONParsing) {
+          if (e.name === 'SyntaxError') {
+            throw _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_5__["default"].from(e, _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_5__["default"].ERR_BAD_RESPONSE, this, null, this.response);
+          }
+          throw e;
+        }
+      }
     }
+
     return data;
   }],
 
@@ -4873,28 +6272,222 @@ var defaults = {
   maxContentLength: -1,
   maxBodyLength: -1,
 
+  env: {
+    FormData: _platform_index_js__WEBPACK_IMPORTED_MODULE_6__["default"].classes.FormData,
+    Blob: _platform_index_js__WEBPACK_IMPORTED_MODULE_6__["default"].classes.Blob
+  },
+
   validateStatus: function validateStatus(status) {
     return status >= 200 && status < 300;
+  },
+
+  headers: {
+    common: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': undefined
+    }
   }
 };
 
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].forEach(['delete', 'get', 'head', 'post', 'put', 'patch'], (method) => {
   defaults.headers[method] = {};
 });
 
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (defaults);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/defaults/transitional.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/axios/lib/defaults/transitional.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  silentJSONParsing: true,
+  forcedJSONParsing: true,
+  clarifyTimeoutError: false
 });
 
-module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ "./node_modules/process/browser.js")))
+/***/ }),
+
+/***/ "./node_modules/axios/lib/env/data.js":
+/*!********************************************!*\
+  !*** ./node_modules/axios/lib/env/data.js ***!
+  \********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   VERSION: () => (/* binding */ VERSION)
+/* harmony export */ });
+const VERSION = "1.6.7";
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/AxiosURLSearchParams.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/AxiosURLSearchParams.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _toFormData_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toFormData.js */ "./node_modules/axios/lib/helpers/toFormData.js");
+
+
+
+
+/**
+ * It encodes a string by replacing all characters that are not in the unreserved set with
+ * their percent-encoded equivalents
+ *
+ * @param {string} str - The string to encode.
+ *
+ * @returns {string} The encoded string.
+ */
+function encode(str) {
+  const charMap = {
+    '!': '%21',
+    "'": '%27',
+    '(': '%28',
+    ')': '%29',
+    '~': '%7E',
+    '%20': '+',
+    '%00': '\x00'
+  };
+  return encodeURIComponent(str).replace(/[!'()~]|%20|%00/g, function replacer(match) {
+    return charMap[match];
+  });
+}
+
+/**
+ * It takes a params object and converts it to a FormData object
+ *
+ * @param {Object<string, any>} params - The parameters to be converted to a FormData object.
+ * @param {Object<string, any>} options - The options object passed to the Axios constructor.
+ *
+ * @returns {void}
+ */
+function AxiosURLSearchParams(params, options) {
+  this._pairs = [];
+
+  params && (0,_toFormData_js__WEBPACK_IMPORTED_MODULE_0__["default"])(params, this, options);
+}
+
+const prototype = AxiosURLSearchParams.prototype;
+
+prototype.append = function append(name, value) {
+  this._pairs.push([name, value]);
+};
+
+prototype.toString = function toString(encoder) {
+  const _encode = encoder ? function(value) {
+    return encoder.call(this, value, encode);
+  } : encode;
+
+  return this._pairs.map(function each(pair) {
+    return _encode(pair[0]) + '=' + _encode(pair[1]);
+  }, '').join('&');
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AxiosURLSearchParams);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/HttpStatusCode.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/HttpStatusCode.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const HttpStatusCode = {
+  Continue: 100,
+  SwitchingProtocols: 101,
+  Processing: 102,
+  EarlyHints: 103,
+  Ok: 200,
+  Created: 201,
+  Accepted: 202,
+  NonAuthoritativeInformation: 203,
+  NoContent: 204,
+  ResetContent: 205,
+  PartialContent: 206,
+  MultiStatus: 207,
+  AlreadyReported: 208,
+  ImUsed: 226,
+  MultipleChoices: 300,
+  MovedPermanently: 301,
+  Found: 302,
+  SeeOther: 303,
+  NotModified: 304,
+  UseProxy: 305,
+  Unused: 306,
+  TemporaryRedirect: 307,
+  PermanentRedirect: 308,
+  BadRequest: 400,
+  Unauthorized: 401,
+  PaymentRequired: 402,
+  Forbidden: 403,
+  NotFound: 404,
+  MethodNotAllowed: 405,
+  NotAcceptable: 406,
+  ProxyAuthenticationRequired: 407,
+  RequestTimeout: 408,
+  Conflict: 409,
+  Gone: 410,
+  LengthRequired: 411,
+  PreconditionFailed: 412,
+  PayloadTooLarge: 413,
+  UriTooLong: 414,
+  UnsupportedMediaType: 415,
+  RangeNotSatisfiable: 416,
+  ExpectationFailed: 417,
+  ImATeapot: 418,
+  MisdirectedRequest: 421,
+  UnprocessableEntity: 422,
+  Locked: 423,
+  FailedDependency: 424,
+  TooEarly: 425,
+  UpgradeRequired: 426,
+  PreconditionRequired: 428,
+  TooManyRequests: 429,
+  RequestHeaderFieldsTooLarge: 431,
+  UnavailableForLegalReasons: 451,
+  InternalServerError: 500,
+  NotImplemented: 501,
+  BadGateway: 502,
+  ServiceUnavailable: 503,
+  GatewayTimeout: 504,
+  HttpVersionNotSupported: 505,
+  VariantAlsoNegotiates: 506,
+  InsufficientStorage: 507,
+  LoopDetected: 508,
+  NotExtended: 510,
+  NetworkAuthenticationRequired: 511,
+};
+
+Object.entries(HttpStatusCode).forEach(([key, value]) => {
+  HttpStatusCode[value] = key;
+});
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (HttpStatusCode);
+
 
 /***/ }),
 
@@ -4902,21 +6495,19 @@ module.exports = defaults;
 /*!************************************************!*\
   !*** ./node_modules/axios/lib/helpers/bind.js ***!
   \************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ bind)
+/* harmony export */ });
 
 
-module.exports = function bind(fn, thisArg) {
+function bind(fn, thisArg) {
   return function wrap() {
-    var args = new Array(arguments.length);
-    for (var i = 0; i < args.length; i++) {
-      args[i] = arguments[i];
-    }
-    return fn.apply(thisArg, args);
+    return fn.apply(thisArg, arguments);
   };
-};
+}
 
 
 /***/ }),
@@ -4925,14 +6516,27 @@ module.exports = function bind(fn, thisArg) {
 /*!****************************************************!*\
   !*** ./node_modules/axios/lib/helpers/buildURL.js ***!
   \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ buildURL)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _helpers_AxiosURLSearchParams_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/AxiosURLSearchParams.js */ "./node_modules/axios/lib/helpers/AxiosURLSearchParams.js");
 
 
-var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
 
+
+
+/**
+ * It replaces all instances of the characters `:`, `$`, `,`, `+`, `[`, and `]` with their
+ * URI encoded counterparts
+ *
+ * @param {string} val The value to be encoded.
+ *
+ * @returns {string} The encoded value.
+ */
 function encode(val) {
   return encodeURIComponent(val).
     replace(/%3A/gi, ':').
@@ -4948,57 +6552,41 @@ function encode(val) {
  *
  * @param {string} url The base of the url (e.g., http://www.google.com)
  * @param {object} [params] The params to be appended
+ * @param {?object} options
+ *
  * @returns {string} The formatted url
  */
-module.exports = function buildURL(url, params, paramsSerializer) {
+function buildURL(url, params, options) {
   /*eslint no-param-reassign:0*/
   if (!params) {
     return url;
   }
+  
+  const _encode = options && options.encode || encode;
 
-  var serializedParams;
-  if (paramsSerializer) {
-    serializedParams = paramsSerializer(params);
-  } else if (utils.isURLSearchParams(params)) {
-    serializedParams = params.toString();
+  const serializeFn = options && options.serialize;
+
+  let serializedParams;
+
+  if (serializeFn) {
+    serializedParams = serializeFn(params, options);
   } else {
-    var parts = [];
-
-    utils.forEach(params, function serialize(val, key) {
-      if (val === null || typeof val === 'undefined') {
-        return;
-      }
-
-      if (utils.isArray(val)) {
-        key = key + '[]';
-      } else {
-        val = [val];
-      }
-
-      utils.forEach(val, function parseValue(v) {
-        if (utils.isDate(v)) {
-          v = v.toISOString();
-        } else if (utils.isObject(v)) {
-          v = JSON.stringify(v);
-        }
-        parts.push(encode(key) + '=' + encode(v));
-      });
-    });
-
-    serializedParams = parts.join('&');
+    serializedParams = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isURLSearchParams(params) ?
+      params.toString() :
+      new _helpers_AxiosURLSearchParams_js__WEBPACK_IMPORTED_MODULE_1__["default"](params, options).toString(_encode);
   }
 
   if (serializedParams) {
-    var hashmarkIndex = url.indexOf('#');
+    const hashmarkIndex = url.indexOf("#");
+
     if (hashmarkIndex !== -1) {
       url = url.slice(0, hashmarkIndex);
     }
-
     url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
   }
 
   return url;
-};
+}
 
 
 /***/ }),
@@ -5007,10 +6595,12 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 /*!*******************************************************!*\
   !*** ./node_modules/axios/lib/helpers/combineURLs.js ***!
   \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ combineURLs)
+/* harmony export */ });
 
 
 /**
@@ -5018,13 +6608,14 @@ module.exports = function buildURL(url, params, paramsSerializer) {
  *
  * @param {string} baseURL The base URL
  * @param {string} relativeURL The relative URL
+ *
  * @returns {string} The combined URL
  */
-module.exports = function combineURLs(baseURL, relativeURL) {
+function combineURLs(baseURL, relativeURL) {
   return relativeURL
-    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+    ? baseURL.replace(/\/?\/$/, '') + '/' + relativeURL.replace(/^\/+/, '')
     : baseURL;
-};
+}
 
 
 /***/ }),
@@ -5033,63 +6624,166 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 /*!***************************************************!*\
   !*** ./node_modules/axios/lib/helpers/cookies.js ***!
   \***************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _platform_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../platform/index.js */ "./node_modules/axios/lib/platform/index.js");
 
 
-var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
 
-module.exports = (
-  utils.isStandardBrowserEnv() ?
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_platform_index_js__WEBPACK_IMPORTED_MODULE_0__["default"].hasStandardBrowserEnv ?
 
   // Standard browser envs support document.cookie
-    (function standardBrowserEnv() {
-      return {
-        write: function write(name, value, expires, path, domain, secure) {
-          var cookie = [];
-          cookie.push(name + '=' + encodeURIComponent(value));
+  {
+    write(name, value, expires, path, domain, secure) {
+      const cookie = [name + '=' + encodeURIComponent(value)];
 
-          if (utils.isNumber(expires)) {
-            cookie.push('expires=' + new Date(expires).toGMTString());
-          }
+      _utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isNumber(expires) && cookie.push('expires=' + new Date(expires).toGMTString());
 
-          if (utils.isString(path)) {
-            cookie.push('path=' + path);
-          }
+      _utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isString(path) && cookie.push('path=' + path);
 
-          if (utils.isString(domain)) {
-            cookie.push('domain=' + domain);
-          }
+      _utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isString(domain) && cookie.push('domain=' + domain);
 
-          if (secure === true) {
-            cookie.push('secure');
-          }
+      secure === true && cookie.push('secure');
 
-          document.cookie = cookie.join('; ');
-        },
+      document.cookie = cookie.join('; ');
+    },
 
-        read: function read(name) {
-          var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
-          return (match ? decodeURIComponent(match[3]) : null);
-        },
+    read(name) {
+      const match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+      return (match ? decodeURIComponent(match[3]) : null);
+    },
 
-        remove: function remove(name) {
-          this.write(name, '', Date.now() - 86400000);
-        }
-      };
-    })() :
+    remove(name) {
+      this.write(name, '', Date.now() - 86400000);
+    }
+  }
 
-  // Non standard browser env (web workers, react-native) lack needed support.
-    (function nonStandardBrowserEnv() {
-      return {
-        write: function write() {},
-        read: function read() { return null; },
-        remove: function remove() {}
-      };
-    })()
-);
+  :
+
+  // Non-standard browser env (web workers, react-native) lack needed support.
+  {
+    write() {},
+    read() {
+      return null;
+    },
+    remove() {}
+  });
+
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/formDataToJSON.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/formDataToJSON.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./node_modules/axios/lib/utils.js");
+
+
+
+
+/**
+ * It takes a string like `foo[x][y][z]` and returns an array like `['foo', 'x', 'y', 'z']
+ *
+ * @param {string} name - The name of the property to get.
+ *
+ * @returns An array of strings.
+ */
+function parsePropPath(name) {
+  // foo[x][y][z]
+  // foo.x.y.z
+  // foo-x-y-z
+  // foo x y z
+  return _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].matchAll(/\w+|\[(\w*)]/g, name).map(match => {
+    return match[0] === '[]' ? '' : match[1] || match[0];
+  });
+}
+
+/**
+ * Convert an array to an object.
+ *
+ * @param {Array<any>} arr - The array to convert to an object.
+ *
+ * @returns An object with the same keys and values as the array.
+ */
+function arrayToObject(arr) {
+  const obj = {};
+  const keys = Object.keys(arr);
+  let i;
+  const len = keys.length;
+  let key;
+  for (i = 0; i < len; i++) {
+    key = keys[i];
+    obj[key] = arr[key];
+  }
+  return obj;
+}
+
+/**
+ * It takes a FormData object and returns a JavaScript object
+ *
+ * @param {string} formData The FormData object to convert to JSON.
+ *
+ * @returns {Object<string, any> | null} The converted object.
+ */
+function formDataToJSON(formData) {
+  function buildPath(path, value, target, index) {
+    let name = path[index++];
+
+    if (name === '__proto__') return true;
+
+    const isNumericKey = Number.isFinite(+name);
+    const isLast = index >= path.length;
+    name = !name && _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArray(target) ? target.length : name;
+
+    if (isLast) {
+      if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].hasOwnProp(target, name)) {
+        target[name] = [target[name], value];
+      } else {
+        target[name] = value;
+      }
+
+      return !isNumericKey;
+    }
+
+    if (!target[name] || !_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isObject(target[name])) {
+      target[name] = [];
+    }
+
+    const result = buildPath(path, value, target[name], index);
+
+    if (result && _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArray(target[name])) {
+      target[name] = arrayToObject(target[name]);
+    }
+
+    return !isNumericKey;
+  }
+
+  if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isFormData(formData) && _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isFunction(formData.entries)) {
+    const obj = {};
+
+    _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].forEachEntry(formData, (name, value) => {
+      buildPath(parsePropPath(name), value, obj, 0);
+    });
+
+    return obj;
+  }
+
+  return null;
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (formDataToJSON);
 
 
 /***/ }),
@@ -5098,24 +6792,27 @@ module.exports = (
 /*!*********************************************************!*\
   !*** ./node_modules/axios/lib/helpers/isAbsoluteURL.js ***!
   \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ isAbsoluteURL)
+/* harmony export */ });
 
 
 /**
  * Determines whether the specified URL is absolute
  *
  * @param {string} url The URL to test
+ *
  * @returns {boolean} True if the specified URL is absolute, otherwise false
  */
-module.exports = function isAbsoluteURL(url) {
+function isAbsoluteURL(url) {
   // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
   // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
   // by any combination of letters, digits, plus, period, or hyphen.
-  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
-};
+  return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(url);
+}
 
 
 /***/ }),
@@ -5124,21 +6821,27 @@ module.exports = function isAbsoluteURL(url) {
 /*!********************************************************!*\
   !*** ./node_modules/axios/lib/helpers/isAxiosError.js ***!
   \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ isAxiosError)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../utils.js */ "./node_modules/axios/lib/utils.js");
+
+
 
 
 /**
  * Determines whether the payload is an error thrown by Axios
  *
  * @param {*} payload The value to test
+ *
  * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
  */
-module.exports = function isAxiosError(payload) {
-  return (typeof payload === 'object') && (payload.isAxiosError === true);
-};
+function isAxiosError(payload) {
+  return _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isObject(payload) && (payload.isAxiosError === true);
+}
 
 
 /***/ }),
@@ -5147,102 +6850,97 @@ module.exports = function isAxiosError(payload) {
 /*!***********************************************************!*\
   !*** ./node_modules/axios/lib/helpers/isURLSameOrigin.js ***!
   \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _platform_index_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../platform/index.js */ "./node_modules/axios/lib/platform/index.js");
 
 
-var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
 
-module.exports = (
-  utils.isStandardBrowserEnv() ?
 
-  // Standard browser envs have full support of the APIs needed to test
-  // whether the request URL is of the same origin as current location.
-    (function standardBrowserEnv() {
-      var msie = /(msie|trident)/i.test(navigator.userAgent);
-      var urlParsingNode = document.createElement('a');
-      var originURL;
 
-      /**
-    * Parse a URL to discover it's components
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_platform_index_js__WEBPACK_IMPORTED_MODULE_0__["default"].hasStandardBrowserEnv ?
+
+// Standard browser envs have full support of the APIs needed to test
+// whether the request URL is of the same origin as current location.
+  (function standardBrowserEnv() {
+    const msie = /(msie|trident)/i.test(navigator.userAgent);
+    const urlParsingNode = document.createElement('a');
+    let originURL;
+
+    /**
+    * Parse a URL to discover its components
     *
     * @param {String} url The URL to be parsed
     * @returns {Object}
     */
-      function resolveURL(url) {
-        var href = url;
+    function resolveURL(url) {
+      let href = url;
 
-        if (msie) {
+      if (msie) {
         // IE needs attribute set twice to normalize properties
-          urlParsingNode.setAttribute('href', href);
-          href = urlParsingNode.href;
-        }
-
         urlParsingNode.setAttribute('href', href);
-
-        // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
-        return {
-          href: urlParsingNode.href,
-          protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
-          host: urlParsingNode.host,
-          search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
-          hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
-          hostname: urlParsingNode.hostname,
-          port: urlParsingNode.port,
-          pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
-            urlParsingNode.pathname :
-            '/' + urlParsingNode.pathname
-        };
+        href = urlParsingNode.href;
       }
 
-      originURL = resolveURL(window.location.href);
+      urlParsingNode.setAttribute('href', href);
 
-      /**
+      // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+      return {
+        href: urlParsingNode.href,
+        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+        host: urlParsingNode.host,
+        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+        hostname: urlParsingNode.hostname,
+        port: urlParsingNode.port,
+        pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+          urlParsingNode.pathname :
+          '/' + urlParsingNode.pathname
+      };
+    }
+
+    originURL = resolveURL(window.location.href);
+
+    /**
     * Determine if a URL shares the same origin as the current location
     *
     * @param {String} requestURL The URL to test
     * @returns {boolean} True if URL shares the same origin, otherwise false
     */
-      return function isURLSameOrigin(requestURL) {
-        var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
-        return (parsed.protocol === originURL.protocol &&
-            parsed.host === originURL.host);
-      };
-    })() :
+    return function isURLSameOrigin(requestURL) {
+      const parsed = (_utils_js__WEBPACK_IMPORTED_MODULE_1__["default"].isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+      return (parsed.protocol === originURL.protocol &&
+          parsed.host === originURL.host);
+    };
+  })() :
 
   // Non standard browser envs (web workers, react-native) lack needed support.
-    (function nonStandardBrowserEnv() {
-      return function isURLSameOrigin() {
-        return true;
-      };
-    })()
-);
+  (function nonStandardBrowserEnv() {
+    return function isURLSameOrigin() {
+      return true;
+    };
+  })());
 
 
 /***/ }),
 
-/***/ "./node_modules/axios/lib/helpers/normalizeHeaderName.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/axios/lib/helpers/normalizeHeaderName.js ***!
-  \***************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/axios/lib/helpers/null.js":
+/*!************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/null.js ***!
+  \************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
-
-
-var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
-
-module.exports = function normalizeHeaderName(headers, normalizedName) {
-  utils.forEach(headers, function processHeader(value, name) {
-    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
-      headers[normalizedName] = value;
-      delete headers[name];
-    }
-  });
-};
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+// eslint-disable-next-line strict
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (null);
 
 
 /***/ }),
@@ -5251,22 +6949,25 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 /*!********************************************************!*\
   !*** ./node_modules/axios/lib/helpers/parseHeaders.js ***!
   \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../utils.js */ "./node_modules/axios/lib/utils.js");
 
 
-var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
 
-// Headers whose duplicates are ignored by node
+
+// RawAxiosHeaders whose duplicates are ignored by node
 // c.f. https://nodejs.org/api/http.html#http_message_headers
-var ignoreDuplicateOf = [
+const ignoreDuplicateOf = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].toObjectSet([
   'age', 'authorization', 'content-length', 'content-type', 'etag',
   'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since',
   'last-modified', 'location', 'max-forwards', 'proxy-authorization',
   'referer', 'retry-after', 'user-agent'
-];
+]);
 
 /**
  * Parse headers into an object
@@ -5278,36 +6979,127 @@ var ignoreDuplicateOf = [
  * Transfer-Encoding: chunked
  * ```
  *
- * @param {String} headers Headers needing to be parsed
+ * @param {String} rawHeaders Headers needing to be parsed
+ *
  * @returns {Object} Headers parsed into an object
  */
-module.exports = function parseHeaders(headers) {
-  var parsed = {};
-  var key;
-  var val;
-  var i;
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (rawHeaders => {
+  const parsed = {};
+  let key;
+  let val;
+  let i;
 
-  if (!headers) { return parsed; }
-
-  utils.forEach(headers.split('\n'), function parser(line) {
+  rawHeaders && rawHeaders.split('\n').forEach(function parser(line) {
     i = line.indexOf(':');
-    key = utils.trim(line.substr(0, i)).toLowerCase();
-    val = utils.trim(line.substr(i + 1));
+    key = line.substring(0, i).trim().toLowerCase();
+    val = line.substring(i + 1).trim();
 
-    if (key) {
-      if (parsed[key] && ignoreDuplicateOf.indexOf(key) >= 0) {
-        return;
-      }
-      if (key === 'set-cookie') {
-        parsed[key] = (parsed[key] ? parsed[key] : []).concat([val]);
+    if (!key || (parsed[key] && ignoreDuplicateOf[key])) {
+      return;
+    }
+
+    if (key === 'set-cookie') {
+      if (parsed[key]) {
+        parsed[key].push(val);
       } else {
-        parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+        parsed[key] = [val];
       }
+    } else {
+      parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
     }
   });
 
   return parsed;
-};
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/parseProtocol.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/parseProtocol.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ parseProtocol)
+/* harmony export */ });
+
+
+function parseProtocol(url) {
+  const match = /^([-+\w]{1,25})(:?\/\/|:)/.exec(url);
+  return match && match[1] || '';
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/speedometer.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/speedometer.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+
+
+/**
+ * Calculate data maxRate
+ * @param {Number} [samplesCount= 10]
+ * @param {Number} [min= 1000]
+ * @returns {Function}
+ */
+function speedometer(samplesCount, min) {
+  samplesCount = samplesCount || 10;
+  const bytes = new Array(samplesCount);
+  const timestamps = new Array(samplesCount);
+  let head = 0;
+  let tail = 0;
+  let firstSampleTS;
+
+  min = min !== undefined ? min : 1000;
+
+  return function push(chunkLength) {
+    const now = Date.now();
+
+    const startedAt = timestamps[tail];
+
+    if (!firstSampleTS) {
+      firstSampleTS = now;
+    }
+
+    bytes[head] = chunkLength;
+    timestamps[head] = now;
+
+    let i = tail;
+    let bytesCount = 0;
+
+    while (i !== head) {
+      bytesCount += bytes[i++];
+      i = i % samplesCount;
+    }
+
+    head = (head + 1) % samplesCount;
+
+    if (head === tail) {
+      tail = (tail + 1) % samplesCount;
+    }
+
+    if (now - firstSampleTS < min) {
+      return;
+    }
+
+    const passed = startedAt && now - startedAt;
+
+    return passed ? Math.round(bytesCount * 1000 / passed) : undefined;
+  };
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (speedometer);
 
 
 /***/ }),
@@ -5316,10 +7108,12 @@ module.exports = function parseHeaders(headers) {
 /*!**************************************************!*\
   !*** ./node_modules/axios/lib/helpers/spread.js ***!
   \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ spread)
+/* harmony export */ });
 
 
 /**
@@ -5340,216 +7134,492 @@ module.exports = function parseHeaders(headers) {
  *  ```
  *
  * @param {Function} callback
+ *
  * @returns {Function}
  */
-module.exports = function spread(callback) {
+function spread(callback) {
   return function wrap(arr) {
     return callback.apply(null, arr);
   };
-};
+}
 
 
 /***/ }),
 
-/***/ "./node_modules/axios/lib/utils.js":
-/*!*****************************************!*\
-  !*** ./node_modules/axios/lib/utils.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ "./node_modules/axios/lib/helpers/toFormData.js":
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/toFormData.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
-"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core/AxiosError.js */ "./node_modules/axios/lib/core/AxiosError.js");
+/* harmony import */ var _platform_node_classes_FormData_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../platform/node/classes/FormData.js */ "./node_modules/axios/lib/helpers/null.js");
 
 
-var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
 
-/*global toString:true*/
 
-// utils is a library of generic helper functions non-specific to axios
+// temporary hotfix to avoid circular references until AxiosURLSearchParams is refactored
 
-var toString = Object.prototype.toString;
 
 /**
- * Determine if a value is an Array
+ * Determines if the given thing is a array or js object.
  *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an Array, otherwise false
+ * @param {string} thing - The object or array to be visited.
+ *
+ * @returns {boolean}
  */
-function isArray(val) {
-  return toString.call(val) === '[object Array]';
+function isVisitable(thing) {
+  return _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isPlainObject(thing) || _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArray(thing);
 }
 
 /**
- * Determine if a value is undefined
+ * It removes the brackets from the end of a string
  *
- * @param {Object} val The value to test
- * @returns {boolean} True if the value is undefined, otherwise false
+ * @param {string} key - The key of the parameter.
+ *
+ * @returns {string} the key without the brackets.
  */
-function isUndefined(val) {
-  return typeof val === 'undefined';
+function removeBrackets(key) {
+  return _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].endsWith(key, '[]') ? key.slice(0, -2) : key;
 }
 
 /**
- * Determine if a value is a Buffer
+ * It takes a path, a key, and a boolean, and returns a string
  *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Buffer, otherwise false
+ * @param {string} path - The path to the current key.
+ * @param {string} key - The key of the current object being iterated over.
+ * @param {string} dots - If true, the key will be rendered with dots instead of brackets.
+ *
+ * @returns {string} The path to the current key.
  */
-function isBuffer(val) {
-  return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor)
-    && typeof val.constructor.isBuffer === 'function' && val.constructor.isBuffer(val);
+function renderKey(path, key, dots) {
+  if (!path) return key;
+  return path.concat(key).map(function each(token, i) {
+    // eslint-disable-next-line no-param-reassign
+    token = removeBrackets(token);
+    return !dots && i ? '[' + token + ']' : token;
+  }).join(dots ? '.' : '');
 }
 
 /**
- * Determine if a value is an ArrayBuffer
+ * If the array is an array and none of its elements are visitable, then it's a flat array.
  *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+ * @param {Array<any>} arr - The array to check
+ *
+ * @returns {boolean}
  */
-function isArrayBuffer(val) {
-  return toString.call(val) === '[object ArrayBuffer]';
+function isFlatArray(arr) {
+  return _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArray(arr) && !arr.some(isVisitable);
 }
 
-/**
- * Determine if a value is a FormData
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an FormData, otherwise false
- */
-function isFormData(val) {
-  return (typeof FormData !== 'undefined') && (val instanceof FormData);
-}
+const predicates = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].toFlatObject(_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"], {}, null, function filter(prop) {
+  return /^is[A-Z]/.test(prop);
+});
 
 /**
- * Determine if a value is a view on an ArrayBuffer
+ * Convert a data object to FormData
  *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+ * @param {Object} obj
+ * @param {?Object} [formData]
+ * @param {?Object} [options]
+ * @param {Function} [options.visitor]
+ * @param {Boolean} [options.metaTokens = true]
+ * @param {Boolean} [options.dots = false]
+ * @param {?Boolean} [options.indexes = false]
+ *
+ * @returns {Object}
+ **/
+
+/**
+ * It converts an object into a FormData object
+ *
+ * @param {Object<any, any>} obj - The object to convert to form data.
+ * @param {string} formData - The FormData object to append to.
+ * @param {Object<string, any>} options
+ *
+ * @returns
  */
-function isArrayBufferView(val) {
-  var result;
-  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
-    result = ArrayBuffer.isView(val);
-  } else {
-    result = (val) && (val.buffer) && (val.buffer instanceof ArrayBuffer);
+function toFormData(obj, formData, options) {
+  if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isObject(obj)) {
+    throw new TypeError('target must be an object');
   }
-  return result;
-}
 
-/**
- * Determine if a value is a String
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a String, otherwise false
- */
-function isString(val) {
-  return typeof val === 'string';
-}
+  // eslint-disable-next-line no-param-reassign
+  formData = formData || new (_platform_node_classes_FormData_js__WEBPACK_IMPORTED_MODULE_1__["default"] || FormData)();
 
-/**
- * Determine if a value is a Number
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Number, otherwise false
- */
-function isNumber(val) {
-  return typeof val === 'number';
-}
+  // eslint-disable-next-line no-param-reassign
+  options = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].toFlatObject(options, {
+    metaTokens: true,
+    dots: false,
+    indexes: false
+  }, false, function defined(option, source) {
+    // eslint-disable-next-line no-eq-null,eqeqeq
+    return !_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isUndefined(source[option]);
+  });
 
-/**
- * Determine if a value is an Object
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is an Object, otherwise false
- */
-function isObject(val) {
-  return val !== null && typeof val === 'object';
-}
+  const metaTokens = options.metaTokens;
+  // eslint-disable-next-line no-use-before-define
+  const visitor = options.visitor || defaultVisitor;
+  const dots = options.dots;
+  const indexes = options.indexes;
+  const _Blob = options.Blob || typeof Blob !== 'undefined' && Blob;
+  const useBlob = _Blob && _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isSpecCompliantForm(formData);
 
-/**
- * Determine if a value is a plain Object
- *
- * @param {Object} val The value to test
- * @return {boolean} True if value is a plain Object, otherwise false
- */
-function isPlainObject(val) {
-  if (toString.call(val) !== '[object Object]') {
+  if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isFunction(visitor)) {
+    throw new TypeError('visitor must be a function');
+  }
+
+  function convertValue(value) {
+    if (value === null) return '';
+
+    if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isDate(value)) {
+      return value.toISOString();
+    }
+
+    if (!useBlob && _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isBlob(value)) {
+      throw new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_2__["default"]('Blob is not supported. Use a Buffer instead.');
+    }
+
+    if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArrayBuffer(value) || _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isTypedArray(value)) {
+      return useBlob && typeof Blob === 'function' ? new Blob([value]) : Buffer.from(value);
+    }
+
+    return value;
+  }
+
+  /**
+   * Default visitor.
+   *
+   * @param {*} value
+   * @param {String|Number} key
+   * @param {Array<String|Number>} path
+   * @this {FormData}
+   *
+   * @returns {boolean} return true to visit the each prop of the value recursively
+   */
+  function defaultVisitor(value, key, path) {
+    let arr = value;
+
+    if (value && !path && typeof value === 'object') {
+      if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].endsWith(key, '{}')) {
+        // eslint-disable-next-line no-param-reassign
+        key = metaTokens ? key : key.slice(0, -2);
+        // eslint-disable-next-line no-param-reassign
+        value = JSON.stringify(value);
+      } else if (
+        (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isArray(value) && isFlatArray(value)) ||
+        ((_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isFileList(value) || _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].endsWith(key, '[]')) && (arr = _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].toArray(value))
+        )) {
+        // eslint-disable-next-line no-param-reassign
+        key = removeBrackets(key);
+
+        arr.forEach(function each(el, index) {
+          !(_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isUndefined(el) || el === null) && formData.append(
+            // eslint-disable-next-line no-nested-ternary
+            indexes === true ? renderKey([key], index, dots) : (indexes === null ? key : key + '[]'),
+            convertValue(el)
+          );
+        });
+        return false;
+      }
+    }
+
+    if (isVisitable(value)) {
+      return true;
+    }
+
+    formData.append(renderKey(path, key, dots), convertValue(value));
+
     return false;
   }
 
-  var prototype = Object.getPrototypeOf(val);
-  return prototype === null || prototype === Object.prototype;
+  const stack = [];
+
+  const exposedHelpers = Object.assign(predicates, {
+    defaultVisitor,
+    convertValue,
+    isVisitable
+  });
+
+  function build(value, path) {
+    if (_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isUndefined(value)) return;
+
+    if (stack.indexOf(value) !== -1) {
+      throw Error('Circular reference detected in ' + path.join('.'));
+    }
+
+    stack.push(value);
+
+    _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].forEach(value, function each(el, key) {
+      const result = !(_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isUndefined(el) || el === null) && visitor.call(
+        formData, el, _utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isString(key) ? key.trim() : key, path, exposedHelpers
+      );
+
+      if (result === true) {
+        build(el, path ? path.concat(key) : [key]);
+      }
+    });
+
+    stack.pop();
+  }
+
+  if (!_utils_js__WEBPACK_IMPORTED_MODULE_0__["default"].isObject(obj)) {
+    throw new TypeError('data must be an object');
+  }
+
+  build(obj);
+
+  return formData;
 }
 
-/**
- * Determine if a value is a Date
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Date, otherwise false
- */
-function isDate(val) {
-  return toString.call(val) === '[object Date]';
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (toFormData);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/toURLEncodedForm.js":
+/*!************************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/toURLEncodedForm.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ toURLEncodedForm)
+/* harmony export */ });
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils.js */ "./node_modules/axios/lib/utils.js");
+/* harmony import */ var _toFormData_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toFormData.js */ "./node_modules/axios/lib/helpers/toFormData.js");
+/* harmony import */ var _platform_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../platform/index.js */ "./node_modules/axios/lib/platform/index.js");
+
+
+
+
+
+
+function toURLEncodedForm(data, options) {
+  return (0,_toFormData_js__WEBPACK_IMPORTED_MODULE_0__["default"])(data, new _platform_index_js__WEBPACK_IMPORTED_MODULE_1__["default"].classes.URLSearchParams(), Object.assign({
+    visitor: function(value, key, path, helpers) {
+      if (_platform_index_js__WEBPACK_IMPORTED_MODULE_1__["default"].isNode && _utils_js__WEBPACK_IMPORTED_MODULE_2__["default"].isBuffer(value)) {
+        this.append(key, value.toString('base64'));
+        return false;
+      }
+
+      return helpers.defaultVisitor.apply(this, arguments);
+    }
+  }, options));
 }
 
-/**
- * Determine if a value is a File
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a File, otherwise false
- */
-function isFile(val) {
-  return toString.call(val) === '[object File]';
-}
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/validator.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/validator.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _env_data_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../env/data.js */ "./node_modules/axios/lib/env/data.js");
+/* harmony import */ var _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/AxiosError.js */ "./node_modules/axios/lib/core/AxiosError.js");
+
+
+
+
+
+const validators = {};
+
+// eslint-disable-next-line func-names
+['object', 'boolean', 'number', 'function', 'string', 'symbol'].forEach((type, i) => {
+  validators[type] = function validator(thing) {
+    return typeof thing === type || 'a' + (i < 1 ? 'n ' : ' ') + type;
+  };
+});
+
+const deprecatedWarnings = {};
 
 /**
- * Determine if a value is a Blob
+ * Transitional option validator
  *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Blob, otherwise false
+ * @param {function|boolean?} validator - set to false if the transitional option has been removed
+ * @param {string?} version - deprecated version / removed since version
+ * @param {string?} message - some message with additional info
+ *
+ * @returns {function}
  */
-function isBlob(val) {
-  return toString.call(val) === '[object Blob]';
-}
+validators.transitional = function transitional(validator, version, message) {
+  function formatMessage(opt, desc) {
+    return '[Axios v' + _env_data_js__WEBPACK_IMPORTED_MODULE_0__.VERSION + '] Transitional option \'' + opt + '\'' + desc + (message ? '. ' + message : '');
+  }
+
+  // eslint-disable-next-line func-names
+  return (value, opt, opts) => {
+    if (validator === false) {
+      throw new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_1__["default"](
+        formatMessage(opt, ' has been removed' + (version ? ' in ' + version : '')),
+        _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_1__["default"].ERR_DEPRECATED
+      );
+    }
+
+    if (version && !deprecatedWarnings[opt]) {
+      deprecatedWarnings[opt] = true;
+      // eslint-disable-next-line no-console
+      console.warn(
+        formatMessage(
+          opt,
+          ' has been deprecated since v' + version + ' and will be removed in the near future'
+        )
+      );
+    }
+
+    return validator ? validator(value, opt, opts) : true;
+  };
+};
 
 /**
- * Determine if a value is a Function
+ * Assert object's properties type
  *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Function, otherwise false
+ * @param {object} options
+ * @param {object} schema
+ * @param {boolean?} allowUnknown
+ *
+ * @returns {object}
  */
-function isFunction(val) {
-  return toString.call(val) === '[object Function]';
+
+function assertOptions(options, schema, allowUnknown) {
+  if (typeof options !== 'object') {
+    throw new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_1__["default"]('options must be an object', _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_1__["default"].ERR_BAD_OPTION_VALUE);
+  }
+  const keys = Object.keys(options);
+  let i = keys.length;
+  while (i-- > 0) {
+    const opt = keys[i];
+    const validator = schema[opt];
+    if (validator) {
+      const value = options[opt];
+      const result = value === undefined || validator(value, opt, options);
+      if (result !== true) {
+        throw new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_1__["default"]('option ' + opt + ' must be ' + result, _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_1__["default"].ERR_BAD_OPTION_VALUE);
+      }
+      continue;
+    }
+    if (allowUnknown !== true) {
+      throw new _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_1__["default"]('Unknown option ' + opt, _core_AxiosError_js__WEBPACK_IMPORTED_MODULE_1__["default"].ERR_BAD_OPTION);
+    }
+  }
 }
 
-/**
- * Determine if a value is a Stream
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a Stream, otherwise false
- */
-function isStream(val) {
-  return isObject(val) && isFunction(val.pipe);
-}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  assertOptions,
+  validators
+});
 
-/**
- * Determine if a value is a URLSearchParams object
- *
- * @param {Object} val The value to test
- * @returns {boolean} True if value is a URLSearchParams object, otherwise false
- */
-function isURLSearchParams(val) {
-  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
-}
 
-/**
- * Trim excess whitespace off the beginning and end of a string
- *
- * @param {String} str The String to trim
- * @returns {String} The String freed of excess whitespace
- */
-function trim(str) {
-  return str.replace(/^\s*/, '').replace(/\s*$/, '');
-}
+/***/ }),
+
+/***/ "./node_modules/axios/lib/platform/browser/classes/Blob.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/axios/lib/platform/browser/classes/Blob.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (typeof Blob !== 'undefined' ? Blob : null);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/platform/browser/classes/FormData.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/axios/lib/platform/browser/classes/FormData.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (typeof FormData !== 'undefined' ? FormData : null);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/platform/browser/classes/URLSearchParams.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/axios/lib/platform/browser/classes/URLSearchParams.js ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _helpers_AxiosURLSearchParams_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../helpers/AxiosURLSearchParams.js */ "./node_modules/axios/lib/helpers/AxiosURLSearchParams.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (typeof URLSearchParams !== 'undefined' ? URLSearchParams : _helpers_AxiosURLSearchParams_js__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/platform/browser/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/axios/lib/platform/browser/index.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _classes_URLSearchParams_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./classes/URLSearchParams.js */ "./node_modules/axios/lib/platform/browser/classes/URLSearchParams.js");
+/* harmony import */ var _classes_FormData_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./classes/FormData.js */ "./node_modules/axios/lib/platform/browser/classes/FormData.js");
+/* harmony import */ var _classes_Blob_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./classes/Blob.js */ "./node_modules/axios/lib/platform/browser/classes/Blob.js");
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  isBrowser: true,
+  classes: {
+    URLSearchParams: _classes_URLSearchParams_js__WEBPACK_IMPORTED_MODULE_0__["default"],
+    FormData: _classes_FormData_js__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Blob: _classes_Blob_js__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  protocols: ['http', 'https', 'file', 'blob', 'url', 'data']
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/platform/common/utils.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/axios/lib/platform/common/utils.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   hasBrowserEnv: () => (/* binding */ hasBrowserEnv),
+/* harmony export */   hasStandardBrowserEnv: () => (/* binding */ hasStandardBrowserEnv),
+/* harmony export */   hasStandardBrowserWebWorkerEnv: () => (/* binding */ hasStandardBrowserWebWorkerEnv)
+/* harmony export */ });
+const hasBrowserEnv = typeof window !== 'undefined' && typeof document !== 'undefined';
 
 /**
  * Determine if we're running in a standard browser environment
@@ -5565,18 +7635,291 @@ function trim(str) {
  *  navigator.product -> 'ReactNative'
  * nativescript
  *  navigator.product -> 'NativeScript' or 'NS'
+ *
+ * @returns {boolean}
  */
-function isStandardBrowserEnv() {
-  if (typeof navigator !== 'undefined' && (navigator.product === 'ReactNative' ||
-                                           navigator.product === 'NativeScript' ||
-                                           navigator.product === 'NS')) {
+const hasStandardBrowserEnv = (
+  (product) => {
+    return hasBrowserEnv && ['ReactNative', 'NativeScript', 'NS'].indexOf(product) < 0
+  })(typeof navigator !== 'undefined' && navigator.product);
+
+/**
+ * Determine if we're running in a standard browser webWorker environment
+ *
+ * Although the `isStandardBrowserEnv` method indicates that
+ * `allows axios to run in a web worker`, the WebWorker will still be
+ * filtered out due to its judgment standard
+ * `typeof window !== 'undefined' && typeof document !== 'undefined'`.
+ * This leads to a problem when axios post `FormData` in webWorker
+ */
+const hasStandardBrowserWebWorkerEnv = (() => {
+  return (
+    typeof WorkerGlobalScope !== 'undefined' &&
+    // eslint-disable-next-line no-undef
+    self instanceof WorkerGlobalScope &&
+    typeof self.importScripts === 'function'
+  );
+})();
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/platform/index.js":
+/*!**************************************************!*\
+  !*** ./node_modules/axios/lib/platform/index.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_index_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node/index.js */ "./node_modules/axios/lib/platform/browser/index.js");
+/* harmony import */ var _common_utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./common/utils.js */ "./node_modules/axios/lib/platform/common/utils.js");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  ..._common_utils_js__WEBPACK_IMPORTED_MODULE_0__,
+  ..._node_index_js__WEBPACK_IMPORTED_MODULE_1__["default"]
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/utils.js":
+/*!*****************************************!*\
+  !*** ./node_modules/axios/lib/utils.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _helpers_bind_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./helpers/bind.js */ "./node_modules/axios/lib/helpers/bind.js");
+
+
+
+
+// utils is a library of generic helper functions non-specific to axios
+
+const {toString} = Object.prototype;
+const {getPrototypeOf} = Object;
+
+const kindOf = (cache => thing => {
+    const str = toString.call(thing);
+    return cache[str] || (cache[str] = str.slice(8, -1).toLowerCase());
+})(Object.create(null));
+
+const kindOfTest = (type) => {
+  type = type.toLowerCase();
+  return (thing) => kindOf(thing) === type
+}
+
+const typeOfTest = type => thing => typeof thing === type;
+
+/**
+ * Determine if a value is an Array
+ *
+ * @param {Object} val The value to test
+ *
+ * @returns {boolean} True if value is an Array, otherwise false
+ */
+const {isArray} = Array;
+
+/**
+ * Determine if a value is undefined
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if the value is undefined, otherwise false
+ */
+const isUndefined = typeOfTest('undefined');
+
+/**
+ * Determine if a value is a Buffer
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a Buffer, otherwise false
+ */
+function isBuffer(val) {
+  return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor)
+    && isFunction(val.constructor.isBuffer) && val.constructor.isBuffer(val);
+}
+
+/**
+ * Determine if a value is an ArrayBuffer
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+ */
+const isArrayBuffer = kindOfTest('ArrayBuffer');
+
+
+/**
+ * Determine if a value is a view on an ArrayBuffer
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+ */
+function isArrayBufferView(val) {
+  let result;
+  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
+    result = ArrayBuffer.isView(val);
+  } else {
+    result = (val) && (val.buffer) && (isArrayBuffer(val.buffer));
+  }
+  return result;
+}
+
+/**
+ * Determine if a value is a String
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a String, otherwise false
+ */
+const isString = typeOfTest('string');
+
+/**
+ * Determine if a value is a Function
+ *
+ * @param {*} val The value to test
+ * @returns {boolean} True if value is a Function, otherwise false
+ */
+const isFunction = typeOfTest('function');
+
+/**
+ * Determine if a value is a Number
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a Number, otherwise false
+ */
+const isNumber = typeOfTest('number');
+
+/**
+ * Determine if a value is an Object
+ *
+ * @param {*} thing The value to test
+ *
+ * @returns {boolean} True if value is an Object, otherwise false
+ */
+const isObject = (thing) => thing !== null && typeof thing === 'object';
+
+/**
+ * Determine if a value is a Boolean
+ *
+ * @param {*} thing The value to test
+ * @returns {boolean} True if value is a Boolean, otherwise false
+ */
+const isBoolean = thing => thing === true || thing === false;
+
+/**
+ * Determine if a value is a plain Object
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a plain Object, otherwise false
+ */
+const isPlainObject = (val) => {
+  if (kindOf(val) !== 'object') {
     return false;
   }
-  return (
-    typeof window !== 'undefined' &&
-    typeof document !== 'undefined'
-  );
+
+  const prototype = getPrototypeOf(val);
+  return (prototype === null || prototype === Object.prototype || Object.getPrototypeOf(prototype) === null) && !(Symbol.toStringTag in val) && !(Symbol.iterator in val);
 }
+
+/**
+ * Determine if a value is a Date
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a Date, otherwise false
+ */
+const isDate = kindOfTest('Date');
+
+/**
+ * Determine if a value is a File
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a File, otherwise false
+ */
+const isFile = kindOfTest('File');
+
+/**
+ * Determine if a value is a Blob
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a Blob, otherwise false
+ */
+const isBlob = kindOfTest('Blob');
+
+/**
+ * Determine if a value is a FileList
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a File, otherwise false
+ */
+const isFileList = kindOfTest('FileList');
+
+/**
+ * Determine if a value is a Stream
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a Stream, otherwise false
+ */
+const isStream = (val) => isObject(val) && isFunction(val.pipe);
+
+/**
+ * Determine if a value is a FormData
+ *
+ * @param {*} thing The value to test
+ *
+ * @returns {boolean} True if value is an FormData, otherwise false
+ */
+const isFormData = (thing) => {
+  let kind;
+  return thing && (
+    (typeof FormData === 'function' && thing instanceof FormData) || (
+      isFunction(thing.append) && (
+        (kind = kindOf(thing)) === 'formdata' ||
+        // detect form-data instance
+        (kind === 'object' && isFunction(thing.toString) && thing.toString() === '[object FormData]')
+      )
+    )
+  )
+}
+
+/**
+ * Determine if a value is a URLSearchParams object
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+ */
+const isURLSearchParams = kindOfTest('URLSearchParams');
+
+/**
+ * Trim excess whitespace off the beginning and end of a string
+ *
+ * @param {String} str The String to trim
+ *
+ * @returns {String} The String freed of excess whitespace
+ */
+const trim = (str) => str.trim ?
+  str.trim() : str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
 
 /**
  * Iterate over an Array or an Object invoking a function for each item.
@@ -5589,12 +7932,18 @@ function isStandardBrowserEnv() {
  *
  * @param {Object|Array} obj The object to iterate
  * @param {Function} fn The callback to invoke for each item
+ *
+ * @param {Boolean} [allOwnKeys = false]
+ * @returns {any}
  */
-function forEach(obj, fn) {
+function forEach(obj, fn, {allOwnKeys = false} = {}) {
   // Don't bother if no value provided
   if (obj === null || typeof obj === 'undefined') {
     return;
   }
+
+  let i;
+  let l;
 
   // Force an array if not already something iterable
   if (typeof obj !== 'object') {
@@ -5604,18 +7953,43 @@ function forEach(obj, fn) {
 
   if (isArray(obj)) {
     // Iterate over array values
-    for (var i = 0, l = obj.length; i < l; i++) {
+    for (i = 0, l = obj.length; i < l; i++) {
       fn.call(null, obj[i], i, obj);
     }
   } else {
     // Iterate over object keys
-    for (var key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        fn.call(null, obj[key], key, obj);
-      }
+    const keys = allOwnKeys ? Object.getOwnPropertyNames(obj) : Object.keys(obj);
+    const len = keys.length;
+    let key;
+
+    for (i = 0; i < len; i++) {
+      key = keys[i];
+      fn.call(null, obj[key], key, obj);
     }
   }
 }
+
+function findKey(obj, key) {
+  key = key.toLowerCase();
+  const keys = Object.keys(obj);
+  let i = keys.length;
+  let _key;
+  while (i-- > 0) {
+    _key = keys[i];
+    if (key === _key.toLowerCase()) {
+      return _key;
+    }
+  }
+  return null;
+}
+
+const _global = (() => {
+  /*eslint no-undef:0*/
+  if (typeof globalThis !== "undefined") return globalThis;
+  return typeof self !== "undefined" ? self : (typeof window !== 'undefined' ? window : global)
+})();
+
+const isContextDefined = (context) => !isUndefined(context) && context !== _global;
 
 /**
  * Accepts varargs expecting each argument to be an object, then
@@ -5632,24 +8006,27 @@ function forEach(obj, fn) {
  * ```
  *
  * @param {Object} obj1 Object to merge
+ *
  * @returns {Object} Result of all merge properties
  */
 function merge(/* obj1, obj2, obj3, ... */) {
-  var result = {};
-  function assignValue(val, key) {
-    if (isPlainObject(result[key]) && isPlainObject(val)) {
-      result[key] = merge(result[key], val);
+  const {caseless} = isContextDefined(this) && this || {};
+  const result = {};
+  const assignValue = (val, key) => {
+    const targetKey = caseless && findKey(result, key) || key;
+    if (isPlainObject(result[targetKey]) && isPlainObject(val)) {
+      result[targetKey] = merge(result[targetKey], val);
     } else if (isPlainObject(val)) {
-      result[key] = merge({}, val);
+      result[targetKey] = merge({}, val);
     } else if (isArray(val)) {
-      result[key] = val.slice();
+      result[targetKey] = val.slice();
     } else {
-      result[key] = val;
+      result[targetKey] = val;
     }
   }
 
-  for (var i = 0, l = arguments.length; i < l; i++) {
-    forEach(arguments[i], assignValue);
+  for (let i = 0, l = arguments.length; i < l; i++) {
+    arguments[i] && forEach(arguments[i], assignValue);
   }
   return result;
 }
@@ -5660,16 +8037,18 @@ function merge(/* obj1, obj2, obj3, ... */) {
  * @param {Object} a The object to be extended
  * @param {Object} b The object to copy properties from
  * @param {Object} thisArg The object to bind function to
- * @return {Object} The resulting value of object a
+ *
+ * @param {Boolean} [allOwnKeys]
+ * @returns {Object} The resulting value of object a
  */
-function extend(a, b, thisArg) {
-  forEach(b, function assignValue(val, key) {
-    if (thisArg && typeof val === 'function') {
-      a[key] = bind(val, thisArg);
+const extend = (a, b, thisArg, {allOwnKeys}= {}) => {
+  forEach(b, (val, key) => {
+    if (thisArg && isFunction(val)) {
+      a[key] = (0,_helpers_bind_js__WEBPACK_IMPORTED_MODULE_0__["default"])(val, thisArg);
     } else {
       a[key] = val;
     }
-  });
+  }, {allOwnKeys});
   return a;
 }
 
@@ -5677,666 +8056,541 @@ function extend(a, b, thisArg) {
  * Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
  *
  * @param {string} content with BOM
- * @return {string} content value without BOM
+ *
+ * @returns {string} content value without BOM
  */
-function stripBOM(content) {
+const stripBOM = (content) => {
   if (content.charCodeAt(0) === 0xFEFF) {
     content = content.slice(1);
   }
   return content;
 }
 
-module.exports = {
-  isArray: isArray,
-  isArrayBuffer: isArrayBuffer,
-  isBuffer: isBuffer,
-  isFormData: isFormData,
-  isArrayBufferView: isArrayBufferView,
-  isString: isString,
-  isNumber: isNumber,
-  isObject: isObject,
-  isPlainObject: isPlainObject,
-  isUndefined: isUndefined,
-  isDate: isDate,
-  isFile: isFile,
-  isBlob: isBlob,
-  isFunction: isFunction,
-  isStream: isStream,
-  isURLSearchParams: isURLSearchParams,
-  isStandardBrowserEnv: isStandardBrowserEnv,
-  forEach: forEach,
-  merge: merge,
-  extend: extend,
-  trim: trim,
-  stripBOM: stripBOM
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/process/browser.js":
-/*!*****************************************!*\
-  !*** ./node_modules/process/browser.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
+/**
+ * Inherit the prototype methods from one constructor into another
+ * @param {function} constructor
+ * @param {function} superConstructor
+ * @param {object} [props]
+ * @param {object} [descriptors]
+ *
+ * @returns {void}
+ */
+const inherits = (constructor, superConstructor, props, descriptors) => {
+  constructor.prototype = Object.create(superConstructor.prototype, descriptors);
+  constructor.prototype.constructor = constructor;
+  Object.defineProperty(constructor, 'super', {
+    value: superConstructor.prototype
+  });
+  props && Object.assign(constructor.prototype, props);
 }
 
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
+/**
+ * Resolve object with deep prototype chain to a flat object
+ * @param {Object} sourceObj source object
+ * @param {Object} [destObj]
+ * @param {Function|Boolean} [filter]
+ * @param {Function} [propFilter]
+ *
+ * @returns {Object}
+ */
+const toFlatObject = (sourceObj, destObj, filter, propFilter) => {
+  let props;
+  let i;
+  let prop;
+  const merged = {};
 
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
+  destObj = destObj || {};
+  // eslint-disable-next-line no-eq-null,eqeqeq
+  if (sourceObj == null) return destObj;
 
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-
-/***/ }),
-
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _css_style_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/style.scss */ "./css/style.scss");
-/* harmony import */ var _modules_MobileMenu__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/MobileMenu */ "./src/modules/MobileMenu.js");
-/* harmony import */ var _modules_HeroSlider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/HeroSlider */ "./src/modules/HeroSlider.js");
-/* harmony import */ var _modules_GoogleMap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/GoogleMap */ "./src/modules/GoogleMap.js");
-/* harmony import */ var _modules_Search__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/Search */ "./src/modules/Search.js");
-/* harmony import */ var _modules_MyNotes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/MyNotes */ "./src/modules/MyNotes.js");
- // Our modules / classes
-
-
-
-
-
- // Instantiate a new object using our modules/classes
-
-const mobileMenu = new _modules_MobileMenu__WEBPACK_IMPORTED_MODULE_1__["default"]();
-const heroSlider = new _modules_HeroSlider__WEBPACK_IMPORTED_MODULE_2__["default"]();
-const googleMap = new _modules_GoogleMap__WEBPACK_IMPORTED_MODULE_3__["default"]();
-const search = new _modules_Search__WEBPACK_IMPORTED_MODULE_4__["default"]();
-const myNotes = new _modules_MyNotes__WEBPACK_IMPORTED_MODULE_5__["default"]();
-
-/***/ }),
-
-/***/ "./src/modules/GoogleMap.js":
-/*!**********************************!*\
-  !*** ./src/modules/GoogleMap.js ***!
-  \**********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-class GMap {
-  constructor() {
-    document.querySelectorAll(".acf-map").forEach(el => {
-      this.new_map(el);
-    });
-  }
-
-  new_map($el) {
-    var $markers = $el.querySelectorAll(".marker");
-    var args = {
-      zoom: 16,
-      center: new google.maps.LatLng(0, 0),
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    var map = new google.maps.Map($el, args);
-    map.markers = [];
-    var that = this; // add markers
-
-    $markers.forEach(function (x) {
-      that.add_marker(x, map);
-    }); // center map
-
-    this.center_map(map);
-  } // end new_map
-
-
-  add_marker($marker, map) {
-    var latlng = new google.maps.LatLng($marker.getAttribute("data-lat"), $marker.getAttribute("data-lng"));
-    var marker = new google.maps.Marker({
-      position: latlng,
-      map: map
-    });
-    map.markers.push(marker); // if marker contains HTML, add it to an infoWindow
-
-    if ($marker.innerHTML) {
-      // create info window
-      var infowindow = new google.maps.InfoWindow({
-        content: $marker.innerHTML
-      }); // show info window when marker is clicked
-
-      google.maps.event.addListener(marker, "click", function () {
-        infowindow.open(map, marker);
-      });
-    }
-  } // end add_marker
-
-
-  center_map(map) {
-    var bounds = new google.maps.LatLngBounds(); // loop through all markers and create bounds
-
-    map.markers.forEach(function (marker) {
-      var latlng = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
-      bounds.extend(latlng);
-    }); // only 1 marker?
-
-    if (map.markers.length == 1) {
-      // set center of map
-      map.setCenter(bounds.getCenter());
-      map.setZoom(16);
-    } else {
-      // fit to bounds
-      map.fitBounds(bounds);
-    }
-  } // end center_map
-
-
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (GMap);
-
-/***/ }),
-
-/***/ "./src/modules/HeroSlider.js":
-/*!***********************************!*\
-  !*** ./src/modules/HeroSlider.js ***!
-  \***********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _glidejs_glide__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @glidejs/glide */ "./node_modules/@glidejs/glide/dist/glide.esm.js");
-
-
-class HeroSlider {
-  constructor() {
-    if (document.querySelector(".hero-slider")) {
-      // count how many slides there are
-      const dotCount = document.querySelectorAll(".hero-slider__slide").length; // Generate the HTML for the navigation dots
-
-      let dotHTML = "";
-
-      for (let i = 0; i < dotCount; i++) {
-        dotHTML += `<button class="slider__bullet glide__bullet" data-glide-dir="=${i}"></button>`;
-      } // Add the dots HTML to the DOM
-
-
-      document.querySelector(".glide__bullets").insertAdjacentHTML("beforeend", dotHTML); // Actually initialize the glide / slider script
-
-      var glide = new _glidejs_glide__WEBPACK_IMPORTED_MODULE_0__["default"](".hero-slider", {
-        type: "carousel",
-        perView: 1,
-        autoplay: 3000
-      });
-      glide.mount();
-    }
-  }
-
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (HeroSlider);
-
-/***/ }),
-
-/***/ "./src/modules/MobileMenu.js":
-/*!***********************************!*\
-  !*** ./src/modules/MobileMenu.js ***!
-  \***********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-class MobileMenu {
-  constructor() {
-    this.menu = document.querySelector(".site-header__menu");
-    this.openButton = document.querySelector(".site-header__menu-trigger");
-    this.events();
-  }
-
-  events() {
-    this.openButton.addEventListener("click", () => this.openMenu());
-  }
-
-  openMenu() {
-    this.openButton.classList.toggle("fa-bars");
-    this.openButton.classList.toggle("fa-window-close");
-    this.menu.classList.toggle("site-header__menu--active");
-  }
-
-}
-
-/* harmony default export */ __webpack_exports__["default"] = (MobileMenu);
-
-/***/ }),
-
-/***/ "./src/modules/MyNotes.js":
-/*!********************************!*\
-  !*** ./src/modules/MyNotes.js ***!
-  \********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-
-
-class MyNotes {
-  constructor() {
-    this.events();
-  }
-
-  events() {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()(".delete-note").on("click", this.deleteNote);
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()(".edit-note").on("click", this.editNote);
-  } // Methods will go here
-
-
-  editNote(e) {
-    var thisNote = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parents("li");
-    thisNote.find(".note-title-field, .note-body-field").removeAttr("readonly").addClass("note-active-field");
-    thisNote.find(".update-note").addClass("update-note--visible");
-  }
-
-  deleteNote(e) {
-    var thisNote = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parents("li");
-    jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
-      beforeSend: xhr => {
-        xhr.setRequestHeader("X-WP-Nonce", universityData.nonce);
-      },
-      url: universityData.root_url + "/wp-json/wp/v2/note/" + thisNote.data("id"),
-      type: "DELETE",
-      success: response => {
-        thisNote.slideUp();
-        console.log("Congrats");
-        console.log(response);
-      },
-      error: response => {
-        console.log("Sorry");
-        console.log(response);
+  do {
+    props = Object.getOwnPropertyNames(sourceObj);
+    i = props.length;
+    while (i-- > 0) {
+      prop = props[i];
+      if ((!propFilter || propFilter(prop, sourceObj, destObj)) && !merged[prop]) {
+        destObj[prop] = sourceObj[prop];
+        merged[prop] = true;
       }
+    }
+    sourceObj = filter !== false && getPrototypeOf(sourceObj);
+  } while (sourceObj && (!filter || filter(sourceObj, destObj)) && sourceObj !== Object.prototype);
+
+  return destObj;
+}
+
+/**
+ * Determines whether a string ends with the characters of a specified string
+ *
+ * @param {String} str
+ * @param {String} searchString
+ * @param {Number} [position= 0]
+ *
+ * @returns {boolean}
+ */
+const endsWith = (str, searchString, position) => {
+  str = String(str);
+  if (position === undefined || position > str.length) {
+    position = str.length;
+  }
+  position -= searchString.length;
+  const lastIndex = str.indexOf(searchString, position);
+  return lastIndex !== -1 && lastIndex === position;
+}
+
+
+/**
+ * Returns new array from array like object or null if failed
+ *
+ * @param {*} [thing]
+ *
+ * @returns {?Array}
+ */
+const toArray = (thing) => {
+  if (!thing) return null;
+  if (isArray(thing)) return thing;
+  let i = thing.length;
+  if (!isNumber(i)) return null;
+  const arr = new Array(i);
+  while (i-- > 0) {
+    arr[i] = thing[i];
+  }
+  return arr;
+}
+
+/**
+ * Checking if the Uint8Array exists and if it does, it returns a function that checks if the
+ * thing passed in is an instance of Uint8Array
+ *
+ * @param {TypedArray}
+ *
+ * @returns {Array}
+ */
+// eslint-disable-next-line func-names
+const isTypedArray = (TypedArray => {
+  // eslint-disable-next-line func-names
+  return thing => {
+    return TypedArray && thing instanceof TypedArray;
+  };
+})(typeof Uint8Array !== 'undefined' && getPrototypeOf(Uint8Array));
+
+/**
+ * For each entry in the object, call the function with the key and value.
+ *
+ * @param {Object<any, any>} obj - The object to iterate over.
+ * @param {Function} fn - The function to call for each entry.
+ *
+ * @returns {void}
+ */
+const forEachEntry = (obj, fn) => {
+  const generator = obj && obj[Symbol.iterator];
+
+  const iterator = generator.call(obj);
+
+  let result;
+
+  while ((result = iterator.next()) && !result.done) {
+    const pair = result.value;
+    fn.call(obj, pair[0], pair[1]);
+  }
+}
+
+/**
+ * It takes a regular expression and a string, and returns an array of all the matches
+ *
+ * @param {string} regExp - The regular expression to match against.
+ * @param {string} str - The string to search.
+ *
+ * @returns {Array<boolean>}
+ */
+const matchAll = (regExp, str) => {
+  let matches;
+  const arr = [];
+
+  while ((matches = regExp.exec(str)) !== null) {
+    arr.push(matches);
+  }
+
+  return arr;
+}
+
+/* Checking if the kindOfTest function returns true when passed an HTMLFormElement. */
+const isHTMLForm = kindOfTest('HTMLFormElement');
+
+const toCamelCase = str => {
+  return str.toLowerCase().replace(/[-_\s]([a-z\d])(\w*)/g,
+    function replacer(m, p1, p2) {
+      return p1.toUpperCase() + p2;
+    }
+  );
+};
+
+/* Creating a function that will check if an object has a property. */
+const hasOwnProperty = (({hasOwnProperty}) => (obj, prop) => hasOwnProperty.call(obj, prop))(Object.prototype);
+
+/**
+ * Determine if a value is a RegExp object
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a RegExp object, otherwise false
+ */
+const isRegExp = kindOfTest('RegExp');
+
+const reduceDescriptors = (obj, reducer) => {
+  const descriptors = Object.getOwnPropertyDescriptors(obj);
+  const reducedDescriptors = {};
+
+  forEach(descriptors, (descriptor, name) => {
+    let ret;
+    if ((ret = reducer(descriptor, name, obj)) !== false) {
+      reducedDescriptors[name] = ret || descriptor;
+    }
+  });
+
+  Object.defineProperties(obj, reducedDescriptors);
+}
+
+/**
+ * Makes all methods read-only
+ * @param {Object} obj
+ */
+
+const freezeMethods = (obj) => {
+  reduceDescriptors(obj, (descriptor, name) => {
+    // skip restricted props in strict mode
+    if (isFunction(obj) && ['arguments', 'caller', 'callee'].indexOf(name) !== -1) {
+      return false;
+    }
+
+    const value = obj[name];
+
+    if (!isFunction(value)) return;
+
+    descriptor.enumerable = false;
+
+    if ('writable' in descriptor) {
+      descriptor.writable = false;
+      return;
+    }
+
+    if (!descriptor.set) {
+      descriptor.set = () => {
+        throw Error('Can not rewrite read-only method \'' + name + '\'');
+      };
+    }
+  });
+}
+
+const toObjectSet = (arrayOrString, delimiter) => {
+  const obj = {};
+
+  const define = (arr) => {
+    arr.forEach(value => {
+      obj[value] = true;
     });
   }
 
+  isArray(arrayOrString) ? define(arrayOrString) : define(String(arrayOrString).split(delimiter));
+
+  return obj;
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (MyNotes);
+const noop = () => {}
 
-/***/ }),
+const toFiniteNumber = (value, defaultValue) => {
+  value = +value;
+  return Number.isFinite(value) ? value : defaultValue;
+}
 
-/***/ "./src/modules/Search.js":
-/*!*******************************!*\
-  !*** ./src/modules/Search.js ***!
-  \*******************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+const ALPHA = 'abcdefghijklmnopqrstuvwxyz'
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+const DIGIT = '0123456789';
 
+const ALPHABET = {
+  DIGIT,
+  ALPHA,
+  ALPHA_DIGIT: ALPHA + ALPHA.toUpperCase() + DIGIT
+}
 
-class Search {
-  // 1. describe and create/initiate our object
-  constructor() {
-    this.addSearchHTML();
-    this.resultsDiv = document.querySelector("#search-overlay__results");
-    this.openButton = document.querySelectorAll(".js-search-trigger");
-    this.closeButton = document.querySelector(".search-overlay__close");
-    this.searchOverlay = document.querySelector(".search-overlay");
-    this.searchField = document.querySelector("#search-term");
-    this.isOverlayOpen = false;
-    this.isSpinnerVisible = false;
-    this.previousValue;
-    this.typingTimer;
-    this.events();
-  } // 2. events
+const generateString = (size = 16, alphabet = ALPHABET.ALPHA_DIGIT) => {
+  let str = '';
+  const {length} = alphabet;
+  while (size--) {
+    str += alphabet[Math.random() * length|0]
+  }
 
+  return str;
+}
 
-  events() {
-    this.openButton.forEach(el => {
-      el.addEventListener("click", e => {
-        e.preventDefault();
-        this.openOverlay();
-      });
-    });
-    this.closeButton.addEventListener("click", () => this.closeOverlay());
-    document.addEventListener("keydown", e => this.keyPressDispatcher(e));
-    this.searchField.addEventListener("keyup", () => this.typingLogic());
-  } // 3. methods (function, action...)
+/**
+ * If the thing is a FormData object, return true, otherwise return false.
+ *
+ * @param {unknown} thing - The thing to check.
+ *
+ * @returns {boolean}
+ */
+function isSpecCompliantForm(thing) {
+  return !!(thing && isFunction(thing.append) && thing[Symbol.toStringTag] === 'FormData' && thing[Symbol.iterator]);
+}
 
+const toJSONObject = (obj) => {
+  const stack = new Array(10);
 
-  typingLogic() {
-    if (this.searchField.value != this.previousValue) {
-      clearTimeout(this.typingTimer);
+  const visit = (source, i) => {
 
-      if (this.searchField.value) {
-        if (!this.isSpinnerVisible) {
-          this.resultsDiv.innerHTML = '<div class="spinner-loader"></div>';
-          this.isSpinnerVisible = true;
-        }
+    if (isObject(source)) {
+      if (stack.indexOf(source) >= 0) {
+        return;
+      }
 
-        this.typingTimer = setTimeout(this.getResults.bind(this), 750);
-      } else {
-        this.resultsDiv.innerHTML = "";
-        this.isSpinnerVisible = false;
+      if(!('toJSON' in source)) {
+        stack[i] = source;
+        const target = isArray(source) ? [] : {};
+
+        forEach(source, (value, key) => {
+          const reducedValue = visit(value, i + 1);
+          !isUndefined(reducedValue) && (target[key] = reducedValue);
+        });
+
+        stack[i] = undefined;
+
+        return target;
       }
     }
 
-    this.previousValue = this.searchField.value;
+    return source;
   }
 
-  async getResults() {
-    try {
-      const response = await axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(universityData.root_url + "/wp-json/university/v1/search?term=" + this.searchField.value);
-      const results = response.data;
-      this.resultsDiv.innerHTML = `
-        <div class="row">
-          <div class="one-third">
-            <h2 class="search-overlay__section-title">General Information</h2>
-            ${results.generalInfo.length ? '<ul class="link-list min-list">' : "<p>No general information matches that search.</p>"}
-              ${results.generalInfo.map(item => `<li><a href="${item.permalink}">${item.title}</a> ${item.postType == "post" ? `by ${item.authorName}` : ""}</li>`).join("")}
-            ${results.generalInfo.length ? "</ul>" : ""}
-          </div>
-          <div class="one-third">
-            <h2 class="search-overlay__section-title">Programs</h2>
-            ${results.programs.length ? '<ul class="link-list min-list">' : `<p>No programs match that search. <a href="${universityData.root_url}/programs">View all programs</a></p>`}
-              ${results.programs.map(item => `<li><a href="${item.permalink}">${item.title}</a></li>`).join("")}
-            ${results.programs.length ? "</ul>" : ""}
-
-            <h2 class="search-overlay__section-title">Professors</h2>
-            ${results.professors.length ? '<ul class="professor-cards">' : `<p>No professors match that search.</p>`}
-              ${results.professors.map(item => `
-                <li class="professor-card__list-item">
-                  <a class="professor-card" href="${item.permalink}">
-                    <img class="professor-card__image" src="${item.image}">
-                    <span class="professor-card__name">${item.title}</span>
-                  </a>
-                </li>
-              `).join("")}
-            ${results.professors.length ? "</ul>" : ""}
-
-          </div>
-          <div class="one-third">
-            <h2 class="search-overlay__section-title">Campuses</h2>
-            ${results.campuses.length ? '<ul class="link-list min-list">' : `<p>No campuses match that search. <a href="${universityData.root_url}/campuses">View all campuses</a></p>`}
-              ${results.campuses.map(item => `<li><a href="${item.permalink}">${item.title}</a></li>`).join("")}
-            ${results.campuses.length ? "</ul>" : ""}
-
-            <h2 class="search-overlay__section-title">Events</h2>
-            ${results.events.length ? "" : `<p>No events match that search. <a href="${universityData.root_url}/events">View all events</a></p>`}
-              ${results.events.map(item => `
-                <div class="event-summary">
-                  <a class="event-summary__date t-center" href="${item.permalink}">
-                    <span class="event-summary__month">${item.month}</span>
-                    <span class="event-summary__day">${item.day}</span>  
-                  </a>
-                  <div class="event-summary__content">
-                    <h5 class="event-summary__title headline headline--tiny"><a href="${item.permalink}">${item.title}</a></h5>
-                    <p>${item.description} <a href="${item.permalink}" class="nu gray">Learn more</a></p>
-                  </div>
-                </div>
-              `).join("")}
-
-          </div>
-        </div>
-      `;
-      this.isSpinnerVisible = false;
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  keyPressDispatcher(e) {
-    if (e.keyCode == 83 && !this.isOverlayOpen && document.activeElement.tagName != "INPUT" && document.activeElement.tagName != "TEXTAREA") {
-      this.openOverlay();
-    }
-
-    if (e.keyCode == 27 && this.isOverlayOpen) {
-      this.closeOverlay();
-    }
-  }
-
-  openOverlay() {
-    this.searchOverlay.classList.add("search-overlay--active");
-    document.body.classList.add("body-no-scroll");
-    this.searchField.value = "";
-    setTimeout(() => this.searchField.focus(), 301);
-    console.log("our open method just ran!");
-    this.isOverlayOpen = true;
-    return false;
-  }
-
-  closeOverlay() {
-    this.searchOverlay.classList.remove("search-overlay--active");
-    document.body.classList.remove("body-no-scroll");
-    console.log("our close method just ran!");
-    this.isOverlayOpen = false;
-  }
-
-  addSearchHTML() {
-    document.body.insertAdjacentHTML("beforeend", `
-      <div class="search-overlay">
-        <div class="search-overlay__top">
-          <div class="container">
-            <i class="fa fa-search search-overlay__icon" aria-hidden="true"></i>
-            <input type="text" class="search-term" placeholder="What are you looking for?" id="search-term">
-            <i class="fa fa-window-close search-overlay__close" aria-hidden="true"></i>
-          </div>
-        </div>
-        
-        <div class="container">
-          <div id="search-overlay__results"></div>
-        </div>
-
-      </div>
-    `);
-  }
-
+  return visit(obj, 0);
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (Search);
+const isAsyncFn = kindOfTest('AsyncFunction');
 
-/***/ }),
+const isThenable = (thing) =>
+  thing && (isObject(thing) || isFunction(thing)) && isFunction(thing.then) && isFunction(thing.catch);
 
-/***/ "jquery":
-/*!*************************!*\
-  !*** external "jQuery" ***!
-  \*************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  isArray,
+  isArrayBuffer,
+  isBuffer,
+  isFormData,
+  isArrayBufferView,
+  isString,
+  isNumber,
+  isBoolean,
+  isObject,
+  isPlainObject,
+  isUndefined,
+  isDate,
+  isFile,
+  isBlob,
+  isRegExp,
+  isFunction,
+  isStream,
+  isURLSearchParams,
+  isTypedArray,
+  isFileList,
+  forEach,
+  merge,
+  extend,
+  trim,
+  stripBOM,
+  inherits,
+  toFlatObject,
+  kindOf,
+  kindOfTest,
+  endsWith,
+  toArray,
+  forEachEntry,
+  matchAll,
+  isHTMLForm,
+  hasOwnProperty,
+  hasOwnProp: hasOwnProperty, // an alias to avoid ESLint no-prototype-builtins detection
+  reduceDescriptors,
+  freezeMethods,
+  toObjectSet,
+  toCamelCase,
+  noop,
+  toFiniteNumber,
+  findKey,
+  global: _global,
+  isContextDefined,
+  ALPHABET,
+  generateString,
+  isSpecCompliantForm,
+  toJSONObject,
+  isAsyncFn,
+  isThenable
+});
 
-(function() { module.exports = window["jQuery"]; }());
 
 /***/ })
 
-/******/ });
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"index": 0,
+/******/ 			"./style-index": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = globalThis["webpackChunkfictional_university_theme"] = globalThis["webpackChunkfictional_university_theme"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["./style-index"], () => (__webpack_require__("./src/index.js")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;
 //# sourceMappingURL=index.js.map
