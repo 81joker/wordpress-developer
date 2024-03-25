@@ -86,7 +86,7 @@ function university_post_types()
     // disable or Enable show public in Admin or clint
     'public' => false,
     // disable or Enable show just for admin dashboard
-    'show_ui' =>true,
+    'show_ui' => true,
     'labels' => array(
       'name' => 'Notes',
       'add_new_item' => 'Add New Note',
@@ -95,6 +95,20 @@ function university_post_types()
       'singular_name' => 'Note'
     ),
     'menu_icon' => 'dashicons-welcome-write-blog'
+  ));
+  // Likes hert 
+  register_post_type('like', array(
+    'supports' => array('title'),
+    'public' => false,
+    'show_ui' => true,
+    'labels' => array(
+      'name' => 'Likes',
+      'add_new_item' => 'Add New Like',
+      'edit_item' => 'Edit Note',
+      'all_items' => 'All Likes',
+      'singular_name' => 'Like'
+    ),
+    'menu_icon' => 'dashicons-heart'
   ));
 }
 

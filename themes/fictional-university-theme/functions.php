@@ -2,55 +2,64 @@
 
 require get_theme_file_path('/inc/search-route.php');
 
-function university_custom_rest() {
+function university_custom_rest()
+{
   register_rest_field('post', 'authorName', array(
-    'get_callback' => function() {return get_the_author();}
+    'get_callback' => function () {
+      return get_the_author();
+    }
+  ));
+
+  register_rest_field('note', 'userNoteCount', array(
+    'get_callback' => function() {return count_user_posts(get_current_user_id(), 'note');}
   ));
 }
 
 add_action('rest_api_init', 'university_custom_rest');
 
-function pageBanner($args = NULL) {
+function pageBanner($args = NULL)
+{
   if (!isset($args['title'])) {
-  if (!$args['title']) {
-    $args['title'] = get_the_title();
-  }
+    if (!$args['title']) {
+      $args['title'] = get_the_title();
+    }
   }
 
-if (isset($args['subtitle'])) {
+  if (isset($args['subtitle'])) {
     if (!$args['subtitle']) {
       $args['subtitle'] = get_field('page_banner_subtitle');
     }
-}
+  }
 
   if (isset($args['photo'])) {
-  if (!$args['photo']) {
-    if (get_field('page_banner_background_image') AND !is_archive() AND !is_home() ) {
-      $args['photo'] = get_field('page_banner_background_image')['sizes']['pageBanner'];
-    } else {
-      $args['photo'] = get_theme_file_uri('/images/ocean.jpg');
+    if (!$args['photo']) {
+      if (get_field('page_banner_background_image') and !is_archive() and !is_home()) {
+        $args['photo'] = get_field('page_banner_background_image')['sizes']['pageBanner'];
+      } else {
+        $args['photo'] = get_theme_file_uri('/images/ocean.jpg');
+      }
     }
   }
-  }
 
-  ?>
+?>
   <div class="page-banner">
     <div class="page-banner__bg-image" style="background-image: url(<?php echo $args['photo']; ?>);"></div>
     <div class="page-banner__content container container--narrow">
       <h1 class="page-banner__title"><?php echo $args['title'] ?></h1>
       <div class="page-banner__intro">
         <p><?php
-              if (isset($args['subtitle'])) {
+            if (isset($args['subtitle'])) {
 
-        echo $args['subtitle']; 
-              }
-        ?></p>
+              echo $args['subtitle'];
+            }
+            ?></p>
       </div>
-    </div>  
+    </div>
   </div>
 <?php }
 
-function university_files() {
+function university_files()
+{
   // wp_enqueue_script('googleMap', '//maps.googleapis.com/maps/api/js?key=AIzaSyDin3iGCdZ7RPomFLyb2yqFERhs55dmfTI', NULL, '1.0', true);
   wp_enqueue_script('main-university-js', get_theme_file_uri('/build/index.js'), array('jquery'), '1.0', true);
   wp_enqueue_style('custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
@@ -62,12 +71,12 @@ function university_files() {
     'root_url' => get_site_url(),
     'nonce' => wp_create_nonce('wp_rest')
   ));
-
 }
 
 add_action('wp_enqueue_scripts', 'university_files');
 
-function university_features() {
+function university_features()
+{
   add_theme_support('title-tag');
   add_theme_support('post-thumbnails');
   add_image_size('professorLandscape', 400, 260, true);
@@ -77,36 +86,38 @@ function university_features() {
 
 add_action('after_setup_theme', 'university_features');
 
-function university_adjust_queries($query) {
-  if (!is_admin() AND is_post_type_archive('campus') AND $query->is_main_query()) {
+function university_adjust_queries($query)
+{
+  if (!is_admin() and is_post_type_archive('campus') and $query->is_main_query()) {
     $query->set('posts_per_page', -1);
   }
 
-  if (!is_admin() AND is_post_type_archive('program') AND $query->is_main_query()) {
+  if (!is_admin() and is_post_type_archive('program') and $query->is_main_query()) {
     $query->set('orderby', 'title');
     $query->set('order', 'ASC');
     $query->set('posts_per_page', -1);
   }
 
-  if (!is_admin() AND is_post_type_archive('event') AND $query->is_main_query()) {
+  if (!is_admin() and is_post_type_archive('event') and $query->is_main_query()) {
     $today = date('Ymd');
     $query->set('meta_key', 'event_date');
     $query->set('orderby', 'meta_value_num');
     $query->set('order', 'ASC');
     $query->set('meta_query', array(
-              array(
-                'key' => 'event_date',
-                'compare' => '>=',
-                'value' => $today,
-                'type' => 'numeric'
-              )
-            ));
+      array(
+        'key' => 'event_date',
+        'compare' => '>=',
+        'value' => $today,
+        'type' => 'numeric'
+      )
+    ));
   }
 }
 
 add_action('pre_get_posts', 'university_adjust_queries');
 
-function universityMapKey($api) {
+function universityMapKey($api)
+{
   $api['key'] = 'yourKeyGoesHere';
   return $api;
 }
@@ -116,10 +127,11 @@ add_filter('acf/fields/google_map/api', 'universityMapKey');
 // Redirect subscriber accounts out of admin and onto homepage
 add_action('admin_init', 'redirectSubsToFrontend');
 
-function redirectSubsToFrontend() {
+function redirectSubsToFrontend()
+{
   $ourCurrentUser = wp_get_current_user();
 
-  if (count($ourCurrentUser->roles) == 1 AND $ourCurrentUser->roles[0] == 'subscriber') {
+  if (count($ourCurrentUser->roles) == 1 and $ourCurrentUser->roles[0] == 'subscriber') {
     wp_redirect(site_url('/'));
     exit;
   }
@@ -127,10 +139,11 @@ function redirectSubsToFrontend() {
 
 add_action('wp_loaded', 'noSubsAdminBar');
 
-function noSubsAdminBar() {
+function noSubsAdminBar()
+{
   $ourCurrentUser = wp_get_current_user();
 
-  if (count($ourCurrentUser->roles) == 1 AND $ourCurrentUser->roles[0] == 'subscriber') {
+  if (count($ourCurrentUser->roles) == 1 and $ourCurrentUser->roles[0] == 'subscriber') {
     show_admin_bar(false);
   }
 }
@@ -138,13 +151,15 @@ function noSubsAdminBar() {
 // Customize Login Screen
 add_filter('login_headerurl', 'ourHeaderUrl');
 
-function ourHeaderUrl() {
+function ourHeaderUrl()
+{
   return esc_url(site_url('/'));
 }
 
 add_action('login_enqueue_scripts', 'ourLoginCSS');
 
-function ourLoginCSS() {
+function ourLoginCSS()
+{
   wp_enqueue_style('custom-google-fonts', '//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i');
   wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
   wp_enqueue_style('university_main_styles', get_theme_file_uri('/build/style-index.css'));
@@ -153,14 +168,23 @@ function ourLoginCSS() {
 
 add_filter('login_headertitle', 'ourLoginTitle');
 
-function ourLoginTitle() {
+function ourLoginTitle()
+{
   return get_bloginfo('name');
 }
 
 // Force note posts to be privte
 function create_private_note_post($post_data, $postarr)
 {
-  if (isset($postarr['post_type']) && $postarr['post_type'] == 'note' && isset($postarr['post_status']) && $postarr['post_status'] == 'publish' && $postarr['post_status'] != 'trash' ) {
+  if ($post_data['post_type'] == 'note' ) {
+    
+    if (count_user_posts(get_current_user_id(), 'note') > 4 && !$postarr['ID']) { // Update the user's post counts
+      die("You have reached your note limit."); // Kill Word
+    }
+    $post_data['post_content'] = sanitize_textarea_field($post_data['post_content']);
+    $post_data['post_title'] = sanitize_text_field($post_data['post_title']);
+  }
+  if (isset($postarr['post_type']) && $postarr['post_type'] == 'note' && isset($postarr['post_status']) && $postarr['post_status'] == 'publish' && $postarr['post_status'] != 'trash') {
     $post_data['post_status'] = 'private';
     $post_data['post_type'] = 'note';
     remove_filter('wp_insert_post_data', 'create_private_note_post');
@@ -168,3 +192,25 @@ function create_private_note_post($post_data, $postarr)
   return $post_data;
 }
 add_filter('wp_insert_post_data', 'create_private_note_post', 10, 2);
+
+
+// Filter Html  for the excerpt. //وظيفة تعقيم الكود او من كتابه اي تشفير
+// function filter_html_in_write_post($data)
+// {
+//   if ($data['post_type'] == 'note') {
+//     # code...
+
+//   $allowed_html = array(
+//     'a' => array(
+//       'href' => array(),
+//       'title' => array(),
+//     ),
+//     'br' => array(),
+//     'em' => array(),
+//     'strong' => array(),
+//   );
+//   $data['post_content'] = wp_kses($data['post_content'], $allowed_html);
+//   }
+//   return $data;
+// }
+// add_filter('wp_insert_post_data', 'filter_html_in_write_post', 10, 2);
